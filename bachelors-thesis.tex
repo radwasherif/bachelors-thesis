@@ -1,0 +1,68 @@
+\documentclass[]{article}
+
+%opening
+\title{Automated Checking of Implicit Assumptions on Textual Data}
+\author{Radwa Sherif Abdelbar \\
+	 Supervisors: Dr. Caterina Urban, Alexandra Bugariu}
+
+\usepackage{natbib}
+\usepackage{amsfonts}
+\usepackage{stmaryrd}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+\begin{document}
+
+\maketitle
+
+
+
+\begin{abstract}
+
+\end{abstract}
+
+\section{Introduction}
+
+\section{Static Analysis}
+
+In this section, we aim to present a generic framework for tracking assumptions on input data using backward static analysis, which builds on the work done in \cite{madelin}. We present a top-level domain, the Assumption Domain, parametrized by a list of abstract domains which we call sub-domains and an internal stack. The different operators and transformations of the analysis are invoked on these sub-domains independently, as well as on the stack. When a program point is encountered at which input is being read, the relevant sub-domain is queried for information about the variable being read as input, and this information is stored on the stack.
+
+Below we present our domain using a top-down approach. In Section \ref{assumption-domain}, we present our top level domain and explain its operations. Then in Sections \ref{sub-domains} we present the properties of the sub-domains and some additional functions which need to be introduced to abstract domains in order for them to work properly with our analysis. In Section \ref{stack}, we then present the Input Stack data structure and explain how it interacts with the sub-domains through the Assumption Domain. Finally, in Section \ref{example-domains}, we present possible example sub-domains, particularly the ones we have focused on in this project and used in our implementation. We also trace a code example as a demonstration of how our analysis operates. 
+
+\subsection{The Assumption Domain} \label{assumption-domain}
+
+$D \equiv SUBD^{n} \times STACK$\\	
+
+Where  $SUBD$ is the set of abstract domains that can keep track of some property about the program variables, and $STACK$ is a set of stacks of assumptions on input values of the program. This domain acts as a top-level domain under which any sequence of chosen abstract domains can operate as independent sub-domains. The stack is then used to record the values of program variables once they are read as inputs to the program. We shall discuss $SUBD$ and $STACK$ in more detail later in this thesis. \\
+
+We define the Assumption Domain formally as follows: \\
+\begin{itemize}
+	\item An element $d \in \textsl{D} = \lbrace ((S_{i})_{i=1}^{n}, Q) \vert S_{i} \in SUBD \wedge Q \in STACK \rbrace$. 
+	\item A concretization function $\gamma_{D}(d) =( \bigcup\limits_{i=1}^{n}\gamma_{S_{i}}(S_{i}), \gamma_{STACK}(Q))$ 
+	[Comment: I am not sure if the best way to make a distinction between program variables and stack is a tuple.]
+	\item A partial order $\sqsubseteq_{D}$ such that if $S_{1i}$ and $S_{2i}$ belong to the same abstract domain $SUBD_{i}$, we get that $ ((S_{1i})_{i=1}^{n}, Q_{1}) \sqsubseteq_{D} ((S_{2 i})_{i=1}^{n}, Q_{2}) \Longleftrightarrow \bigwedge\limits_{i=1}^{n}(S_{1i} \sqsubseteq_{SUBD_{i}} S_{2i}) \wedge Q_{1} \sqsubseteq_{STACK} Q_{2} $
+	\item A minimum element $\bot_{D} = ((\bot_{SUBD_{i}})_{i=1}^{n}, \bot_{STACK})$. 
+	\item A maximum element $\top_{D} =  ((\top_{SUBD_{i}})_{i=1}^{n}, \top_{STACK})$
+	\item A join operator $\sqcup_{D}$ such that $ ((S_{1i})_{i=1}^{n}, Q_{1}) \sqcup_{D} ((S_{2i})_{i=1}^{n}, Q_{2}) = (((S_{1i} \sqcup_{SUBD{i}} S_{2i})_{i=1}^{n}, Q_{1} \sqcup_{STACK} Q_{2}))$
+	\item A meet operator $\sqcap_{D}$ such that $ ((S_{1i})_{i=1}^{n}, Q_{1}) \sqcap_{D} ((S_{2i})_{i=1}^{n}, Q_{2}) = (((S_{1i} \sqcap_{SUBD{i}} S_{2i})_{i=1}^{n}, Q_{1} \sqcap_{STACK} Q_{2}))$
+	\item A backward assignment operator $\llbracket \overleftarrow{X:= expr} \rrbracket ((S_{i})_{i=1}^{n}, Q) =  ((\llbracket \overleftarrow{X:= expr} \rrbracket(S_{i}))_{i=1}^{n}, \llbracket \overleftarrow{X:= expr} \rrbracket(Q))$ 
+	\item A widening operator $\nabla_{D}$ such that $ ((S_{1i})_{i=1}^{n}, Q_{1}) \nabla_{D} ((S_{2i})_{i=1}^{n}, Q_{2}) = ((S_{1i} \nabla_{SUBD_{i}} S_{2i})_{i=1}^{n}, Q_{1} \nabla_{STACK} Q_{2}) $
+\end{itemize}
+
+\subsection{The Sub-domains} \label{sub-domains}
+
+\subsection{The Input Assumption Stack} \label{stack}
+
+\subsection{Example Sub-domains} \label{example-domains}
+
+[Examples of sub-domains plugged into our analysis.]
+
+\section{Implementation}
+
+\section{Evaluation}
+
+\bibliography{bachelors-thesis}
+\bibliographystyle{unsrt}
+
+
+\end{document}
