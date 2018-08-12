@@ -1,15 +1,33 @@
-\documentclass[]{article}
+\documentclass[]{report}
 
 %opening
-\title{Automated Checking of Implicit Assumptions on Textual Data}
+\title{Automated Checking of Implicit Assumptions on Textual Data} 
 \author{Radwa Sherif Abdelbar \\
-	 Supervisors: Dr. Caterina Urban, Alexandra Bugariu}
+	 Supervisors: Dr. Caterina Urban, Alexandra Bugariu \\ Prof. Dr. Peter M{\"u}ller}
+\usepackage{titlesec}
 
 \usepackage{natbib}
 \usepackage{amsfonts}
 \usepackage{stmaryrd}
 \usepackage{amsmath}
 \usepackage{amsfonts}
+\usepackage{listings}
+\lstdefinestyle{mystyle}{
+	numberstyle=\tiny,
+	breakatwhitespace=false,         
+	breaklines=true,                 
+	captionpos=b,                    
+	keepspaces=true,                 
+	numbers=left,                    
+	numbersep=5pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,                  
+	tabsize=2
+}
+\lstset{style=mystyle}
+
+\titleformat{\chapter}{\normalfont\huge\bf}{\thechapter}{20pt}{\huge\bf}
 
 \begin{document}
 
@@ -21,45 +39,247 @@
 
 \end{abstract}
 
-\section{Introduction}
+\chapter{Introduction}
 
-\section{Static Analysis}
+Today, we live in a world that produces tremendous amounts of data on a daily basis. The extensive use of social media websites and the digitization of traditional services such as banking, retail and publishing guarantees the existence of large datasets that are available to service providers. In addition to business, technological advancements have created an abundance of data in many fields of scientific research such as the genomic data created by efficient DNA sequencing or raw images of celestial bodies that are captured by modern telescopes \cite{blei2017science}. 
 
-In this section, we aim to present a generic framework for tracking assumptions on input data using backward static analysis, which builds on the work done in \cite{madelin}. We present a top-level domain, the Assumption Domain, parametrized by a list of abstract domains which we call sub-domains and an internal stack. The different operators and transformations of the analysis are invoked on these sub-domains independently, as well as on the stack. When a program point is encountered at which input is being read, the relevant sub-domain is queried for information about the variable being read as input, and this information is stored on the stack.
+This abundance of data, along with the rapid development in new data science techniques and methods to organize, analyze and detect patterns in large datasets, creates new and unique opportunities for experts in different domains. For example, it enables businesses to predict future customer behavior or medical researcher to associate the presence of a specific gene in the human DNA with susceptibility to certain diseases. 
 
-Below we present our domain using a top-down approach. In Section \ref{assumption-domain}, we present our top level domain and explain its operations. Then in Sections \ref{sub-domains} we present the properties of the sub-domains and some additional functions which need to be introduced to abstract domains in order for them to work properly with our analysis. In Section \ref{stack}, we then present the Input Stack data structure and explain how it interacts with the sub-domains through the Assumption Domain. Finally, in Section \ref{example-domains}, we present possible example sub-domains, particularly the ones we have focused on in this project and used in our implementation. We also trace a code example as a demonstration of how our analysis operates. 
+These advantages, however, are not achieved without challenges or difficulties. The datasets processed by data science algorithms are typically very large in size and could be obtained from various sources or maintained on different machines. For this reason, they are likely to contain errors and inconsistencies. 
 
-\subsection{The Assumption Domain} \label{assumption-domain}
+In the field of data science, raw data, that is data as it is collected from the source and stored on some storage medium (e.g. database or cloud), is not usually usable as is. A recent survey among data scientists \cite{kaggle} shows them to cite "dirty data" as one of the most challenging aspects of their work. Dirty data, as defined in \cite{dirty-data}, is data that is wrong, missing or not represented according to a known standard such as non-standard representation of time and date.
 
-$D \equiv SUBD^{n} \times STACK$\\	
+Before feeding the data into a data science program, it must be cleansed and the erroneous values must be eliminated. Many tools have been introduced to achieve this goal.. [mention some data cleaning tools.] 
 
-Where  $SUBD$ is the set of abstract domains that can keep track of some property about the program variables, and $STACK$ is a set of stacks of assumptions on input values of the program. This domain acts as a top-level domain under which any sequence of chosen abstract domains can operate as independent sub-domains. The stack is then used to record the values of program variables once they are read as inputs to the program. We shall discuss $SUBD$ and $STACK$ in more detail later in this thesis. \\
+In this thesis, we present an approach to detect incorrect input data to Python programs. Unlike the data-cleaning tools mentioned above, our method does not perform computations on the dataset directly. Instead, we analyze the source code of the program which is to run on this data and try to compute the set of input values that will allow the program to terminate without raising any errors.  We then scan the dataset line by line to see if any existing values are outside this set of accepted values. If that is the case, the wrong input values are flagged as errors so that the user can correct them.  
 
-We define the Assumption Domain formally as follows: \\
+\begin{lstlisting} [language = Python, caption=Example of Assumptions on String Data] 
+	sequence_length: int = int(input())
+	count_a: int = 0
+	count_c: int = 0
+	count_g: int = 0
+	count_t: int = 0
+	for i in range(sequence_length):
+		base: str = input()
+		if base == 'A':
+			count_a: int = count_a + 1
+		elif base == 'C':
+			count_c: int = count_c + 1
+		elif base == 'G':
+			count_g: int = count_g + 1
+		elif base == 'T':
+			count_t: int = count_t + 1
+		else:
+			raise ValueError
+			
+\end{lstlisting} 
+
+We compute the set of accepted input values to a program by means of a static analysis that detects assumptions made by a program about its input data. To elaborate further, let us examine the program in Listing 1. This program aims to read a DNA sequence and count the frequency of occurrence of each nucleotide. It first reads the length of the sequence, then since the only possible nucleotides in a DNA sequence are represented by the letters A, C, G and T, it sets a frequency counter for each of these nucleotides. Then the program iterates through the sequence, reading one letter per line and incrementing the corresponding counter variable. If it encounters a letter that is neither A, C, G or T, it raises an exception because it \textit{assumes} that, in an ideal scenario, no value in the input file will be outside this set of letters. 
+
+Our aim, thus, is not to perform computations on the input data based on the known fact that the human DNA contains only A, C, G and T bases and to cleanse the wrong values. Rather, we turn our attention to the program that will run on the data and try to answer the question: what does this program \textit{assume} about its input data such that if those assumptions are not fulfilled, the program will raise an error?
+
+Our approach is composed of two main steps. First, we use static analysis to infer assumptions that the program made about the input data. Then, using the output of the first step, we run an input-checking algorithm on the data file in order to find the errors. 
+
+[explain outline of the thesis]
+
+\section{Theoretical Background}
+\subsection{Static Analysis}
+[Explain what static analysis is on a high level, what it's used for, the ways to do it]
+\subsection{Abstract Interpretation}
+[Explain briefly abstract interpretation and the advantages of using it in static analysis, element of an abstract domain.]
+
+\section{Previous Work}
+
+We build our approach on the work done in \cite{madelin} which focuses on inferring assumption on numerical data using the Interval Domain and a specially designed relations domain. Our main contribution is designing a generic framework that can use any existing abstract domain to keep track of assumptions on the input data. 
+
+\chapter{Static Analyis}
+
+\section{Concrete Domain}
+
+To define our concrete domain, we first define the following sets:
 \begin{itemize}
-	\item An element $d \in \textsl{D} = \lbrace ((S_{i})_{i=1}^{n}, Q) \vert S_{i} \in SUBD \wedge Q \in STACK \rbrace$. 
-	\item A concretization function $\gamma_{D}(d) =( \bigcup\limits_{i=1}^{n}\gamma_{S_{i}}(S_{i}), \gamma_{STACK}(Q))$ 
-	[Comment: I am not sure if the best way to make a distinction between program variables and stack is a tuple.]
-	\item A partial order $\sqsubseteq_{D}$ such that if $S_{1i}$ and $S_{2i}$ belong to the same abstract domain $SUBD_{i}$, we get that $ ((S_{1i})_{i=1}^{n}, Q_{1}) \sqsubseteq_{D} ((S_{2 i})_{i=1}^{n}, Q_{2}) \Longleftrightarrow \bigwedge\limits_{i=1}^{n}(S_{1i} \sqsubseteq_{SUBD_{i}} S_{2i}) \wedge Q_{1} \sqsubseteq_{STACK} Q_{2} $
-	\item A minimum element $\bot_{D} = ((\bot_{SUBD_{i}})_{i=1}^{n}, \bot_{STACK})$. 
-	\item A maximum element $\top_{D} =  ((\top_{SUBD_{i}})_{i=1}^{n}, \top_{STACK})$
-	\item A join operator $\sqcup_{D}$ such that $ ((S_{1i})_{i=1}^{n}, Q_{1}) \sqcup_{D} ((S_{2i})_{i=1}^{n}, Q_{2}) = (((S_{1i} \sqcup_{SUBD{i}} S_{2i})_{i=1}^{n}, Q_{1} \sqcup_{STACK} Q_{2}))$
-	\item A meet operator $\sqcap_{D}$ such that $ ((S_{1i})_{i=1}^{n}, Q_{1}) \sqcap_{D} ((S_{2i})_{i=1}^{n}, Q_{2}) = (((S_{1i} \sqcap_{SUBD{i}} S_{2i})_{i=1}^{n}, Q_{1} \sqcap_{STACK} Q_{2}))$
-	\item A backward assignment operator $\llbracket \overleftarrow{X:= expr} \rrbracket ((S_{i})_{i=1}^{n}, Q) =  ((\llbracket \overleftarrow{X:= expr} \rrbracket(S_{i}))_{i=1}^{n}, \llbracket \overleftarrow{X:= expr} \rrbracket(Q))$ 
-	\item A widening operator $\nabla_{D}$ such that $ ((S_{1i})_{i=1}^{n}, Q_{1}) \nabla_{D} ((S_{2i})_{i=1}^{n}, Q_{2}) = ((S_{1i} \nabla_{SUBD_{i}} S_{2i})_{i=1}^{n}, Q_{1} \nabla_{STACK} Q_{2}) $
+	\item $\mathcal{L}$: the set of all program points in the program being analyzed. 
+	\item $\mathcal{S}$: the set of all possible strings. 
+	\item $\mathcal{V}$: the set of program variables.
+	\item Following from the previous definitions, $\wp(\mathcal{V} \rightarrow \mathcal{S})$ is a set of mappings from program variables to the possible values they can take. Note that one program  variables is allowed to be mapped to multiple values. 
+	\item We also take $\wp(\mathcal{S})^{*}$ as the list of values read as input from one program point onwards.  
 \end{itemize}
 
-\subsection{The Sub-domains} \label{sub-domains}
+We can then define our concrete domain as follows: 
+\begin{center}
+$\mathcal{L} \rightarrow \wp(\mathcal{V} \rightarrow \mathcal{S}) \times \wp(\mathcal{S})^{*}$
+\end{center}
 
-\subsection{The Input Assumption Stack} \label{stack}
+As indicated by the formula, our  concrete domain maps a program point to a set of mappings of program variables to the values they are allowed to take and a list of input values which the program reads from this point onwards such that the program terminates without any errors. 
+
+\section{The Assumption Abstract Domain} \label{assumption-domain}
+We use the theory of Abstract Interpretation \cite{cousot} to design an abstract domain that over-approximates the concrete semantics defined in the previous section. In this context, over-approximation means that the constraints inferred by the analysis are necessary but not sufficient for the program to run without producing an error. If the input values violate those constraints, the program is guaranteed to produce an error. We guarantee an absence of false-positives. However, if the input values satisfy all the constraints, the program might still produce an error. Our static analysis works backwards. 
+
+To examine the properties of our domain, let us consider the program in Listing 2, which performs the same operation as Listing 1, namely reading a DNA sequence and counting the frequency of every nucleotide, but on multiple sequences separated by a '.' or '\#' character. On line 1, the number of sequences is read. Lines 3 and 4 assert that we have at least one sequence in the file. Another addition in Listing 2 is the check that the sequence length is not greater than some maximum length on lines 7 and 8. 
+
+There are multiple ways in which this program can produce an error. On line 1 if the value read cannot be cast to an integer, a error will be raised by Python. If the number of sequences is not positive (line 3), the length of each sequence is greater than the designated maximum sequence length, the sequence contains characters other than A, C, G and T (lines 15 through 24) or if the separator character is not a hash or a dot (line 26), the program raises a ValueError explicitly. 
+
+It is obvious from this example that we need to track information about both numerical values and string values if we are to compute the set of allowed input values to this program. For examples we need to ensure that the relation $sequence\_length > max\_length$ holds and that the variable $base$ has only the characters in the set $\lbrace'A', 'C', 'G', 'T' \rbrace$. This cannot be achieved by running a conventional static analysis using only one abstract domain.
+
+\begin{lstlisting} [language=Python, caption=Example of Assumptions on both String and Numerical Data]
+	number_of_sequences: int = int(input())
+	max_length: int = int(input())
+	if number_of_sequences <= 0 :
+		raise ValueError("Expecting at least one DNA sequence")
+	for s in range(number_of_sequences):
+		sequence_length: int = int(input())
+		if sequence_length > max_length:
+			raise ValueError
+		A_count: int = 0
+		C_count: int = 0
+		G_count: int = 0
+		T_count: int = 0
+		for i in range(sequence_length):
+			base: str = input()
+			if base == 'A':
+				A_count: int = A_count + 1
+			elif base == 'C':
+				C_count: int = C_count + 1
+			elif base == 'G':
+				G_count: int = G_count + 1
+			elif base == 'T':
+				T_count: int = T_count + 1
+			else:
+				raise ValueError
+		separator: str = input()
+		if separator == '.' or separator == '#':
+			pass
+		else:
+			raise ValueError
+\end{lstlisting}
+
+
+
+Our abstract domain, which we call the Assumption Domain, is a generic domain that allows for the approximation of multiple program properties simultaneously. It is parametrized by a list of abstract domains which are independent of one another. For each step of the analysis, the Assumption Domain invokes the corresponding operator or transformation on each domain independently. Thus, in the case of the example above, we can use the Octagons Domain \cite{octagon} to keep track of the relations between numerical variables such as $sequence\_length \leq max\_length$ and the Character Inclusion Domain \cite{character} to keep track of the characters of the variable $base$.
+
+
+Another important property of our abstract domain is its ability to store assumptions about inputs read by the program in any of its scopes. Going back to Listing 2, let us examine the variable $base$. If we trace a backward static analysis from line 24 to line 15, we will get some information about this variable. For example, using the Character Inclusion Domain, we will get that this variable is allowed to contain only the characters 'A', 'C', 'G' and 'T'. However, on line 14 whatever information we have captured before will be lost with the assignment statement \verb|base = input()|. Therefore, we need a data structure in which to store the constraints computed so far about this variable. At the end of the analysis, this data structure will contain the constraints about all the inputs read in course of the execution of the program. 
+
+In our case, we choose this data structure to be a stack, in which every layer represents a scope of the program. Whenever the analysis enters a new scope of the program, a new layer is pushed onto the stack. Inside of this scope, whenever a value is read as input, we store its constraints on the top layer of the stack. When existing a scope, the top layer is popped form the stack. This way, at the end of the analysis, we have a stack with one layer containing all the assumptions about the inputs read in all the scopes of the program. 
+
+Given the previously mentioned properties, we introduce our domain formally below. \\
+
+
+We define $SUBD$ to be a family of abstract domains which are suitable for our analysis. In section \ref{sub-domains}, we explain the properties of these domains in detail.  
+
+In addition, we define $STACK$ to be a set of all possible stacks which store assumptions on input values of the program. The stack data structure and its operations are defined in detail in section \ref{stack}. 
+
+We use the notation $ (X_{i})_{i=1}^{n} $ throughout this thesis to indicate a list of length $ n $.  \\
+
+We define the Assumption Domain formally as follows: \\
+\begin{center}
+	$D \equiv SUBD^{n} \times STACK$\\	
+\end{center}
+\begin{itemize}
+	\item An element $d \in \textsl{D} = \lbrace ((S_{i})_{i=1}^{n}, Q) \vert S_{i} \in SUBD \wedge Q \in STACK \rbrace$. Every element of this domain consists of a sequence of instances of sub-domains and a stack. Every instance of a sub-domain $ S_{i} $ keeps track of all the variables at the same time. If a variable does not belong to a type the domain can handle, it is always mapped to top in that domain. For example, if a variables is of type string and the domain $ S_{1} $ is the Interval Domain, then $ x $ will always be mapped to top in $ S_{1} $.
+	\item A concretization function $\gamma_{D}(d) =( \bigcap\limits_{i=1}^{n}\gamma_{S_{i}}(S_{i}), \gamma_{STACK}(Q)).$ From the previous definition follows the concretization function. It is the intersection of concretization of all the sub-domains as well as the concretization of the stack. 
+	\item A partial order $\sqsubseteq_{D}$ such that $ ((S_{1,i})_{i=1}^{n}, Q_{1}) \sqsubseteq_{D} ((S_{2, i})_{i=1}^{n}, Q_{2}) \Longleftrightarrow \bigwedge\limits_{i=1}^{n}(S_{1i} \sqsubseteq_{S_{i}} S_{2i}) \wedge Q_{1} \sqsubseteq_{STACK} Q_{2} .$ An element $ d_{1} $ of $ D $ is less than or equal to another element $ d_{1} $ if and only if every instance of a sub-domain in $ d_{1} $ is less than or equal to the corresponding instance of the same sub-domain in $ d_{2} $ and if and only if the stack of $ d_{1} $ is less than or equal to the stack of $ d_{2} $.
+	\item A minimum element $\bot_{D} = ((\bot_{S_{i}})_{i=1}^{n}, \bot_{STACK})$.   
+	\item A maximum element $\top_{D} =  ((\top_{S_{i}})_{i=1}^{n}, \top_{STACK})$
+	\item A join operator $\sqcup_{D}$ such that $ ((S_{1,i})_{i=1}^{n}, Q_{1}) \sqcup_{D} ((S_{2,i})_{i=1}^{n}, Q_{2}) = (((S_{1,i} \sqcup_{S_{i}} S_{2,i})_{i=1}^{n}, Q_{1} \sqcup_{STACK} Q_{2}))$. The join operator is applied pair-wise to all sub-domains and the stack. Every instance of a sub-domain in the first element is joined with the corresponding instance of the same domain in the second element. The two stack are also joined. 
+	\item A meet operator $\sqcap_{D}$ such that $ ((S_{1,i})_{i=1}^{n}, Q_{1}) \sqcap_{D} ((S_{2,i})_{i=1}^{n}, Q_{2}) = (((S_{1,i} \sqcap_{S_{i}} S_{2,i})_{i=1}^{n}, Q_{1} \sqcap_{STACK} Q_{2}))$. Similar to the join, the meet operator is applied pair-wise to all sub-domains and the stack.
+	\item A backward assignment operator $\llbracket X:=aexpr \rrbracket ((S_{i})_{i=1}^{n}, Q) =  ((\llbracket X:=aexpr \rrbracket(S_{i}))_{i=1}^{n}, \llbracket X:= expr \rrbracket(Q)).$ The backward assignment operator is applied element-wise to every sub-domain and to the stack. 
+	\item A filter operator $ \llbracket bexpr \rrbracket ((S_{i})_{i=1}^{n}, Q) =  ((\llbracket bexpr \rrbracket(S_{i}))_{i=1}^{n}, \llbracket bexpr \rrbracket(Q)). $ The filter operator is applied element-wise to every sub-domain and to the stack.
+	\item A widening operator $\nabla_{D}$ such that $ ((S_{1,i})_{i=1}^{n}, Q_{1}) \nabla_{D} ((S_{2,i})_{i=1}^{n}, Q_{2}) = $ $ ((S_{1, i} \nabla_{S_{i}} S_{2,i}), Q_{1} \nabla_{STACK} Q_{2}) .$ Similar to the join and meet, widening is applied pair-wise between the sub-domains and the stack. 
+\end{itemize}
+
+\subsection{Sub-domains} \label{sub-domains}
+
+As mentioned in the previous section, our Assumption Domain can make use of any existing abstract domain in order to track assumptions on input data. However, in order for this setting to work effectively, we need to define some extra operators for existing abstract domains. 
+
+$SUBD$ is the family of abstract domains which are capable of keeping track of constraints on variables. The variables are either program variables or special variables of the form $ l[program\_point] $ that represent a program point. An element $F \in SUBD$ is an abstract domain whose concretization function $\gamma_{F}$ operators $\sqcup_{F}, \sqcap_{F}, \sqsubset_{F}, \nabla_{F}$, backward assignment and filter are already defined.
+
+The domains used in our analysis are required to define a special operator $ \mathcal{R}_{F} $ such that $ \mathcal{R}_{F}(f, v, l) $ for $ f \in F, v \in \mathcal{V}, l \in \mathcal{L} $ replaces every occurrence of a variable $ v $ with the program point $ l $ from which this variable is read as input. 
+
+ In Listing 2, if we have an element in some relational domain $F$ that keeps track of the constraint $sequence\_length \leq max\_length$ on line 7, then on line 6, we will call $ \mathcal{R}_{F}(\lbrace sequence\_length \leq max\_length \rbrace, sequence\_length, l6) $ and then we get the element $ \lbrace l6 \leq max\_length \rbrace$. Again on line 2, we call $ \mathcal{R}_{F}(\lbrace l6 \leq max\_length \rbrace, max\_length, l2) = \lbrace l6 \leq l2 \rbrace$. We, thus, obtain a constraint that is no longer between program variables, but between program points from which these variables are read as inputs. 
+ 
+ \begin{lstlisting} [language=Python, caption= Example of unification]
+ x: int = input()
+ if x > 10:
+	 y: int = int(input())
+	 if y + x <= 10:
+		 raise ValueError
+ else:
+	 z: float = float(input())
+	 if z + x <= 20:
+		 raise ValueError
+ \end{lstlisting}
+ 
+ We also the sub-domains to define a special operator $ \mathcal{U}(f_{1}, f_{2}) $ that unifies the environment of two elements of a relational domain. To illustrate what we mean by unification we introduce Listing 3. In the then-branch of the if-statement, we read a variable $ y $ and assert the condition $ y + x > 10 $. In the else-branch, we read a variable $ z $ and enforce the condition $ z + x > 20 $. Assuming that we have a relational domain that is capable of keeping track of these relations in the two branches. If we trace a backward analysis on this program and employing the $ \mathcal{R}_{F} $ we defined earlier in this section, then in the then branch, we will get the relation $ l3 + x > 10 $ and in the else branch, we will get the relation $ l7 + x > 20 $. A join needs to be performed on these two elements at the head of the if-statement. Since our analysis treats $ l3 $ and $ l7 $ as different variables, the join will yield top. 
+ 
+ It is possible, however, to do better than this. From the perspective of our analysis, we do not care about the particular variable that represents an input value, but rather about the order in which inputs are read. Therefore in the case of Listing 2.2, we care that after reading $ x $ on line 1, we will read one more value, regardless of which branch the program will take. The function of the unification operator then is to enable us to treat both $ l3 $ and $ l7 $ as the same variable since, essentially, they reflect the same order of reading inputs in the program. For example, $ \mathcal{U}_{F} $ can be defined to replace the later program point with the earlier one as follows: $ \mathcal{U}_{F}(\lbrace l3 + x > 10 \rbrace, \lbrace l7 + x > 20 \rbrace) =  \lbrace l3 + x > 20 \rbrace$. Then a join can be performed between $ \lbrace l3 + x > 10 \rbrace $ and $ \lbrace l3 + x > 20 \rbrace $. 
+
+\subsection{The Stack} \label{stack}
+
+The stack used in our analysis follows the intuitive definition of a stack. It is composed of layers and defines push and pop operations. To introduce our stack, we need to define a set $B = \lbrace (l, (c_{i})_{i=1}^{n})\ \vert \ l \in \mathcal{L} \wedge \exists_{F_{in} \in SUBD_{in}} c \in F_{in} \rbrace \cup \lbrace \star \rbrace$ which is either a sequence of constraints from any domain in $SUBD$ associated with a specific program point or a constraint represented by $ \star $ which is an empty constraint and is used to indicate a lack of information on what constraints are placed on input values. For example, in Listing 2, an element $(l7, (int, l7 \leq l2)) \in B$ would indicate that the value read from program point 7 is of type integer and is less than the value read form program point 2.
+
+We then define the set of stack layers $I  = \lbrace  m \times (a_{i})_{i=1}^{k}\ \vert m \in \mathbb{M}\ \wedge \ a_{i} \in I \cup B \rbrace$ as a set of possibly repeated constraints on the input data, where $ \mathbb{M} $ is a set of multipliers that indicate how many time the constraints in the list are repeated. A multiplier is either an expression or an integer. For clarity, we express a list of constraints of length $ k $ that is repeated $ m $ times using the notation $ m \times (a_{i})_{i=1}^{k} $. We define a concretization function as well as join, meet and widening operators for the stack layers before we proceed to define them for the whole stack. 
+
+\begin{itemize}
+	\item A concretization function $ \gamma_{I} $ is defined recursively as follows:
+		\begin{itemize}
+			\item $ \gamma_{I}(\star) = \mathcal{S}$. An empty constraint indicates that the input value can be anything. 
+			
+			\item For $ (l, (c_{i})_{i=1}^{n}) \in B $, $ \gamma_{I}((l, (c_{i})_{i=1}^{n})) = \gamma(c_{1}) \cap ... \cap\gamma(c_{n}) $. A tuple of constraints associated with one program point concertizes to any value that satisfies all of the constraints of this tuple.  
+			
+			\item For $ m \times (a_{i})_{i=1}^{k} \in I $, $ \gamma_{I}(m \times (a_{i})_{i=1}^{k}) = [\gamma_{I}(a_{1}),.., \gamma_{I}(a_{k})]^{m}$. To concertize a constraint in the set $ I $, the concretization function is applied recursively to its list of constraints, then the result is repeated as many times as the value of its multiplier. 
+		\end{itemize}
+	\item A partial order $ \sqsubseteq_{I} $:
+	\begin{itemize}
+		\item For any $ b \in B,\ b \sqsubseteq_{I} \star$. 
+		\item For $(l_{1}, (c_{1,i})_{i=1}^{n}), (l_{2}, (c_{,2i})_{i=1}^{n}) \in B$, the partial order is given by $ \bigwedge\limits_{i=1}^{n} c_{1,i} \sqsubseteq_{I} c_{2,i} $. We take the conjunction of the pair-wise order of the elements of the two tuples. 
+		\item For $ m \times (a_{1,i})_{i=1}^{k}, m \times (a_{2,i})_{i=1}^{k}  \in I$, that is, two elements in $ I $ with the same multiplier and the same number of constraints, the order is given by $ \bigwedge\limits_{i=1}^{k}a_{1,i} \sqsubseteq_{I} a_{2,i} $. 
+		\item For two elements where one belongs to $ I $ and the other to $ B $, we default to false. 
+	\end{itemize}
+	
+	\item A maximum element $ \top_{I} \equiv 1 \times [\star] .$
+	\item A minimum element $ \bot_{I}. $
+	\item A join operator $\sqcup_{I}$:
+	\begin{itemize}
+		\item For $ b \in B,\ b \sqcup_{I} \star = \star$
+		\item For $(l_{1}, (c_{1,i})_{i=1}^{n}), (l_{2}, (c_{2,i})_{i=1}^{n}) \in B$, the join is given by $ (min(l_{1}, l_{2}), (c_{1,i} \sqcup c_{2,i})_{i=1}^{n}) $. The soundness proof of this join follows from the soundness of the join operator of the individual domains as follows: $ \gamma_{I}((l_{1}, (c_{1i})_{i=1}^{n})) \cup \gamma_{I}((l_{2}, (c_{2i})_{i=1}^{n})) = (\gamma_{I}(c_{1,1}) \cap ... \cap \gamma_{I}(c_{1, n})) \cup (\gamma_{I}(c_{2,1}) \cap ... \cap \gamma_{I}(c_{2, n})) \subseteq \gamma_{I}(c_{1, 1} \sqcup c_{2, 1}) \cap ... \cap \gamma_{I}(c_{1, n} \sqcup c_{2, n}) $. 
+		\item For $ m \times (a_{1,i})_{i=1}^{k}, m \times (a_{2,i})_{i=1}^{k}  \in I$, that is, two elements in $ I $ with the same multiplier and the same number of constraints, the join is given by $ m \times (a_{1,i} \sqcup a_{2,i})_{i=1}^{k} $. The soundness can be proved as follows: $ [\gamma_{I}(a_{1,1}), ..., \gamma_{I}(a_{1,k})]^{m} \cup [\gamma_{I}(a_{2,1}), ..., \gamma_{I}(a_{2, k})]^{m} \subseteq [\gamma_{I}(a_{1,1} \sqcup a_{2, 1}), ..., \gamma_{I}(a_{1, k} \sqcup a_{2, k})]^{m}.$
+		\item For $ 1 \times (a_{1, i})_{i=1}^{k_{1}}, 1 \times (a_{2, i})_{i=1}^{k_{2}} \in I $, where $ k_{1} \neq k_{2} $, the join is given by $ m \times (a_{1,i} \sqcup a_{2,i})_{i=1}^{min(k1, k2)} \oplus [\star]$. When joining to elements from $ I $ with different constraint lengths, it is inevitable that we lose some information. The addition of the $ \star $ constraint is an indication that there is at least one input value for which we have no constraints and which can take any possible value. The soundness proof is somewhat similar to the previous point. $ [\gamma_{I}(a_{1,1}), ..., \gamma_{I}(a_{1,k})] \cup [\gamma_{I}(a_{2,1}), ..., \gamma_{I}(a_{2, k})] \subseteq [\gamma_{I}(a_{1,1} \sqcup a_{2, 1}), ..., \gamma_{I}(a_{1, k} \sqcup a_{2, k}), \mathcal{S}].$
+	\end{itemize}
+	\item A meet operator returns the first element since it is not needed by the analysis for the set $ I $. 
+	
+	\item A backward assignment operator $ \llbracket X := aexpr \rrbracket $ that is applied individually to constraints belonging to the set $ B $. 
+	
+	\item A widening operator $ \nabla_{I} \equiv \sqcup_{I} .$
+	\item A special replacement operator $ \mathcal{R}_{I} $ that is similar to the $ \mathcal{R}_{F} $ operator defined in the previous section:
+	\begin{itemize}
+		\item For $ (l, (c_{i})_{i=1}^{n}) \in B$, the replacement operator works as follows: $$ \mathcal{R}_{I}((l, (c_{i})_{i=1}^{n}), v, l_{1}) = (l, (\mathcal{R}_{F}(c_{i}, v, l_{1}))_{i=1}^{n}) $$ The respective operator of each domain is applied to the constraint belonging to that domain. 
+		\item For elements of the set $ I $: $$ \mathcal{R}_{I}(m \times (a_{i})_{i=1}^{k}) = m \times (\mathcal{R}_{I}(a_{i})_{i=1}^{k}) $$ The replacement operator is applied recursively to the constraints until it reaches an element of $ B $, then it applies the $ \mathcal{R}_{F} $ operator. 
+	\end{itemize}
+	\item An insertion operator $ \mathcal{I}_{I} $ that is responsible for inserting new constraints or updating existing constraints on a stack layer:
+	\begin{itemize}
+		\item For two elements $ (l, (c_{1,i})_{i=1}^{n}), (l, (c_{2,i})_{i=1}^{n} ) \in B $ that are associated with the same program point, we update the existing constraint by joining the two: $ \mathcal{I}_{I}((l, (c_{1,i})_{i=1}^{n}), (l, (c_{2,i})_{i=1}^{n})) = ((l, (c_{1,i})_{i=1}^{n}) \sqcup_{I} (l, (c_{2,i})_{i=1}^{n})).$
+		\item For two elements $ m \times (a_{1,i})_{i=1}^{k1}, m \times (a_{2,i})_{i=1}^{k2} \in I $ where $ k1 \leq k2 $ then it is required to update the existing constraints as follows: $ m \times (\mathcal{I}_{I}(a_{1,i}, a_{2,i}))_{i=1}^{k1} \oplus (a_{i})_{i=k1+1}^{k2}.$ 
+		
+		\item For all other cases, inserting $ b \in B \cup I$ in a stack layer $ m \times (a_{i})_{i=1}^{k} $: $ \mathcal{I}_{I}(m \times (a_{i})_{i=1}^{k}, b) = m \times (b \oplus (a_{i})_{i=1}^{k})$. The new constraint is perpended to the front of the list of existing constraints. 
+	\end{itemize}
+\end{itemize}
+
+The stack is defined to be a sequence of layers: 
+$$ q_{0}\ \vert\ q_{1}\ \vert\ ...\ \vert\ q_{N-1}\ \vert\ \ q_{N},\ q_{i} \in I $$
+
+ $ q_{0} $ is the bottom layer and $ q_{N} $ is the top layer. The \verb|push| operation of the stack is performed by adding a new empty layer $ 1 \times [\ ] $ to the top of the stack whenever the analysis enters a new scope. The \verb|pop| operation is performed on exiting a scope by merging the top two layers of the stack using the $ \mathcal{I}_{I} $ operator as follows: 
+ $$ \verb|pop|(q_{0}\ \vert\ q_{1}\ \vert\ ...\ \vert\ q_{N-1}\ \vert\ \ q_{N}) = q_{0}\ \vert\ q_{1}\ \vert\ ...\ \vert\  \mathcal{I}_{I}(q_{N-1}, q_{N}) $$
+ 
+ The stack concretization function $ \gamma_{STACK} $ is defined as follows: $\gamma_{I}(q_{0})\ \vert\ \gamma_{I}(q_{1})\ \vert\ ...$ $\ \vert\ \gamma_{I}(q_{N})$ . The binary operators join, meet, widening operators are applied pair-wise to the layers of the stack. The backward assignment operator is applied to every layer of the stack. 
 
 \subsection{Example Sub-domains} \label{example-domains}
 
 [Examples of sub-domains plugged into our analysis.]
 
-\section{Implementation}
+\chapter{Implementation}
 
-\section{Evaluation}
+\chapter{Evaluation}
 
 \bibliography{bachelors-thesis}
 \bibliographystyle{unsrt}

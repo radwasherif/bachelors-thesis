@@ -1,8 +1,41 @@
 \begin{thebibliography}{1}
 
+\bibitem{blei2017science}
+David~M Blei and Padhraic Smyth.
+\newblock Science and data science.
+\newblock {\em Proceedings of the National Academy of Sciences},
+  114(33):8689--8692, 2017.
+
+\bibitem{kaggle}
+Kaggle: The state of data science and machine learning, 2017.
+
+\bibitem{dirty-data}
+Won Kim, Byoung-Ju Choi, Eui-Kyeong Hong, Soo-Kyung Kim, and Doheon Lee.
+\newblock A taxonomy of dirty data.
+\newblock {\em Data Mining and Knowledge Discovery}, 7(1):81--99, Jan 2003.
+
 \bibitem{madelin}
 Madelin Schumacher.
 \newblock Automated generation of data quality checks.
 \newblock Master's thesis, ETH Zurich, 2018.
+
+\bibitem{cousot}
+Patrick Cousot and Radhia Cousot.
+\newblock Abstract interpretation: a unified lattice model for static analysis
+  of programs by construction or approximation of fixpoints.
+\newblock In editor, editor, {\em Proceedings of the 4th ACM SIGACT-SIGPLAN
+  symposium on Principles of programming languages}, pages 238--252. ACM, 1977.
+
+\bibitem{octagon}
+Antoine Min{\'e}.
+\newblock The octagon abstract domain.
+\newblock {\em Higher-order and symbolic computation}, 19(1):31--100, 2006.
+
+\bibitem{character}
+Giulia Costantini, Pietro Ferrara, and Agostino Cortesi.
+\newblock Static analysis of string values.
+\newblock In Shengchao Qin and Zongyan Qiu, editors, {\em Formal Methods and
+  Software Engineering}, pages 505--521, Berlin, Heidelberg, 2011. Springer
+  Berlin Heidelberg.
 
 \end{thebibliography}
