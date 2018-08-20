@@ -38,4 +38,11 @@ Giulia Costantini, Pietro Ferrara, and Agostino Cortesi.
   Software Engineering}, pages 505--521, Berlin, Heidelberg, 2011. Springer
   Berlin Heidelberg.
 
+\bibitem{tutorial}
+Antoine Min{\'e} et~al.
+\newblock Tutorial on static inference of numeric invariants by abstract
+  interpretation.
+\newblock {\em Foundations and Trends{\textregistered} in Programming
+  Languages}, 4(3-4):120--372, 2017.
+
 \end{thebibliography}

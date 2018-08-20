@@ -1,17 +1,23 @@
-\documentclass[]{report}
+\documentclass[10pt]{report}
 
 %opening
 \title{Automated Checking of Implicit Assumptions on Textual Data} 
 \author{Radwa Sherif Abdelbar \\
 	 Supervisors: Dr. Caterina Urban, Alexandra Bugariu \\ Prof. Dr. Peter M{\"u}ller}
 \usepackage{titlesec}
-
+\usepackage{tikz}
 \usepackage{natbib}
 \usepackage{amsfonts}
+\usepackage{amsmath}
 \usepackage{stmaryrd}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{listings}
+\usepackage{syntax}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage[T1]{fontenc}
+\usepackage{setspace}
 \lstdefinestyle{mystyle}{
 	numberstyle=\tiny,
 	breakatwhitespace=false,         
@@ -28,6 +34,8 @@
 \lstset{style=mystyle}
 
 \titleformat{\chapter}{\normalfont\huge\bf}{\thechapter}{20pt}{\huge\bf}
+\def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
+\let\endchangemargin=\endlist
 
 \begin{document}
 
@@ -94,7 +102,7 @@ We build our approach on the work done in \cite{madelin} which focuses on inferr
 
 \chapter{Static Analyis}
 
-\section{Concrete Domain}
+\section{Concrete Domain} \label{concrete}
 
 To define our concrete domain, we first define the following sets:
 \begin{itemize}
@@ -192,27 +200,12 @@ We define the Assumption Domain formally as follows: \\
 
 As mentioned in the previous section, our Assumption Domain can make use of any existing abstract domain in order to track assumptions on input data. However, in order for this setting to work effectively, we need to define some extra operators for existing abstract domains. 
 
-$SUBD$ is the family of abstract domains which are capable of keeping track of constraints on variables. The variables are either program variables or special variables of the form $ l[program\_point] $ that represent a program point. An element $F \in SUBD$ is an abstract domain whose concretization function $\gamma_{F}$ operators $\sqcup_{F}, \sqcap_{F}, \sqsubset_{F}, \nabla_{F}$, backward assignment and filter are already defined.
+$SUBD$ is the family of abstract domains which are capable of keeping track of constraints on variables. The variables are either program variables or special variables that represent an input value. An element $F \in SUBD$ is an abstract domain whose concretization function $\gamma_{F}$ operators $\sqcup_{F}, \sqcap_{F}, \sqsubset_{F}, \nabla_{F}$, backward assignment and filter are already defined.
+ 
+The domains used in our analysis are required to define a special \textit{replacement} operator $ \mathcal{R}_{F}(v, f, x) $ that, when an input value is read and stored in variable $ v \in \mathcal{V} $, introduces some special variable $ x $ into element $ f $ of a relational domain $ F $ that denotes this input value and its relation to other variables. This newly introduced variable has to provide information on the order in which an input value was read with respect to other input values in the program. One possible definition for a replacement operator is to replace a variable that is read as input with a special variable $ l_{i} $ that represents the program point $ i $ at which it is read. In this case the operator is $ \mathcal{R}_{F}(v, f, l_{i}) $. 
 
-The domains used in our analysis are required to define a special operator $ \mathcal{R}_{F} $ such that $ \mathcal{R}_{F}(f, v, l) $ for $ f \in F, v \in \mathcal{V}, l \in \mathcal{L} $ replaces every occurrence of a variable $ v $ with the program point $ l $ from which this variable is read as input. 
-
- In Listing 2, if we have an element in some relational domain $F$ that keeps track of the constraint $sequence\_length \leq max\_length$ on line 7, then on line 6, we will call $ \mathcal{R}_{F}(\lbrace sequence\_length \leq max\_length \rbrace, sequence\_length, l6) $ and then we get the element $ \lbrace l6 \leq max\_length \rbrace$. Again on line 2, we call $ \mathcal{R}_{F}(\lbrace l6 \leq max\_length \rbrace, max\_length, l2) = \lbrace l6 \leq l2 \rbrace$. We, thus, obtain a constraint that is no longer between program variables, but between program points from which these variables are read as inputs. 
  
- \begin{lstlisting} [language=Python, caption= Example of unification]
- x: int = input()
- if x > 10:
-	 y: int = int(input())
-	 if y + x <= 10:
-		 raise ValueError
- else:
-	 z: float = float(input())
-	 if z + x <= 20:
-		 raise ValueError
- \end{lstlisting}
- 
- We also the sub-domains to define a special operator $ \mathcal{U}(f_{1}, f_{2}) $ that unifies the environment of two elements of a relational domain. To illustrate what we mean by unification we introduce Listing 3. In the then-branch of the if-statement, we read a variable $ y $ and assert the condition $ y + x > 10 $. In the else-branch, we read a variable $ z $ and enforce the condition $ z + x > 20 $. Assuming that we have a relational domain that is capable of keeping track of these relations in the two branches. If we trace a backward analysis on this program and employing the $ \mathcal{R}_{F} $ we defined earlier in this section, then in the then branch, we will get the relation $ l3 + x > 10 $ and in the else branch, we will get the relation $ l7 + x > 20 $. A join needs to be performed on these two elements at the head of the if-statement. Since our analysis treats $ l3 $ and $ l7 $ as different variables, the join will yield top. 
- 
- It is possible, however, to do better than this. From the perspective of our analysis, we do not care about the particular variable that represents an input value, but rather about the order in which inputs are read. Therefore in the case of Listing 2.2, we care that after reading $ x $ on line 1, we will read one more value, regardless of which branch the program will take. The function of the unification operator then is to enable us to treat both $ l3 $ and $ l7 $ as the same variable since, essentially, they reflect the same order of reading inputs in the program. For example, $ \mathcal{U}_{F} $ can be defined to replace the later program point with the earlier one as follows: $ \mathcal{U}_{F}(\lbrace l3 + x > 10 \rbrace, \lbrace l7 + x > 20 \rbrace) =  \lbrace l3 + x > 20 \rbrace$. Then a join can be performed between $ \lbrace l3 + x > 10 \rbrace $ and $ \lbrace l3 + x > 20 \rbrace $. 
+If a program reads inputs from two different paths and these paths are to be joined at some point in the analysis, relational domain elements resulting from these two paths will contain different variables representing the inputs read on these paths. For this reason, we require the sub-domains to define a special operator $ \mathcal{U}(f_{1}, f_{2}) $ that unifies the environment of two elements of a relational domain. From the perspective of our analysis, we do not care about the particular variable that represents an input, but rather about the order in which these input are being read in their respective paths. The unification operator needs to ensure that the constraints on two input value read in the same order on two different paths can be joined successfully. An illustrative example on the replacement and unification operators can be found in section \ref{octagon} where we refer to the Octagon Domain.
 
 \subsection{The Stack} \label{stack}
 
@@ -261,21 +254,360 @@ We then define the set of stack layers $I  = \lbrace  m \times (a_{i})_{i=1}^{k}
 		\item For two elements $ (l, (c_{1,i})_{i=1}^{n}), (l, (c_{2,i})_{i=1}^{n} ) \in B $ that are associated with the same program point, we update the existing constraint by joining the two: $ \mathcal{I}_{I}((l, (c_{1,i})_{i=1}^{n}), (l, (c_{2,i})_{i=1}^{n})) = ((l, (c_{1,i})_{i=1}^{n}) \sqcup_{I} (l, (c_{2,i})_{i=1}^{n})).$
 		\item For two elements $ m \times (a_{1,i})_{i=1}^{k1}, m \times (a_{2,i})_{i=1}^{k2} \in I $ where $ k1 \leq k2 $ then it is required to update the existing constraints as follows: $ m \times (\mathcal{I}_{I}(a_{1,i}, a_{2,i}))_{i=1}^{k1} \oplus (a_{i})_{i=k1+1}^{k2}.$ 
 		
-		\item For all other cases, inserting $ b \in B \cup I$ in a stack layer $ m \times (a_{i})_{i=1}^{k} $: $ \mathcal{I}_{I}(m \times (a_{i})_{i=1}^{k}, b) = m \times (b \oplus (a_{i})_{i=1}^{k})$. The new constraint is perpended to the front of the list of existing constraints. 
+		\item For all other cases, inserting $ b \in B \cup I$ in a stack layer $ m \times (a_{i})_{i=1}^{k} $: $ \mathcal{I}_{I}(m \times (a_{i})_{i=1}^{k}, b) = m \times (b \oplus (a_{i})_{i=1}^{k})$. The new constraint is prepended to the front of the list of existing constraints. 
 	\end{itemize}
 \end{itemize}
 
 The stack is defined to be a sequence of layers: 
 $$ q_{0}\ \vert\ q_{1}\ \vert\ ...\ \vert\ q_{N-1}\ \vert\ \ q_{N},\ q_{i} \in I $$
 
- $ q_{0} $ is the bottom layer and $ q_{N} $ is the top layer. The \verb|push| operation of the stack is performed by adding a new empty layer $ 1 \times [\ ] $ to the top of the stack whenever the analysis enters a new scope. The \verb|pop| operation is performed on exiting a scope by merging the top two layers of the stack using the $ \mathcal{I}_{I} $ operator as follows: 
- $$ \verb|pop|(q_{0}\ \vert\ q_{1}\ \vert\ ...\ \vert\ q_{N-1}\ \vert\ \ q_{N}) = q_{0}\ \vert\ q_{1}\ \vert\ ...\ \vert\  \mathcal{I}_{I}(q_{N-1}, q_{N}) $$
+ $ q_{0} $ is the bottom layer and $ q_{N} $ is the top layer. The \textbf{\textsc{push}} operation of the stack is performed by adding a new empty layer $ 1 \times [\ ] $ to the top of the stack whenever the analysis enters a new scope. The \textbf{\textsc{pop}} operation is performed on exiting a scope by merging the top two layers of the stack using the $ \mathcal{I}_{I} $ operator as follows: 
+ $$ \textbf{\textsc{pop}}(q_{0}\ \vert\ q_{1}\ \vert\ ...\ \vert\ q_{N-1}\ \vert\ \ q_{N}) = q_{0}\ \vert\ q_{1}\ \vert\ ...\ \vert\  \mathcal{I}_{I}(q_{N-1}, q_{N}) $$
  
  The stack concretization function $ \gamma_{STACK} $ is defined as follows: $\gamma_{I}(q_{0})\ \vert\ \gamma_{I}(q_{1})\ \vert\ ...$ $\ \vert\ \gamma_{I}(q_{N})$ . The binary operators join, meet, widening operators are applied pair-wise to the layers of the stack. The backward assignment operator is applied to every layer of the stack. 
 
-\subsection{Example Sub-domains} \label{example-domains}
 
-[Examples of sub-domains plugged into our analysis.]
+\section{An Instance of the Analysis} \label{example-domains}
+After designing an Assumption Domain in the previous section, we create an instance of this domain with several sub-domains for the purpose of this thesis. Here we introduce these sub-domains: the Type Domain, the Octagons Domain and the Character Inclusion Domain. We then trace an instance of the analysis instantiated with these three domains on a code example. 
+
+Similar to those defined in \cite{tutorial}, we define an expression language that will be useful in defining substitution and filter algorithms for our sub-domains later in this section: \\
+\begin{changemargin} {1.7cm} {1.7cm}
+	expr ::= v \hfill (variable, $ v \in \mathcal{V} $) \\
+\hspace*{10mm}	| c \hfill (literal, $ c \in \mathcal{S} \cup \mathbb{R} $) \\
+\hspace*{10mm}	| expr $ \diamond $ expr \hfill (expression, $ \diamond \in \lbrace + , - , \times \div \rbrace $) \\ \\
+
+cond ::= expr $ = $ expr \hfill (comparison) \\
+\hspace*{10mm} | cond $ \wedge $ cond \hfill (logical and) \\
+\hspace*{10mm} | cond $ \vee $ cond \hfill (logical or)
+	
+\end{changemargin}
+	
+\subsection{The Type Domain} \label{types}
+
+The Type Domain is used to keep track of types of variables. We define a type lattice $ \mathbf{T} $ as per the Hass diagram below: \\
+\begin{center}
+	\begin{tikzpicture}
+
+	\node (string)  {$String$};
+	\node [below  of=string] (float)  {$Float$};
+	\node [below  of=float] (int)  {$Integer$};
+	\node [below  of=int] (bool)  {$Boolean$};
+	\node [below  of=bool] (bottom)  {$\bot$};
+	\draw [thick] (string) -- (float); 
+	\draw [thick] (float) -- (int); 
+	\draw [thick] (int) -- (bool);
+	\draw [thick] (bool) -- (bottom); 
+	
+	\end{tikzpicture}
+\end{center}
+
+In section \ref{concrete} we define $ \mathcal{S} $ to be the set of all possible strings. Here we define the sets $ \mathbb{F}, \mathbb{I}, \mathbb{B} \subseteq \mathcal{S} $ to be the sets of strings that can be interpreted as floating-point numbers, integers and booleans respectively. Then we define a concretization function $ \gamma_{\mathbf{T}}: \mathbf{T} \longrightarrow \mathcal{S} $ for the type lattice as follows: 
+\begin{center}
+ $ \gamma_{\mathbf{T}}(String) = \mathcal{S} $ \\
+ $ \gamma_{\mathbf{T}}(Float) = \mathbb{F} $ \\
+  $ \gamma_{\mathbf{T}}(Integer) = \mathbb{I} $ \\
+   $ \gamma_{\mathbf{T}}(Boolean) = \mathbb{B} $ \\
+    $ \gamma_{\mathbf{T}}(\bot) = \phi $
+
+\end{center}
+The operators $ \sqsubseteq_{\mathbf{T}}, \sqcup_{\mathbf{T}}, \sqcap_{\mathbf{T}} $ can be defined using the Hass diagram above. \\
+
+We define arithmetic operations for the type lattice as follows:\\
+\hspace*{15mm}$ t_{1} + t_{2}$ = $ \left\{
+\begin{array}{ll}
+Integer & t_{1} = Boolean \wedge t_{2} = Boolean \\
+String & t_{1} = String \wedge t_{2} = String \\
+\bot_{\mathbf{T}} & (t_{1} = String \wedge t_{2} \neq String) \vee (t_{1} \neq String \wedge t_{2} = String) \\
+t_{1} \sqcup_{\mathbf{T}} t_{2} & otherwise
+\end{array} 
+\right. $ \\ \\
+
+\hspace*{10mm}$ t_{1} - t_{2}$ = $ \left\{
+\begin{array}{ll}
+Integer & t_{1} = Boolean \wedge t_{2} = Boolean \\
+\bot_{\mathbf{T}} & t_{1} = String \vee  t_{2} = String \\
+t_{1} \sqcup_{\mathbf{T}} t_{2} & otherwise
+\end{array} 
+\right. $ \\ \\
+
+\hspace*{10mm}$ t_{1} \times t_{2}$ = $ \left\{
+\begin{array}{ll}
+Integer & t_{1} = Boolean \wedge t_{2} = Boolean \\
+\bot_{\mathbf{T}} & t_{1} = String \wedge  (t_{2} = String \vee t_{2} = Float) \\
+\bot_{\mathbf{T}} & t_{2} = String \wedge  (t_{1} = String \vee t_{1} = Float) \\
+t_{1} \sqcup_{\mathbf{T}} t_{2} & otherwise
+\end{array} 
+\right. $ \\ \\
+
+\hspace*{10mm}$ t_{1} \div t_{2}$ = $ \left\{
+\begin{array}{ll}
+ \bot_{\mathbf{T}} & t_{1} = Boolean \vee t_{2} = Boolean \\
+	Float & otherwise
+\end{array} 
+\right. $ \\ \\
+ 
+To define the Type Domain, we assume that a static type inference has already been run on the program and that it infers the most generic type for a variable in all execution paths of the program. Our Type Domain aims to track more fine-grained information about the types of variables. We assume that the function $ \mathtt{type}(v) $ returns the type of a variable according to the type inference. Then we proceed to define the Type Domain as follows: 
+
+\begin{center}
+	$ \mathrm{TYP} \equiv \mathcal{V} \longrightarrow \mathbf{T}$
+\end{center} 
+\begin{itemize}
+	\item An element $ t \in \mathrm{TYP} = \lbrace v \rightarrow typ\ \vert\ v \in \mathcal{V} \wedge typ \in \mathbf{T}  \rbrace $. An element of this domain maps a variable to an element of the type lattice. 
+	\item A concretization function $ \gamma_{\mathbf{TYP}} $:
+	\begin{itemize} 
+		\item We first define a function $ \gamma_{c}: (\mathcal{V} \rightarrow \wp(\mathcal{S})) \longrightarrow \wp(\mathcal{V} \rightarrow \mathcal{S}) $, which transforms a mapping from variable to multiple string values to multiple mappings from a variable to a string value. 
+		\item We define an intermediate concretization function $ \gamma'_{\mathbf{TYP}}: \mathrm{TYP} \longrightarrow (\mathcal{V} \rightarrow \wp(\mathcal{S})) $ as follows: $ \gamma'_{\mathrm{TYP}}(f) = \lambda_{x}\cdot \gamma_{\mathbf{T}}(f(x)) $. 
+		\item Finally, the concretization function of the Type Domain $ \gamma_{\mathrm{TYP}}: \mathrm{TYP} \longrightarrow \wp(\mathcal{V} \rightarrow \mathcal{S}) $ as the chaining of the two previous functions: $ \gamma_{c} \circ \gamma'_{\mathrm{TYP}}$. It maps every variable to the possible values it can take according to its type. 
+	\end{itemize}
+\item A partial order $ \sqsubseteq_{\mathrm{TYP}} $: $ t_{1} \sqsubseteq_{\mathrm{TYP}} t_{2} \Longleftrightarrow \forall_{v \in \mathcal{V}} (t_{1}(v) \sqsubseteq_{\mathbf{T}} t_{2}(v))$. For an element of the domain to be smaller than the other, it has to the case that it maps every variable involved in the program to a smaller lattice element than it is mapped in the other element. 
+\item A minimum element $ \bot_{\mathrm{TYP}} = \lambda_{x} \cdot \bot_{\mathbf{T}}$. It simply maps every variable to the least element of the type lattice. This represents a type error state. 
+\item A maximum element $ \top_{\mathrm{TYP}} = \lambda_{x} \cdot \mathtt{type}(x) $. Since the type inference calculates the most generic type a variable can take, the maximum element of this domain maps every variable to the type computed for it by the type inference. If a variable has a type Float in the type inference, then this it the most generic it can have in all paths of the program and therefore we do not assign it to String but to Float. 
+\item A join operator $ \sqcup_{\mathrm{TYP}} $: $ t_{1} \sqcup_{\mathrm{TYP}} t_{2} = \lambda_{x}\cdot t_{1}(x) \sqcup_{\mathbf{T}} t_{2}(x) $. If variable is mapped to two different types in two different paths, then, when these paths are joined, we map the variable to the more \textit{generic} type. That is, the type that is higher in the type lattice Hass diagram. 
+
+\item A meet operator $ \sqcap_{\mathrm{TYP}} $: $ t_{1} \sqcap_{\mathrm{TYP}} t_{2} = \lambda_{x}\cdot t_{1}(x) \sqcap_{\mathbf{T}} t_{2}(x) $.
+\item A backward assignment operator $ \llbracket X:=aexpr \rrbracket(t) = \mathrm{SUBS}_{\mathrm{TYP}}(t, X, aexpr)$ which is described in Algorithm \ref{subsT}. The substitution algorithm evaluates $ aexpr $ and all its sub-expressions and then refines the state $ t $ using this evaluation and the type of $ X $. 
+\item A filter operator $ \llbracket cond \rrbracket(t) = t $. It does not affect the state.
+\item A widening operator $ \nabla_{\mathrm{TYP}} \equiv \sqcup_{\mathrm{TYP}} $. 
+
+We note that since the Type Domain is a non-relational domain, a replacement operator $ \mathcal{R}_{\mathrm{TYP}} $ and a unification operator $ \mathcal{U}_{\mathrm{TYP}} $ return the state unchanged. 
+
+\end{itemize}
+
+	
+	\begin{algorithm}[H]
+		\caption{Substitution algorithm for Type Domain} \label{subsT}
+		\begin{algorithmic}
+			\Function{$ \mathrm{SUBS}_{\mathrm{TYP}} $} {$t,\  x,\ aexpr $}
+			
+			\State $ value \gets t(x) $
+			\State $ t(x) \gets \mathtt{type}(x) $
+			\State $ eval \gets empty\ map $
+			\State $ eval \gets \mathrm{EVAL}_{\mathrm{TYP}}(aexpr, eval) $
+			\State $ \mathrm{REFINE}_{\mathrm{TYP}}(aexpr, eval, eval[x] \sqcap_{\mathbf{T}} value, t) $
+			\State \Return $ t $
+			\EndFunction
+		\end{algorithmic}
+	\end{algorithm}
+
+
+\begin{algorithm}[H]
+	\caption{Expression evaluation for Type Domain} \label{evalT}
+	\begin{algorithmic}
+		\Function{$ \mathrm{EVAL}_{\mathrm{TYP}} $} {$ expr, eval $}
+		
+		\If {$expr$ is a literal}
+		\State $ eval[expr] \gets $ type of literal
+		\State \Return $ eval $
+		\EndIf
+		
+		\If {$ expr \in \mathcal{V}$}
+		\State $ eval[expr] \gets \mathtt{type}(v)$
+		\State \Return $ eval $
+		\EndIf
+		
+		\If {$ expr = expr1 \diamond expr2\ \textbf{where}\ \diamond \in \lbrace +, -, \times, \div \rbrace $}
+		\State $ eval[expr] \gets \mathrm{EVAL}_{\mathrm{TYP}}(expr1) \diamond \mathrm{EVAL}_{\mathrm{TYP}}(expr2)$
+		\State \Return $ eval $
+		\EndIf
+		
+		\EndFunction
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]
+	\caption{Expression refinement for Type Domain} \label{refineT}
+	\begin{algorithmic}
+		\Function{$ \mathrm{REFINE}_{\mathrm{TYP}} $} {$ expr, eval, value, t$}
+		
+		\If {$ expr $ is a literal}
+		\State \Return t
+		\EndIf
+		
+		\If {$ expr \in \mathcal{V}$}
+		\State $ t(x) \gets eval[expr] \sqcap_{\mathbf{T}} value$
+		\State \Return $ t $
+		\EndIf
+		
+		\If {$ expr = expr1 \diamond expr2\ \textbf{where}\ \diamond \in \lbrace +, -, \times, \div \rbrace $}
+		\State $ value \gets eval[expr] \sqcap_{\mathbf{T}} value  $
+		\State $ refine1 \gets \mathrm{REFINE}_{\mathrm{TYP}}(expr1, eval, value, t) $
+		\State $ refine2 \gets \mathrm{REFINE}_{\mathrm{TYP}}(expr2, eval, value, refine1) $
+		\State \Return $ refine2 $
+		\EndIf
+		
+		\EndFunction
+	\end{algorithmic}
+\end{algorithm}
+
+\subsection{The Octagon Domain} \label{octagon}
+
+The Octagon Domain was introduced by Antoine Min\'{e} in \cite{octagon} as a numerical relational domain that can keep track of relations the form $ \pm X \pm Y \geq c $ where $ X $ and $ Y $ are program variables. We use the Octagon Domain in our analysis in order to keep track of relations between variables such as $ sequence\_length \leq max\_length $ in Listing 2.1. 
+
+As explained in section \ref{sub-domains}, in order for an existing domain to work with our analysis framework, it needs to define a \textit{replacement} operator that, whenever an input is read, introduces a new variable to denote this input and the constraints and relations associated with it before it is stored in the stack. In the same section, we also explain the need to define a unification operator to address the problem of inconsistent environments arising from introducing new variables into our analysis. 
+
+ \begin{lstlisting} [language=Python, caption= Example of Unification] 
+x: int = input()
+if x > 10:
+	y: int = int(input())
+	if y + x <= 10:
+		raise ValueError
+else:
+	z: float = float(input())
+	if z + x <= 20:
+		raise ValueError
+\end{lstlisting}
+
+We define a replacement operator $ \mathcal{R}_{O}(o, v, l_{i}) $ for the Octagon Domain, where $ o $ is an octagon, $ v $ is the variable that is being read as input and $ l_{i} $ is the program point at which the input is being read. The operator works by first adding the variable $ l_{i} $ to the octagon. This variable has no constraints associated with it at first. Then, assuming the Octagons Domain defines a backward assignment operator, we perform the substitution $ \llbracket v := l_{i} \rrbracket_{O} $. Thus, $ v $ is replaced by $ l_{i} $ in all the constraints of the octagon and $ v $ becomes top. 
+
+
+We define the unification operator $ \mathcal{U}_{O}(o_{1}, o_{2}) $ where both $ o_{1} $ and $ o_{2} $ are octagons. The operator is applied before every join, meet or widening operation in the analysis. We assume every element of the Octagon Domain keeps a list of its variables in the order in which they were added during the analysis. For every variable $ l_{i} $ in $ o_{1} $ and $ l_{j} $ in $ o_{2} $, that have the same order in the respective variable lists, if $ j < i $, we replace $ l_{i} $ with $ l_{j} $ in $ o_{1} $. That is, when we have two variables that represent inputs read in the same order in two different paths in the analysis, we replace the variable that represents a later program point, with a variable that represents an earlier program point. After this step, if there are variables in $ o_{2} $ which are not in $ o_{1} $, they are added to $ o_{1} $. Note that in this case the operator is asymmetric and needs to be called twice, $ \mathcal{U}_{O}(o_{1}, o_{2}) $ and $ \mathcal{U}_{O}(o_{2}, o_{1}) $, before every join, meet and widening. 
+
+
+To illustrate the replacement and unification operators we introduce Listing 2.2. In the then-branch of the if-statement, we read a variable $ y $ and assert the condition $ y + x > 10 $. In the else-branch, we read a variable $ z $ and enforce the condition $ z + x > 20 $. If we trace a backward analysis on this program and employing the $ \mathcal{R}_{O} $ we defined earlier in this section, then in the then-branch, we get $\mathcal{R}_{O}(\lbrace y + x > 10\rbrace, y, l_{3}) = \lbrace l3 + x > 10 \rbrace$ and similarly in the else-branch we get the relation $ \lbrace l_{7} + x > 20 \rbrace$. A join needs to be performed on these two elements at the head of the if-statement. Since our analysis treats $ l_{3} $ and $ l_{7} $ as different variables, without the unification operator, the join will yield top. 
+
+ As mentioned earlier, our analysis does not care about the specific variables representing input values, but rather about the order in which they occur in the list of input values which the program reads in their respective paths. In this example, we only care that after reading $ x $ we read another variable whose summation to $ x $ had to be greater than 20, otherwise the program will crash. Therefore, for the purpose of our analysis, $ l_{3} $  and $ l_{7} $ should be treated as the same variable when joining the two paths at the head of the if-condition since both of them are read second in their respective paths. We call the unification operator once as follows: $ \mathcal{U}_{O}(\lbrace l_{3} + x > 10 \rbrace, \lbrace l_{7} + x > 20 \rbrace) =  \lbrace l_{3} + x > 10 \rbrace$ and then another time switching the operands as follows: $ \mathcal{U}_{O}(\lbrace l_{7} + x > 20 \rbrace, \lbrace l_{3} + x > 10 \rbrace) =  \lbrace l_{3} + x > 20 \rbrace$. Then a join can be performed between $ \lbrace l_{3} + x > 10 \rbrace $ and $ \lbrace l_{3} + x > 20 \rbrace $ which will give us $ l_{3} + x > 20 $. 
+
+\subsection{The Character Inclusion Domain}
+The Character Inclusion Domain, as defined in \cite{character}, is an abstract domain that maps a string into two sets: a set of characters that are certainly included in the string and another set of characters that may be included in the string. 
+For a finite alphabet $\mathrm{A}$, we define a character inclusion lattice as follows: 
+\begin{itemize}
+	\item An element $c \in CI = \lbrace(C, M): C, M \in \wp (\mathrm{A}) \land C \subseteq M \rbrace \cup \bot_{CI}$. This can be understood as an abstraction of a string which certainly contains all the characters in $C$ and is only allowed to contain characters in $ M $.
+	
+	\item A concretization function $\gamma_{CI}$: $\langle CI, \sqsubseteq_{CI}\rangle  \longrightarrow \langle A^{*}, \subseteq\rangle$ such that \\ $ \gamma_{CI}((C, M)) = \lbrace x\ \vert\ x \in A^{*} \wedge \mathtt{char}(x) \supseteq C \wedge \mathtt{char}(x) \subseteq M \rbrace $, where $ \mathtt{char}(x) $ is a function that returns the set of all characters in a string  $ x $.  An element $ (C, M) $ concertizes to the set of all string which contain all the characters in $ C $ and which do not contain any characters outside $ M $. 
+	
+	\item A partial order: $(C_{1}, M_{1}) \sqsubseteq_{CI} (C_{2}, M_{2}) \iff (C_{1} \supseteq C_{2}, M_{1} \subseteq M_{2})$. This order indicates that the fewer the certainly included characters and the more the maybe included characters, the more strings we represent. For example the element $(\lbrace a \rbrace , \lbrace a,b \rbrace)$ concertizes to $\lbrace a, aa, ab, aaa, aab,... \rbrace$ while the element $(\emptyset, \lbrace a, b \rbrace)$ concertizes to $\lbrace\varepsilon, a, b, aa, ab, bb,...\rbrace$. The restriction of having $a$ in the certainly included set makes the values $\lbrace \varepsilon, b, bb, bbb,...\rbrace $ disappear from the concretization. 
+	
+	\item A least element $\bot_{CI}$ which represents a failure state. 
+	\item A greatest element $\top_{CI} = (\emptyset, A) $ which represents a string that can contain any combination of characters from the alphabet. 
+	
+	\item A join operator: $(C_{1}, M_{1}) \sqcup_{CI} (C_{2}, M_{2}) = (C_{1} \cap C_{2}, M_{1} \cup M_{2})$. The soundness of this operator can be stated as follows: \\ $ \lbrace x\ \vert\ x \in A^{*} \wedge \mathtt{char}(x) \supseteq C_{1} \wedge \mathtt{char}(x) \subseteq M_{1} \rbrace \cup \lbrace x\ \vert\ x \in A^{*} \wedge \mathtt{char}(x) \supseteq C_{2} \wedge \mathtt{char}(x) \subseteq M_{2} \rbrace \subseteq  \lbrace x\ \vert\ x \in A^{*} \wedge \mathtt{char}(x) \supseteq C_{1}\ \cap\ C_{2}\ \wedge\ \mathtt{char}(x) \subseteq M_{1} \cup M_{2} \rbrace \Longleftrightarrow \gamma_{CI}((C_{1}, M_{1})) \cup \gamma_{CI}((C_{2}, M_{2})) \subseteq \gamma_{CI}((C_{1}, M_{1}) \sqcup_{CI} (C_{2}, M_{2}))$. If we have two elements $ (\lbrace a, b \rbrace, \lbrace a, b, c \rbrace) $ and $ (\lbrace a \rbrace, \lbrace a, b, d \rbrace) $ that we would like to join, then we can only say that the resulting element will \textit{certainly} contain the character $ a $ (the intersection of $ C $ sets), but it \textit{may} contain any of the characters $ a,\ b,\ c\ $ or $ d $ (the union of the two $ M $ sets). 
+	
+	 
+	\item A meet operator: $(C_{1}, M_{1}) \sqcap_{CI} (C_{2}, M_{2}) = (C_{1} \cup C_{2}, M_{1} \cap M_{2}) \cup \bot_{CI}$. The bottom is to account for cases when $C_{1} \cup C_{2} \not\subseteq M_{1} \cap M_{2}$. The soundness of this operator can be stated as follows: \\$ \lbrace x\ \vert\ x \in A^{*} \wedge \mathtt{char}(x) \supseteq C_{1} \wedge \mathtt{char}(x) \subseteq M_{1} \rbrace \cap \lbrace x\ \vert\ x \in A^{*} \wedge \mathtt{char}(x) \supseteq C_{2} \wedge \mathtt{char}(x) \subseteq M_{2} \rbrace \subseteq  \lbrace x\ \vert\ x \in A^{*} \wedge \mathtt{char}(x) \supseteq C_{1} \cup C_{2} \wedge \mathtt{char}(x) \subseteq M_{1} \cap M_{2} \rbrace \Longleftrightarrow \gamma_{CI}((C_{1}, M_{1})) \cap \gamma_{CI}((C_{2}, M_{2})) \subseteq \gamma_{CI}((C_{1}, M_{1}) \sqcap_{CI} (C_{2}, M_{2}))$. The meet works in the opposite way to the join. If we have two elements $ (\lbrace a, b \rbrace, \lbrace a, b, c \rbrace) $ and $ (\lbrace a \rbrace, \lbrace a, b, d \rbrace) $ which we would like to meet, we can say that the resulting element will \textit{certainly} contain both $ a $ and $ b $ (the union of the two $ C $ sets) and that it \textit{may} contain only $ a $ and $ b $ (the intersection of the two $ M $ set) as well.  
+ 	
+	\item A concatenation operator: $ ((C_{1}, M_{1}) +_{CI} (C_{2}, M_{2})) = ((C_{1} \cup M_{1}),(C_{2} \cup M_{2}))$. When concatenating two string, the resulting string will \textit{certainly} that characters that are certainly included in both strings and \textit{may} contain the characters that may be included in both strings as well. 
+	\item A widening operator $\nabla_{CI} \equiv \sqcup_{CI}.$ The widening operator is the same as the join. 
+	
+\end{itemize}
+
+	Then we define the Character Inclusion Domain as a mapping from variables to elements of the character inclusion lattice as follows: 
+\begin{center}
+	$ \mathrm{CHAR} \equiv \mathcal{V} \longrightarrow CI $
+\end{center} 
+\begin{itemize}
+	\item An element $ c \in CHAR = \lbrace v \longrightarrow ci\ \vert\  v \in \mathcal{V} \wedge ci \in CI \rbrace $. Every element in the Character Inclusion Domain maps a variable to an element in the character inclusion lattice. 
+	\item A concretization function $ \gamma_{\mathrm{CHAR}} $: 
+		\begin{itemize} 
+		\item We first define a function $ \gamma_{c}: (\mathcal{V} \rightarrow \wp(\mathcal{S})) \longrightarrow \wp(\mathcal{V} \rightarrow \mathcal{S}) $, which transforms a mapping from variable to multiple string values to multiple mappings from a variable to a string value. 
+		\item We define an intermediate concretization function $ \gamma'_{\mathrm{CHAR}}: \mathrm{CHAR} \longrightarrow (\mathcal{V} \rightarrow \wp(\mathcal{S})) $ as follows: $ \gamma'_{\mathrm{CHAR}}(f) = \lambda_{x}\cdot \gamma_{CI}(f(x)) $. 
+		\item Finally, we define the concretization function of the Character Inclusion Domain $ \gamma_{\mathrm{CHAR}}: \mathrm{CHAR} \longrightarrow \wp(\mathcal{V} \rightarrow \mathcal{S}) $ as the chaining of the two previous functions: $ \gamma_{c} \circ \gamma'_{\mathrm{CHAR}}$. 
+	\end{itemize}
+
+	\item A partial order $ \sqsubseteq_{\mathrm{CHAR}} $: $ c_{1} \sqsubseteq_{\mathrm{CHAR}} c_{2} \Longleftrightarrow \forall_{v \in \mathcal{V}} (c_{1}(v) \sqsubseteq_{CI} c_{2}(v))$.
+	\item A minimum element $ \bot_{\mathrm{CHAR}} = \lambda_{x} \cdot \bot_{CI}$. Every variable is mapped to the smallest element in the character inclusion lattice.  
+	\item A maximum element $ \top_{\mathrm{CHAR}} = \lambda_{x} \cdot \top_{CI} $. Every variable is mapped to the biggest element of the character inclusion lattice. 
+	\item A join operator $ \sqcup_{\mathrm{CHAR}} $: $ c_{1} \sqcup_{\mathrm{CHAR}} c_{2} = \lambda_{x}\cdot c_{1}(x) \sqcup_{CI} c_{2}(x) $ which maps a variable to the joining of the two lattice elements to which it was mapped in $ c_{1} $ and $ c_{2} $.
+	 
+	\item A meet operator $ \sqcap_{\mathrm{TYP}} $: $ c_{1} \sqcap_{\mathrm{CHAR}} c_{2} = \lambda_{x}\cdot c_{1}(x) \sqcap_{CI} c_{2}(x) $ which maps a variable to the meet of the two lattice elements to which it was mapped in $ c_{1} $ and $ c_{2} $. 
+	\item A backward assignment operator $ \llbracket X:=aexpr \rrbracket(c) = \mathrm{SUBS}_{\mathrm{CHAR}}(c, X, aexpr)$ which is described in Algorithm \ref{subsC}. It evaluates $ aexpr $ and all its sub-expressions and refine the state $ c $ with the values computed in this evaluation and the value to which $ X $ was mapped before the assignment is invoked. Meanwhile, $ X $ becomes top.
+	
+	\item A filter operator $ \llbracket cond \rrbracket(c) =  \mathrm{FILTER}_{\mathrm{CHAR}}(cond, c)$ which is described in Algorithm \ref{filterC}.
+	\item A widening operator $ \nabla_{\mathrm{CHAR}} \equiv \sqcup_{\mathrm{CHAR}} $ which is equivalent to the join. 
+
+\end{itemize}
+ 
+As is the case for the Type Domain, the replacement operator $ \mathcal{R}_{\mathrm{CHAR}} $ and a unification operator $ \mathcal{U}_{\mathrm{CHAR}} $ do not produce any changes on the state since this domain is non-relational. 
+
+\begin{algorithm}[H]
+	\caption{Substitution algorithm for Character Inclusion Domain} \label{subsC}
+	\begin{algorithmic}
+		\Function{$ \mathrm{SUBS}_{\mathrm{CHAR}} $} {$c,\  x,\ aexpr $}
+		
+		\State $ value \gets c(x) $
+		\State $ c(x) \gets \top_{CI} $
+		\State $ eval \gets emtpy\ map$
+		\State $ eval \gets \mathrm{EVAL}_{\mathrm{CHAR}}(aexpr, eval, c) $
+		\State $ \mathrm{REFINE}_{\mathrm{CHAR}}(aexpr, eval, eval[x] \sqcap_{CI} value, c) $
+		\State \Return $ c $
+		\EndFunction
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]
+	\caption{Filter algorithm for Character Inclusion Domain} \label{filterC}
+	\begin{algorithmic}
+		\Function{$ \mathrm{FILTER}_{\mathrm{CHAR}} $} {$cond,\ c$}
+		\If {$ cond = (cond1 \wedge cond2) $}
+		\State $ c1 \gets \mathrm{FILTER}_{\mathrm{CHAR}}(cond1, c)$
+		\State $ c2 \gets \mathrm{FILTER}_{\mathrm{CHAR}}(cond2, c)$
+		\State \Return $ c1 \sqcap_{\mathrm{CHAR}} c2$
+		\ElsIf {$ cond = (cond1 \vee cond2) $}
+		\State $ c1 \gets \mathrm{FILTER}_{\mathrm{CHAR}}(cond1, c)$
+		\State $ c2 \gets \mathrm{FILTER}_{\mathrm{CHAR}}(cond2, c)$
+		\State \Return $ c1 \sqcup_{\mathrm{CHAR}} c2$
+		\ElsIf {$ cond = (expr1 == expr2) $}
+		\State $ eval1 \gets empty\ map $
+		\State $ eval1 \gets \mathrm{EVAL}_{\mathrm{CHAR}}(expr1, eval1, c) $
+		\State $ eval2 \gets empty\ map $
+		\State $ eval2 \gets \mathrm{EVAL}_{\mathrm{CHAR}}(expr2, eval2, c) $
+		\State $ \mathrm{REFINE}_{\mathrm{CHAR}}(expr1, eval1, eval1[expr1], c)$
+		\State $ \mathrm{REFINE}_{\mathrm{CHAR}}(expr2, eval2, eval2[expr2], c)$
+				
+		\EndIf
+		\State \Return $ c $
+		\EndFunction
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]
+	\caption{Expression evaluation for Character Inclusion Domain} \label{evalC}
+	\begin{algorithmic}
+		\Function{$ \mathrm{EVAL}_{\mathrm{CHAR}} $} {$ expr, eval, c $}
+		
+		\If {$expr$ is a literal}
+		\State $ eval[expr] \gets (\mathtt{char}(x), \mathtt{char}(x) )$ 
+		\State \Return $ eval $
+		\EndIf
+		
+		\If {$ expr \in \mathcal{V}$}
+		\State $ eval[expr] \gets c(expr)$
+		\State \Return $ eval $
+		\EndIf
+		
+		\If {$ expr = expr1 + expr2$}
+		\State $ eval[expr] \gets \mathrm{EVAL}_{\mathrm{CHAR}}(expr1) +_{CI} \mathrm{EVAL}_{\mathrm{CHAR}}(expr2)$
+		\State \Return $ eval $
+		\EndIf
+		
+		\EndFunction
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]
+	\caption{Expression refinement for Character Inclusion Domain} \label{refineC}
+	\begin{algorithmic}
+		\Function{$ \mathrm{REFINE}_{\mathrm{CHAR}} $} {$ expr, eval, (C, M), c$}
+		
+		\If {$ expr $ is a literal}
+		\State \Return c
+		\EndIf
+		
+		\If {$ expr \in \mathcal{V}$}
+		\State $ c(x) \gets eval[expr] \sqcap_{CI} (C, M)$
+		\State \Return $ c $
+		\EndIf
+		
+		\If {$ expr = expr1 + expr2 $}
+		\State $ (C, M) \gets eval[expr] \sqcap_{CI} (C, M)  $
+		\State $ refine1 \gets \mathrm{REFINE}_{\mathrm{TYP}}(expr1, eval, (\emptyset, M), c) $
+		\State $ refine2 \gets \mathrm{REFINE}_{\mathrm{TYPE}}(expr2, eval, (\emptyset, M), refine1) $
+		\State \Return $ refine2 $
+		\EndIf
+		
+		\EndFunction
+	\end{algorithmic}
+\end{algorithm}
+
 
 \chapter{Implementation}
 
