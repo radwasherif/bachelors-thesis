@@ -1,4 +1,4 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 
 \bibitem{blei2017science}
 David~M Blei and Padhraic Smyth.
@@ -44,5 +44,14 @@ Antoine Min{\'e} et~al.
   interpretation.
 \newblock {\em Foundations and Trends{\textregistered} in Programming
   Languages}, 4(3-4):120--372, 2017.
+
+\bibitem{lyra}
+Lyra project.
+
+\bibitem{singh}
+Gagandeep Singh, Markus P{\"u}schel, and Martin Vechev.
+\newblock A practical construction for decomposing numerical abstract domains.
+\newblock {\em Proceedings of the ACM on Programming Languages}, 2(POPL):55,
+  2017.
 
 \end{thebibliography}

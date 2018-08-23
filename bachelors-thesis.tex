@@ -18,8 +18,10 @@
 \usepackage[noend]{algpseudocode}
 \usepackage[T1]{fontenc}
 \usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{url}
 \lstdefinestyle{mystyle}{
-	numberstyle=\tiny,
+	numberstyle=\small,
 	breakatwhitespace=false,         
 	breaklines=true,                 
 	captionpos=b,                    
@@ -29,7 +31,8 @@
 	showspaces=false,                
 	showstringspaces=false,
 	showtabs=false,                  
-	tabsize=2
+	tabsize=2,
+	frame=single
 }
 \lstset{style=mystyle}
 
@@ -49,18 +52,19 @@
 
 \chapter{Introduction}
 
-Today, we live in a world that produces tremendous amounts of data on a daily basis. The extensive use of social media websites and the digitization of traditional services such as banking, retail and publishing guarantees the existence of large datasets that are available to service providers. In addition to business, technological advancements have created an abundance of data in many fields of scientific research such as the genomic data created by efficient DNA sequencing or raw images of celestial bodies that are captured by modern telescopes \cite{blei2017science}. 
+Today, we live in a world that produces tremendous amounts of data on a daily basis. The extensive use of social media websites and the digitization of traditional services such as banking, retail and publishing guarantees the existence of large datasets that are available to service providers. In addition to business, technological advancements have created an abundance of data in many fields of scientific research such as the genomic data created by efficient Deoxyribonucleic acid (DNA) sequencing or raw images of celestial bodies that are captured by modern telescopes \cite{blei2017science}. 
 
 This abundance of data, along with the rapid development in new data science techniques and methods to organize, analyze and detect patterns in large datasets, creates new and unique opportunities for experts in different domains. For example, it enables businesses to predict future customer behavior or medical researcher to associate the presence of a specific gene in the human DNA with susceptibility to certain diseases. 
 
-These advantages, however, are not achieved without challenges or difficulties. The datasets processed by data science algorithms are typically very large in size and could be obtained from various sources or maintained on different machines. For this reason, they are likely to contain errors and inconsistencies. 
+These advantages, however, are not achieved without challenges or difficulties. The datasets processed by data science algorithms are typically very large in size and could be obtained from various sources or maintained on different machines. For these reasons, they are likely to contain errors and inconsistencies. 
 
-In the field of data science, raw data, that is data as it is collected from the source and stored on some storage medium (e.g. database or cloud), is not usually usable as is. A recent survey among data scientists \cite{kaggle} shows them to cite "dirty data" as one of the most challenging aspects of their work. Dirty data, as defined in \cite{dirty-data}, is data that is wrong, missing or not represented according to a known standard such as non-standard representation of time and date.
+In the field of data science, raw data, that is data as it is collected from the source and stored on some storage medium (e.g. database or cloud), is not usually usable as is. A recent survey among data scientists \cite{kaggle} shows them to cite ``dirty data'' as one of the most challenging aspects of their work. Dirty data, as defined in \cite{dirty-data}, is data that is wrong, missing or not represented according to a known standard such as non-standard representation of time and date.
 
 Before feeding the data into a data science program, it must be cleansed and the erroneous values must be eliminated. Many tools have been introduced to achieve this goal.. [mention some data cleaning tools.] 
 
-In this thesis, we present an approach to detect incorrect input data to Python programs. Unlike the data-cleaning tools mentioned above, our method does not perform computations on the dataset directly. Instead, we analyze the source code of the program which is to run on this data and try to compute the set of input values that will allow the program to terminate without raising any errors.  We then scan the dataset line by line to see if any existing values are outside this set of accepted values. If that is the case, the wrong input values are flagged as errors so that the user can correct them.  
+In this thesis, we present an approach to detect incorrect input data with respect to a given data science program. Unlike the data-cleaning tools mentioned above, our method does not perform computations on the dataset directly. Instead, we design a static analysis that analyzes the source code of the program in order to find out the implicit assumptions that the program makes about the input data that it reads such that if these assumptions are violated the program will crash. These assumptions represent the pre-conditions that must be satisfied so that the program runs without producing errors. Our analysis will compute an over-approximation of these pre-conditions. In other words, if there is a set of accepted values that will allow the program to run without raising an error, the set of values that our analysis computes will contain all the accepted values, but it might contain some extra values that will cause the program to raise errors. That is, the pre-conditions we compute are necessary but not sufficient for the program to terminate without crashing. 
 
+We then design an input checker that looks for values that violate the assumptions computed by the analysis. If that is the case, the wrong input values are flagged as errors so that the user can correct them. Our approach is advantageous in cases where the data cannot be shared with third parties to perform data cleaning. We implement our analysis and input checker for Python programs and integrate them into a tool that can be used directly by domain experts on their data. 
 \begin{lstlisting} [language = Python, caption=Example of Assumptions on String Data] 
 	sequence_length: int = int(input())
 	count_a: int = 0
@@ -82,15 +86,13 @@ In this thesis, we present an approach to detect incorrect input data to Python 
 			
 \end{lstlisting} 
 
-We compute the set of accepted input values to a program by means of a static analysis that detects assumptions made by a program about its input data. To elaborate further, let us examine the program in Listing 1. This program aims to read a DNA sequence and count the frequency of occurrence of each nucleotide. It first reads the length of the sequence, then since the only possible nucleotides in a DNA sequence are represented by the letters A, C, G and T, it sets a frequency counter for each of these nucleotides. Then the program iterates through the sequence, reading one letter per line and incrementing the corresponding counter variable. If it encounters a letter that is neither A, C, G or T, it raises an exception because it \textit{assumes} that, in an ideal scenario, no value in the input file will be outside this set of letters. 
+To elaborate further on what we aim to achieve in this thesis, let us examine the program in Listing 1. This program aims to read a DNA sequence and count the frequency of occurrence of each nucleotide. It first reads the length of the sequence (line 1), then since the only possible nucleotides in a DNA sequence are represented by the letters A, C, G and T, it sets a frequency counter for each of these nucleotides (lines 2-5). Then the program iterates through the sequence, reading one letter per line and incrementing the corresponding counter variable. If it encounters a letter that is neither A, C, G or T, it raises an exception because it \textit{assumes} that, in an ideal scenario, no value in the input file will be outside this set of letters.  
 
-Our aim, thus, is not to perform computations on the input data based on the known fact that the human DNA contains only A, C, G and T bases and to cleanse the wrong values. Rather, we turn our attention to the program that will run on the data and try to answer the question: what does this program \textit{assume} about its input data such that if those assumptions are not fulfilled, the program will raise an error?
+Our aim, thus, is not to perform computations on the input data based on the known fact that the human DNA contains only A, C, G and T bases and to cleanse the wrong values. Rather, we turn our attention to the program that will run on the data and try to answer the question: what does this program \textit{assume} about its input data such that if those assumptions are not fulfilled, the program will raise an error? For our analysis to compute a successful over-approximation, it must always include the character `A', `C', `G' and `T' in the set of accepted values it produces. However, it may include some other values as well. 
 
-Our approach is composed of two main steps. First, we use static analysis to infer assumptions that the program made about the input data. Then, using the output of the first step, we run an input-checking algorithm on the data file in order to find the errors. 
+[explain outline of the thesis...]
 
-[explain outline of the thesis]
-
-\section{Theoretical Background}
+\section{Theoretical Background} \label{theoritical}
 \subsection{Static Analysis}
 [Explain what static analysis is on a high level, what it's used for, the ways to do it]
 \subsection{Abstract Interpretation}
@@ -100,17 +102,17 @@ Our approach is composed of two main steps. First, we use static analysis to inf
 
 We build our approach on the work done in \cite{madelin} which focuses on inferring assumption on numerical data using the Interval Domain and a specially designed relations domain. Our main contribution is designing a generic framework that can use any existing abstract domain to keep track of assumptions on the input data. 
 
-\chapter{Static Analyis}
+\chapter{Static Analyis} \label{analysis}
 
 \section{Concrete Domain} \label{concrete}
 
 To define our concrete domain, we first define the following sets:
 \begin{itemize}
 	\item $\mathcal{L}$: the set of all program points in the program being analyzed. 
-	\item $\mathcal{S}$: the set of all possible strings. 
-	\item $\mathcal{V}$: the set of program variables.
-	\item Following from the previous definitions, $\wp(\mathcal{V} \rightarrow \mathcal{S})$ is a set of mappings from program variables to the possible values they can take. Note that one program  variables is allowed to be mapped to multiple values. 
-	\item We also take $\wp(\mathcal{S})^{*}$ as the list of values read as input from one program point onwards.  
+	\item $\mathcal{S}$: the set of all possible string values. 
+	\item $\mathcal{V}$: the set of all program variables.
+	\item$\wp(\mathcal{V} \rightarrow \mathcal{S})$: the set of environments mapping program variables to their possible values. 
+	\item $\wp(\mathcal{S})^{*}$: the list of values read as input from one program point onwards.  
 \end{itemize}
 
 We can then define our concrete domain as follows: 
@@ -118,10 +120,10 @@ We can then define our concrete domain as follows:
 $\mathcal{L} \rightarrow \wp(\mathcal{V} \rightarrow \mathcal{S}) \times \wp(\mathcal{S})^{*}$
 \end{center}
 
-As indicated by the formula, our  concrete domain maps a program point to a set of mappings of program variables to the values they are allowed to take and a list of input values which the program reads from this point onwards such that the program terminates without any errors. 
+As indicated by the formula, our  concrete domain maps a program point to a set of mappings of program variables to the values they are allowed to take and a list of input values which the program reads from this point onwards. Specifically, given a program, its concrete semantics is the set of values that its variables are allowed to take and the list of input values that it is allowed to read so that it terminates without errors.   
 
 \section{The Assumption Abstract Domain} \label{assumption-domain}
-We use the theory of Abstract Interpretation \cite{cousot} to design an abstract domain that over-approximates the concrete semantics defined in the previous section. In this context, over-approximation means that the constraints inferred by the analysis are necessary but not sufficient for the program to run without producing an error. If the input values violate those constraints, the program is guaranteed to produce an error. We guarantee an absence of false-positives. However, if the input values satisfy all the constraints, the program might still produce an error. Our static analysis works backwards. 
+We use the theory of Abstract Interpretation \cite{cousot} to design an abstract domain that over-approximates the concrete semantics defined in the previous section. In this context, over-approximation means that the constraints inferred by the analysis are necessary but not sufficient for the program to run without producing an error. If the input values violate those constraints, the program is guaranteed to produce an error. We guarantee an absence of false-positives. However, if the input values satisfy all the constraints, the program might still produce an error. Our static analysis works backwards by starting at the final state of the program and analyzing all the execution paths of the program till it reaches the initial state.  
 
 To examine the properties of our domain, let us consider the program in Listing 2, which performs the same operation as Listing 1, namely reading a DNA sequence and counting the frequency of every nucleotide, but on multiple sequences separated by a '.' or '\#' character. On line 1, the number of sequences is read. Lines 3 and 4 assert that we have at least one sequence in the file. Another addition in Listing 2 is the check that the sequence length is not greater than some maximum length on lines 7 and 8. 
 
@@ -163,33 +165,31 @@ It is obvious from this example that we need to track information about both num
 
 
 
-Our abstract domain, which we call the Assumption Domain, is a generic domain that allows for the approximation of multiple program properties simultaneously. It is parametrized by a list of abstract domains which are independent of one another. For each step of the analysis, the Assumption Domain invokes the corresponding operator or transformation on each domain independently. Thus, in the case of the example above, we can use the Octagons Domain \cite{octagon} to keep track of the relations between numerical variables such as $sequence\_length \leq max\_length$ and the Character Inclusion Domain \cite{character} to keep track of the characters of the variable $base$.
+Our abstract domain, which we call the Assumption Domain, is a generic domain that allows for the approximation of multiple program properties simultaneously. It is parametrized by a list of abstract domains which are independent of one another. For each step of the analysis, the Assumption Domain invokes the corresponding operator or transformation on each domain independently. We define a $ SUBD $ to be a family of domains that can be used in our analysis. Any value domain can be a member of this family given that it define extra operators that are described in \ref{sub-domains}. The Assumption Domain uses these domains to keep track of assumptions on the values of program variables. For example, in the case of , we can use the Octagons Domain \cite{octagon} to keep track of the relations between numerical variables such as $sequence\_length \leq max\_length$ and the Character Inclusion Domain \cite{character} to keep track of the characters of the variable $base$.
 
+Going back to Listing 2, if we trace a backward static analysis from line 24 to line 15 using the Character Inclusion Domain as a sub-domain, we will get that the variable $ base $ is allowed to contain only the characters 'A', 'C', 'G' and 'T'. When this variable is read as input on line 14, we need to store the assumption in some data structure. The same applies for the variable $ sequence\_length $. Tracing the analysis backwards using the Octagon Domain will give us the constraint $ sequence\_length \leq max\_length $. On line 6, when the variable is read as input, this constraint must be stored in a way that preserves its order among other inputs that the program reads in the course of its execution. More specifically, we need a data structure in which the assumptions about $ sequence\_length$ appear before those about $ base $.  We also need a data structure that indicates how many times an input value is read. For example, it needs to show that the variable $ base $ is read $ sequence\_length $ number of times. 
 
-Another important property of our abstract domain is its ability to store assumptions about inputs read by the program in any of its scopes. Going back to Listing 2, let us examine the variable $base$. If we trace a backward static analysis from line 24 to line 15, we will get some information about this variable. For example, using the Character Inclusion Domain, we will get that this variable is allowed to contain only the characters 'A', 'C', 'G' and 'T'. However, on line 14 whatever information we have captured before will be lost with the assignment statement \verb|base = input()|. Therefore, we need a data structure in which to store the constraints computed so far about this variable. At the end of the analysis, this data structure will contain the constraints about all the inputs read in course of the execution of the program. 
-
-In our case, we choose this data structure to be a stack, in which every layer represents a scope of the program. Whenever the analysis enters a new scope of the program, a new layer is pushed onto the stack. Inside of this scope, whenever a value is read as input, we store its constraints on the top layer of the stack. When existing a scope, the top layer is popped form the stack. This way, at the end of the analysis, we have a stack with one layer containing all the assumptions about the inputs read in all the scopes of the program. 
+In our case, we choose this data structure to be a stack, in which every layer represents a scope of the program. Whenever the analysis enters a new branch or a loop, a new layer is pushed onto the stack. Inside of this scope, whenever a variable is read as input, we store its constraints in the top layer of the stack. When exiting a branch or a loop, the top layer is popped from the stack and combined with the layer below it in such a way that the assumptions appear in the order in which the inputs are read. In the case of exiting a loop, we define a mechanism to indicate how many times a group of assumptions are repeater. This way, at the end of the analysis, the stack will contain all the assumptions on the input value of the program in the correct order. We define the stack with further detail in section \ref{stack}. 
 
 Given the previously mentioned properties, we introduce our domain formally below. \\
+  
 
-
-We define $SUBD$ to be a family of abstract domains which are suitable for our analysis. In section \ref{sub-domains}, we explain the properties of these domains in detail.  
-
-In addition, we define $STACK$ to be a set of all possible stacks which store assumptions on input values of the program. The stack data structure and its operations are defined in detail in section \ref{stack}. 
+We define $STACK$ to be a set of all possible stacks which store assumptions on input values of the program.
 
 We use the notation $ (X_{i})_{i=1}^{n} $ throughout this thesis to indicate a list of length $ n $.  \\
 
-We define the Assumption Domain formally as follows: \\
+We can define the Assumption Domain formally as follows: \\
 \begin{center}
 	$D \equiv SUBD^{n} \times STACK$\\	
 \end{center}
 \begin{itemize}
-	\item An element $d \in \textsl{D} = \lbrace ((S_{i})_{i=1}^{n}, Q) \vert S_{i} \in SUBD \wedge Q \in STACK \rbrace$. Every element of this domain consists of a sequence of instances of sub-domains and a stack. Every instance of a sub-domain $ S_{i} $ keeps track of all the variables at the same time. If a variable does not belong to a type the domain can handle, it is always mapped to top in that domain. For example, if a variables is of type string and the domain $ S_{1} $ is the Interval Domain, then $ x $ will always be mapped to top in $ S_{1} $.
-	\item A concretization function $\gamma_{D}(d) =( \bigcap\limits_{i=1}^{n}\gamma_{S_{i}}(S_{i}), \gamma_{STACK}(Q)).$ From the previous definition follows the concretization function. It is the intersection of concretization of all the sub-domains as well as the concretization of the stack. 
-	\item A partial order $\sqsubseteq_{D}$ such that $ ((S_{1,i})_{i=1}^{n}, Q_{1}) \sqsubseteq_{D} ((S_{2, i})_{i=1}^{n}, Q_{2}) \Longleftrightarrow \bigwedge\limits_{i=1}^{n}(S_{1i} \sqsubseteq_{S_{i}} S_{2i}) \wedge Q_{1} \sqsubseteq_{STACK} Q_{2} .$ An element $ d_{1} $ of $ D $ is less than or equal to another element $ d_{1} $ if and only if every instance of a sub-domain in $ d_{1} $ is less than or equal to the corresponding instance of the same sub-domain in $ d_{2} $ and if and only if the stack of $ d_{1} $ is less than or equal to the stack of $ d_{2} $.
-	\item A minimum element $\bot_{D} = ((\bot_{S_{i}})_{i=1}^{n}, \bot_{STACK})$.   
-	\item A maximum element $\top_{D} =  ((\top_{S_{i}})_{i=1}^{n}, \top_{STACK})$
-	\item A join operator $\sqcup_{D}$ such that $ ((S_{1,i})_{i=1}^{n}, Q_{1}) \sqcup_{D} ((S_{2,i})_{i=1}^{n}, Q_{2}) = (((S_{1,i} \sqcup_{S_{i}} S_{2,i})_{i=1}^{n}, Q_{1} \sqcup_{STACK} Q_{2}))$. The join operator is applied pair-wise to all sub-domains and the stack. Every instance of a sub-domain in the first element is joined with the corresponding instance of the same domain in the second element. The two stack are also joined. 
+	\item An element $d \in \textsl{D} = \lbrace ((S_{i})_{i=1}^{n}, Q) \vert S_{i} \in SUBD \wedge Q \in STACK \rbrace$. Every element of this domain consists of a sequence of instances of sub-domains and a stack.
+	\item A concretization function $\gamma_{D}(d) =( \bigcap\limits_{i=1}^{n}\gamma_{S_{i}}(S_{i}), \gamma_{STACK}(Q)).$ 
+	 
+	\item A partial order $\sqsubseteq_{D}$ such that $ ((S_{1,i})_{i=1}^{n}, Q_{1}) \sqsubseteq_{D} ((S_{2, i})_{i=1}^{n}, Q_{2}) \Longleftrightarrow \bigwedge\limits_{i=1}^{n}(S_{1i} \sqsubseteq_{S_{i}} S_{2i}) \wedge Q_{1} \sqsubseteq_{STACK} Q_{2} .$ An element $ d_{1} $ of $ D $ is small than or equal to another element $ d_{1} $ if and only if $ d_{1} $ represents a set of allowed input values that is smaller than or equal the set allowed input values by $ d_{2} $. 
+	\item A minimum element $\bot_{D} = ((\bot_{S_{i}})_{i=1}^{n}, \bot_{STACK})$. This elements represents a state where there are no possible input values that are acceptable by the program. 
+	\item A maximum element $\top_{D} =  ((\top_{S_{i}})_{i=1}^{n}, \top_{STACK})$. This represents the set of all possible input value without any constraints. 
+	\item A join operator $\sqcup_{D}$ such that $ ((S_{1,i})_{i=1}^{n}, Q_{1}) \sqcup_{D} ((S_{2,i})_{i=1}^{n}, Q_{2}) = (((S_{1,i} \sqcup_{S_{i}} S_{2,i})_{i=1}^{n}, Q_{1} \sqcup_{STACK} Q_{2}))$. When joining two paths of the analysis, we must join the assumptions computed by the analysis on the program variables. 
 	\item A meet operator $\sqcap_{D}$ such that $ ((S_{1,i})_{i=1}^{n}, Q_{1}) \sqcap_{D} ((S_{2,i})_{i=1}^{n}, Q_{2}) = (((S_{1,i} \sqcap_{S_{i}} S_{2,i})_{i=1}^{n}, Q_{1} \sqcap_{STACK} Q_{2}))$. Similar to the join, the meet operator is applied pair-wise to all sub-domains and the stack.
 	\item A backward assignment operator $\llbracket X:=aexpr \rrbracket ((S_{i})_{i=1}^{n}, Q) =  ((\llbracket X:=aexpr \rrbracket(S_{i}))_{i=1}^{n}, \llbracket X:= expr \rrbracket(Q)).$ The backward assignment operator is applied element-wise to every sub-domain and to the stack. 
 	\item A filter operator $ \llbracket bexpr \rrbracket ((S_{i})_{i=1}^{n}, Q) =  ((\llbracket bexpr \rrbracket(S_{i}))_{i=1}^{n}, \llbracket bexpr \rrbracket(Q)). $ The filter operator is applied element-wise to every sub-domain and to the stack.
@@ -467,7 +467,7 @@ To illustrate the replacement and unification operators we introduce Listing 2.2
 
  As mentioned earlier, our analysis does not care about the specific variables representing input values, but rather about the order in which they occur in the list of input values which the program reads in their respective paths. In this example, we only care that after reading $ x $ we read another variable whose summation to $ x $ had to be greater than 20, otherwise the program will crash. Therefore, for the purpose of our analysis, $ l_{3} $  and $ l_{7} $ should be treated as the same variable when joining the two paths at the head of the if-condition since both of them are read second in their respective paths. We call the unification operator once as follows: $ \mathcal{U}_{O}(\lbrace l_{3} + x > 10 \rbrace, \lbrace l_{7} + x > 20 \rbrace) =  \lbrace l_{3} + x > 10 \rbrace$ and then another time switching the operands as follows: $ \mathcal{U}_{O}(\lbrace l_{7} + x > 20 \rbrace, \lbrace l_{3} + x > 10 \rbrace) =  \lbrace l_{3} + x > 20 \rbrace$. Then a join can be performed between $ \lbrace l_{3} + x > 10 \rbrace $ and $ \lbrace l_{3} + x > 20 \rbrace $ which will give us $ l_{3} + x > 20 $. 
 
-\subsection{The Character Inclusion Domain}
+\subsection{The Character Inclusion Domain} \label{character}
 The Character Inclusion Domain, as defined in \cite{character}, is an abstract domain that maps a string into two sets: a set of characters that are certainly included in the string and another set of characters that may be included in the string. 
 For a finite alphabet $\mathrm{A}$, we define a character inclusion lattice as follows: 
 \begin{itemize}
@@ -611,7 +611,328 @@ As is the case for the Type Domain, the replacement operator $ \mathcal{R}_{\mat
 
 \chapter{Implementation}
 
+We implemented our static analysis and input checker in Python as an extension to the Lyra project \cite{lyra}. We then implemented a plug-in for IntelliJ IDEA that enables the user to use the analysis and checker as a tool. The plug-in implementation is in Java. 
+
+
+
+We implement the Assumption Domain described in section \ref{assumption-domain} in a class we call $ AssumptionState $.  The $ AssumptionState $ class has a list of sub-states which represents the sub-domains in the Assumption Domain. The Type Domain already exists as part of Lyra. We implemented separate classes for the Octagon and Character Inclusion domains. For the Octagon domain, we used the Python interface of the ETH Library for Numerical Analysis (ELINA) \cite{singh}. We added extra logic in order to translate the Lyra representation of expressions and conditions into a representation that is compatible with ELINA and also to implement the replacement and unification operators mentioned in section \ref{octagon}. The Character Inclusion domain is implemented as described in section \ref{character} with the addition of support for built-in python functions that perform checks on the characters included in a string such as \verb|isalpha()|, \verb|isalnum()|, \verb|isdecimal()|, \verb|isdigit()|, \verb|islower()| and \verb|isupper()|. We also added the Sign Domain, which had already exited as a part of Lyra, to our implementation in order to keep track of constraints such as $ x \neq 0 $ which is impossible to track with Octagons. 
+
+Every one of the sub-states keeps track of all program variables. If a variable belongs to a type that the domain cannot handle, then its value will always be top in this domain. Therefore, an integer variable will always be mapped to top in the Character Inclusion Domain and a string variable will never have any constraints on it in the Octagon Domain. We require all sub-states to define functions that convert their constraints into JSON object and parse them back from JSON object. We also require every sub-state to implement an input-checking function that, given a input value read from a file, is able to tell whether this value satisfies the constraints that the sub-state represents or not. 
+
+The class $ InputStack $ also has the stack described in section \ref{stack} which implemented as an extension to the already existing $ Stack $ interface in Lyra. We define the pop and push operators for it as well as the structure of individual stack layers. The stack layer is implemented in the class $ InputLattice $ which represents a list of possibly repeated constraints on the input data (see the set $ I $ in section \ref{stack}) and defines a mechanism for recording assumptions on the top layer as well as for joining lists of assumptions from different paths of the analysis. 
+
+Our implementation follows a hierarchy similar to that used in \cite{madelin}. We implement an $ AssumptionController $ class which acts as the entry point for our tool and takes as input the path to a Python code file and an input data file. This class controls three other classes that are in the layer right below it in the hierarchy: $ AssumptionAnalysis $ which extends the Lyra $ Runner  $ class, $ JSONHandler $ and $ InputChecker $. The $ AnalysisAnalysis $ class is responsible for running a backward static analysis on a given Python program. The $ JSONHandler $ class is responsible for writing the assumptions resulting from the analysis into a JSON file and later reading them back from the JSON file. The $ InputChecker $ runs a checking algorithm an a given input file and produces a list of errors present in the file. 
+
+
+The analysis starts with an instance of the $ AssumptionState $ class set to top and traverses the program paths backward calling the appropriate functions from the class at every step. The final result of the analysis is stored in the stack of the final state and it is of type $ InputLattice $. When the analysis terminates, the controller retrieves the result and passes it to the $ JSONHandler $ class which writes the assumptions into JSON file by calling the functions defined in every sub-state. For subsequent runs of the controller, it checks if the code of the program has been modified and if it has not been modified, it does not run the analysis again but calls the $ JSONHandler $ to read the assumptions for that program from the existing JSON file and convert them back into an $ InputLattice $ object. The assumptions are then passed to the $ InputChecker $ class along with the input file which is required to be checked for errors. The $ InputChecker $ traverses the input file line by line and checks the value in every line against the corresponding assumption by calling the input-checking functions defined in every sub-state. It produces a dictionary which maps a line number in the input file to a $ CheckerError $ object which contains an appropriate error message describing how the value on this line violates an assumption. 
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{tool-labeled.png}
+	\caption{Screenshot of the IntelliJ IDEA Interface with the Plug-in}
+	\label{tool}
+\end{figure}
+
+We implement a plug-in for IntelliJ IDEA that allows a user to run our analysis and input checker. The interface which is presented to the user is shown in Figure \ref{tool}. To run the tool on a specific Python program, we must create a run configuration for it and select it from the drop-down menu labeled 1 in the figure. Using the green button labeled 6 we can choose which input data file to check. Then we can run the tool via the button labeled 5 in the figure. The lines which contain errors in the input file will be underlined in red and when the user hovers them with the mouse, an error message will appear. In addition to that, a pop-up message will always appear at the bottom of the screen indicating the location and error message of the first error value in the file. This functionality was added to guide the user step by step in fixing the errors in the file from top to bottom. If the tool cannot detect any more errors in the file, a green pop-up appears at the bottom of the screen indicating so. 
+  
+
 \chapter{Evaluation}
+
+In this section we present the evaluation of the work done in this thesis. In section \ref{user-study}, we present methodology and result of a user study we conducted in order to evaluate the usability of our tool. In section \ref{analysis-evaluation}, we present an evaluation of the static analysis we defined in section \ref{analysis}. 
+
+\section{User Study} \label{user-study}
+We conducted a user study to evaluate the usability of the tool we developed. We asked ten users, five who have a background in computer science and five who study or work in other fields, to use our tool and give us feedback on how helpful they find it. The methodology of the user study is presented in the next section and the results are presented in section \ref{results}. 
+
+\subsection{Methodology} \label{methodology}
+
+In our user study, we asked our users to do two experiments. For every experiment we presented the user with a programs, accompanied by an input data file which contains some errors that will cause the program to crash, and asked them to try to fix the errors in the data file so that the program runs without crashing. For one experiment they were asked to do this without any help and for the other they were asked to do this with the help of our tool. In the sections below we describe the programs and the input data we use and the procedure of the two experiments.
+
+\subsubsection{Programs and Input Data}
+
+We used four programs in our user study. The programs `Grades' (Listing \ref{grades}) and `Self-Driving Cars' (Listing \ref{cars}) are taken from the user study conducted in \cite{madelin}. The programs `Convert' (Listing) and `DNA Frequency' we obtained from the online sources [cite] and [cite] respectively. The code of the programs so that it can be handled by our analysis. For example, we removed statements that contain lists and function call. We also added new statement which provide more interesting assumptions on these input data. We constructed the input datasets to contain an average of eight errors per file. The errors we added can be classified into two main types: errors which appear as a result of typing mistakes, such as the number \textbf{6.5}, which represents a grade, being typed as \textbf{6..5} on line 32 in Listing \ref{grades-data}, and errors which result from some garbage values being printed in the data file due to, for example, the conversion of data from one format to another such as the value \textbf{G}, which represents a DNA base, being printed as \textbf{..G} on line 6 in Listing \ref{dna-data}.   \\ 
+
+\subsubsection{The Experiments}
+
+\begin{lstlisting} [language=Python, label=grades, caption=Code for Program `Grades']
+	subject: str = input()
+	homeworks: int = int(input())
+	students: int = int(input())
+	for i in range(students):
+		id: str = input()
+		sum: float = 0
+		max: float = 0
+		for j in range(homeworks):
+			grade: float = float(input())
+			best: float = float(input())
+			if grade < 0 or grade > best:
+			raise ValueError
+			sum: float = sum + grade
+			max: float = max + best
+		
+		average: float = sum / max * 100.0;
+		print("Student ID:")
+		print(id)
+		print("Average homework grade:")
+		print(average)
+		grade: float = float(input())
+		best: float = float(input())
+		if grade < 0 or grade > best:
+			raise ValueError
+		final_grade: float = grade / best * 100.0
+		print("Final test grade:")
+		print(final_grade)
+\end{lstlisting}
+
+\begin{lstlisting} [label=grades-data, caption=Input Data for `Grades']
+	CS 101: Introduction to Computer Science
+	3
+	4
+	34-8342
+	9
+	10
+	12
+	12
+	11
+	10
+	45
+	50
+	34-14002
+	6
+	10
+	13
+	12
+	-9
+	10
+	51
+	50
+	31-1234
+	5.5
+	10
+	9
+	12
+	10#
+	10
+	-43
+	50
+	34-2373
+	6..5
+	10
+	11
+	12
+	7
+	10
+	48 
+\end{lstlisting}
+
+\begin{lstlisting} [language=Python, label=cars, caption=Code for Program `Self-Driving Cars']
+
+cases: int = int(input())
+for case in range(cases):
+	distance: float = float(input())
+	if distance < 0:
+		raise ValueError("Distance cannot be negative.")
+	n: int = int(input())
+	max: float = 0
+	for i in range(n):
+		position: int = int(input())
+		if distance < position:
+			raise ValueError("Distance cannot be smaller than the current position.")
+		speed: float = float(input())
+		if speed < 0:
+			raise ValueError("Speed cannot be negative.")
+		val: float = (distance - position) / speed
+		if val > max:
+			max: int = val
+	t: int = case + 1
+	print("Trip:")
+	print(t)
+	print("with speed")
+	print(distance / max)
+	
+\end{lstlisting}
+\begin{lstlisting} [label=cars-data, caption=Input Data for `Self-Driving Cars]
+	4
+	10.5
+	3
+	4
+	40
+	6
+	45.5
+	12
+	50
+	120
+	5>>
+	25km
+	90
+	45
+	99km/h
+	-57
+	-123
+	76
+	130
+	1200
+	140
+	50
+	2
+	60
+	120
+	30
+	112
+	200
+	2
+	100
+	120
+	170
+\end{lstlisting}
+
+\begin{lstlisting} [language=Python, label=convert, caption= Code Program `Convert'] [H]
+items: int = int(input())
+if items == 0:
+	raise ValueError
+for i in range(items):
+	name: str = input()
+	weight: float = int(input())
+	if weight <= 0:
+		raise ValueError
+	unit: str = input()
+	if unit == 'pounds' or unit == 'lb' or unit == 'lbs':
+		weight: float = weight * 453.592 * 1e-3
+	elif unit == 'ounces' or unit == 'oz' or unit == 'oz.':
+		weight: float = weight * 28.35 * 1e-3
+	elif unit == 'grams' or unit == 'gms' or unit == 'g':
+		weight: float = weight * 1e-3
+	elif unit == 'kilograms' or unit == 'kilo' or unit == 'kg':
+		pass
+	else:
+		raise ValueError
+	print("Item: " + name)
+	print("weight:")
+	print(weight)
+	print("kg")
+
+	
+\end{lstlisting} 
+
+\begin{lstlisting} [label=convert-data, caption=Input Data for `Convert']
+	10#
+	earphones
+	300
+	gramx
+	stereo set
+	0
+	kg
+	camera tripod
+	1@
+	qounds
+	trolly suitcase
+	30
+	lbs
+	laptop lenovo 5070
+	1
+	kgs
+	laptop lenovo thinkpad
+	2>>
+	pounds
+	12x envelope
+	35
+	gm.
+	bic blue pens 4-piece set
+	125
+	grams
+	travel compass
+	50
+	grams
+	vacuum cleaner
+	2#0
+	kgs
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python, label=dna, caption= Code for Program `DNA Frequency']
+	sequences: int = int(input())
+	if sequences < 1:
+		raise ValueError("Expecting at least one DNA sequence")
+	for s in range(sequences):
+		length: int = int(input())
+		a: int = 0
+		c: int = 0
+		g: int = 0
+		t: int = 0
+		for i in range(length):
+			base: str = input()
+			if base == 'A':
+			a: int = a + 1
+			elif base == 'C':
+			c: int = c + 1
+			elif base == 'G':
+			g: int = g + 1
+			elif base == 'T':
+			t: int = t + 1
+			else:
+			raise ValueError
+		separator: str = input()
+		if separator == '.' or separator == '#':
+			pass
+		else:
+			raise ValueError
+		print("Frequency of A nucleotide:")
+		print(a)
+		print("Frequency of C nucleotide:")
+		print(c)
+		print("Frequency of G nucleotide:")
+		print(g)
+		print("Frequency of T nucleotide:")
+		print(t)
+		CG_content: float = (c + g) / (a + t + c + g) * 100.0
+		print("CG content: ")
+		print(CG_content)
+		print("%")
+\end{lstlisting}
+
+\begin{lstlisting} [label=dna-data, caption=Input Data for `DNA Frequency']
+	3..
+	10
+	A
+	O
+	C
+	..G
+	G
+	X
+	T
+	A
+	C
+	G
+	#
+	15
+	C
+	G@
+	T
+	A
+	C
+	&C*
+	G
+	T
+	O
+	G
+	A
+	C
+	T))
+	G
+	T
+	*
+	5
+	A
+	C
+	T
+\end{lstlisting}
+
+\subsection{Results} \label{results}
+
+\section{Evaluation of the Static Analysis} \label{analysis-evaluation}
+
+\chapter{Conclusion}
+
+\appendix
+\chapter{Appendix} 
+
 
 \bibliography{bachelors-thesis}
 \bibliographystyle{unsrt}
