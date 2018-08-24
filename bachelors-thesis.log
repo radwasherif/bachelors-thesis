@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.7.18)  22 AUG 2018 20:40
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.7.18)  24 AUG 2018 11:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -504,51 +504,204 @@ Package: setspace 2011/12/19 v6.7a set line spacing
 (/usr/share/texlive/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip11
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
-) (./bachelors-thesis.aux)
-\openout1 = `bachelors-thesis.aux'.
+)
+(/usr/share/texlive/texmf-dist/tex/latex/pdfpages/pdfpages.sty
+Package: pdfpages 2017/08/14 v0.5k Insert pages of external PDF documents (AM)
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 43.
-LaTeX Font Info:    ... okay on input line 43.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 43.
-LaTeX Font Info:    ... okay on input line 43.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 43.
-LaTeX Font Info:    ... okay on input line 43.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 43.
-LaTeX Font Info:    ... okay on input line 43.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 43.
-LaTeX Font Info:    ... okay on input line 43.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 43.
-LaTeX Font Info:    ... okay on input line 43.
+(/usr/share/texlive/texmf-dist/tex/latex/tools/calc.sty
+Package: calc 2014/10/28 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count137
+\calc@Bcount=\count138
+\calc@Adimen=\dimen173
+\calc@Bdimen=\dimen174
+\calc@Askip=\skip59
+\calc@Bskip=\skip60
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count139
+\calc@Cskip=\skip61
+)
+(/usr/share/texlive/texmf-dist/tex/latex/eso-pic/eso-pic.sty
+Package: eso-pic 2015/07/21 v2.0g eso-pic (RN)
 
-ABD: EveryShipout initializing macros
-(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
-[Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count137
-\scratchdimen=\dimen173
-\scratchbox=\box44
-\nofMPsegments=\count138
-\nofMParguments=\count139
-\everyMPshowfont=\toks38
-\MPscratchCnt=\count140
-\MPscratchDim=\dimen174
-\MPnumerator=\count141
-\makeMPintoPDFobject=\count142
-\everyMPtoPDFconversion=\toks39
-) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
-Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/atbegshi.sty
+Package: atbegshi 2016/06/09 v1.18 At begin shipout hook (HO)
 
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/infwarerr.sty
 Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
 )
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2017/03/15 v3.2 Provides the ifpdf switch
+)))
+\AM@pagewidth=\dimen175
+\AM@pageheight=\dimen176
+
+(/usr/share/texlive/texmf-dist/tex/latex/pdfpages/pppdftex.def
+File: pppdftex.def 2017/08/14 v0.5k Pdfpages driver for pdfTeX (AM)
+)
+\AM@pagebox=\box44
+\AM@global@opts=\toks38
+\AM@toc@title=\toks39
+\c@AM@survey=\count140
+\AM@templatesizebox=\box45
+)
+(/usr/share/texlive/texmf-dist/tex/latex/pgfplots/pgfplots.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplots.revision.tex)
+Package: pgfplots 2017/06/05 v1.15 Data Visualization (1.15)
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplots.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplotscore.code.tex
+\t@pgfplots@toka=\toks40
+\t@pgfplots@tokb=\toks41
+\t@pgfplots@tokc=\toks42
+\pgfplots@tmpa=\dimen177
+\c@pgfplots@coordindex=\count141
+\c@pgfplots@scanlineindex=\count142
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/sys/pgfplotssysgeneric.code
+.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/libs/pgfplotslibrary.code.t
+ex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldp
+gfsupp_loader.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryfpu.code.tex
+)
+Package pgfplots: loading complementary arithmetics for your pgf version...
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldp
+gfsupp_pgflibraryfpu.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldp
+gfsupp_pgfmathfloat.code.tex
+\c@pgfmathroundto@lastzeros=\count143
+))
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/util/pgfplotsutil.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/liststructure/pgfplotslists
+tructure.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/liststructure/pgfplotslists
+tructureext.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/liststructure/pgfplotsarray
+.code.tex
+\c@pgfplotsarray@tmp=\count144
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/liststructure/pgfplotsmatri
+x.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/numtable/pgfplotstableshare
+d.code.tex
+\c@pgfplotstable@counta=\count145
+\t@pgfplotstable@a=\toks43
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/liststructure/pgfplotsdeque
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/util/pgfplotsbinary.code.te
+x
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/util/pgfplotsbinary.data.co
+de.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/util/pgfplotsutil.verb.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/libs/pgflibrarypgfplots.sur
+fshading.code.tex
+\c@pgfplotslibrarysurf@no=\count146
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/sys/pgflibrarypgfplots.surf
+shading.pgfsys-pdftex.def)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/util/pgfplotscolormap.code.
+tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/util/pgfplotscolor.code.tex
+))
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplotsstackedplots.code.t
+ex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplotsplothandlers.code.t
+ex
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplotsmeshplothandler.cod
+e.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplotsmeshplotimage.code.
+tex)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplots.scaling.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplotscoordprocessing.cod
+e.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplots.errorbars.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplots.markers.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplotsticks.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplots.paths.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarydecorations.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduledecorations.cod
+e.tex
+\pgfdecoratedcompleteddistance=\dimen178
+\pgfdecoratedremainingdistance=\dimen179
+\pgfdecoratedinputsegmentcompleteddistance=\dimen180
+\pgfdecoratedinputsegmentremainingdistance=\dimen181
+\pgf@decorate@distancetomove=\dimen182
+\pgf@decorate@repeatstate=\count147
+\pgfdecorationsegmentamplitude=\dimen183
+\pgfdecorationsegmentlength=\dimen184
+)
+\tikz@lib@dec@box=\box46
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarydecorations.pathmorphing.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/decorations/pgflibrary
+decorations.pathmorphing.code.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarydecorations.pathreplacing.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/decorations/pgflibrary
+decorations.pathreplacing.code.tex))
+\pgfplots@numplots=\count148
+\pgfplots@xmin@reg=\dimen185
+\pgfplots@xmax@reg=\dimen186
+\pgfplots@ymin@reg=\dimen187
+\pgfplots@ymax@reg=\dimen188
+\pgfplots@zmin@reg=\dimen189
+\pgfplots@zmax@reg=\dimen190
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibraryplotmarks.code.tex
+File: tikzlibraryplotmarks.code.tex 2008/01/09 v3.0.1a (rcs-revision 1.1)
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryplotmarks.co
+de.tex
+File: pgflibraryplotmarks.code.tex 2015/08/03 v3.0.1a (rcs-revision 1.14)
+))) (./bachelors-thesis.aux)
+\openout1 = `bachelors-thesis.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+ ABD: EveryShipout initializing macros
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count149
+\scratchdimen=\dimen191
+\scratchbox=\box47
+\nofMPsegments=\count150
+\nofMParguments=\count151
+\everyMPshowfont=\toks44
+\MPscratchCnt=\count152
+\MPscratchDim=\dimen192
+\MPnumerator=\count153
+\makeMPintoPDFobject=\count154
+\everyMPtoPDFconversion=\toks45
+) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
+
 (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/grfext.sty
 Package: grfext 2016/05/16 v1.2 Manage graphics extensions (HO)
 
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
 Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
-
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
-Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
-)))
+))
 (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/kvoptions.sty
 Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
 
@@ -570,10 +723,6 @@ Package etexcmds Info: Could not find \expanded.
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2017/03/19 v0.25 Utility functions of pdfTeX for LuaTeX (HO
 )
-
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifpdf.sty
-Package: ifpdf 2017/03/15 v3.2 Provides the ifpdf switch
-)
 Package pdftexcmds Info: LuaTeX not detected.
 Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
@@ -590,18 +739,36 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-\c@lstlisting=\count143
-LaTeX Font Info:    Try loading font information for U+msa on input line 45.
+\c@lstlisting=\count155
+\AtBeginShipoutBox=\box48
 
+(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/pdflscape.sty
+Package: pdflscape 2016/05/14 v0.11 Display of landscape pages in PDF (HO)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/lscape.sty
+Package: lscape 2000/10/22 v3.01 Landscape Pages (DPC)
+)
+Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
+
+(/usr/share/texlive/texmf-dist/tex/generic/ifxetex/ifxetex.sty
+Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
+))
+
+Package pgfplots Warning: running in backwards compatibility mode (unsuitable t
+ick labels; missing features). Consider writing \pgfplotsset{compat=1.15} into 
+your preamble.
+ on input line 45.
+
+LaTeX Font Info:    Try loading font information for U+msa on input line 47.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 45.
+LaTeX Font Info:    Try loading font information for U+msb on input line 47.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Try loading font information for U+stmry on input line 45.
+LaTeX Font Info:    Try loading font information for U+stmry on input line 47.
 
 (/usr/share/texlive/texmf-dist/tex/latex/stmaryrd/Ustmry.fd) [1
 
@@ -612,34 +779,34 @@ Chapter 1.
 ] (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2015/06/04 1.6 listings language file
 ) [2]
-[3]
+[3] [4]
 Chapter 2.
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 111.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 115.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 111.
- [4
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 115.
+ [5
 
-] [5]
-Underfull \hbox (badness 10000) in paragraph at lines 174--175
-
- []
-
-[6]
-Underfull \hbox (badness 10000) in paragraph at lines 179--180
+] [6]
+Underfull \hbox (badness 10000) in paragraph at lines 178--179
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 181--182
+[7]
+Underfull \hbox (badness 10000) in paragraph at lines 183--184
 
  []
 
 
-Overfull \hbox (22.37947pt too wide) in paragraph at lines 189--190
+Underfull \hbox (badness 10000) in paragraph at lines 185--186
+
+ []
+
+
+Overfull \hbox (22.37947pt too wide) in paragraph at lines 193--194
 []\T1/cmr/m/n/10 A par-tial or-der $\OMS/cmsy/m/n/10 v[]$ \T1/cmr/m/n/10 such t
 hat $\OT1/cmr/m/n/10 ((\OML/cmm/m/it/10 S[]\OT1/cmr/m/n/10 )[]\OML/cmm/m/it/10 
 ; Q[]\OT1/cmr/m/n/10 ) \OMS/cmsy/m/n/10 v[] \OT1/cmr/m/n/10 ((\OML/cmm/m/it/10 
@@ -648,7 +815,7 @@ S[]\OT1/cmr/m/n/10 )[]\OML/cmm/m/it/10 ; Q[]\OT1/cmr/m/n/10 ) \OMS/cmsy/m/n/10
  []
 
 
-Overfull \hbox (3.71542pt too wide) in paragraph at lines 193--194
+Overfull \hbox (3.71542pt too wide) in paragraph at lines 197--198
 []\T1/cmr/m/n/10 A meet op-er-a-tor $\OMS/cmsy/m/n/10 u[]$ \T1/cmr/m/n/10 such 
 that $\OT1/cmr/m/n/10 ((\OML/cmm/m/it/10 S[]\OT1/cmr/m/n/10 )[]\OML/cmm/m/it/10
  ; Q[]\OT1/cmr/m/n/10 ) \OMS/cmsy/m/n/10 u[] \OT1/cmr/m/n/10 ((\OML/cmm/m/it/10
@@ -657,7 +824,7 @@ it/10 S[] \OMS/cmsy/m/n/10 u[]
  []
 
 
-Overfull \hbox (2.09811pt too wide) in paragraph at lines 195--196
+Overfull \hbox (2.09811pt too wide) in paragraph at lines 199--200
 []\T1/cmr/m/n/10 A fil-ter op-er-a-tor $\U/stmry/m/n/10 J\OML/cmm/m/it/10 bexpr
 \U/stmry/m/n/10 K\OT1/cmr/m/n/10 ((\OML/cmm/m/it/10 S[]\OT1/cmr/m/n/10 )[]\OML/
 cmm/m/it/10 ; Q\OT1/cmr/m/n/10 ) = ((\U/stmry/m/n/10 J\OML/cmm/m/it/10 bexpr\U/
@@ -667,8 +834,8 @@ stmry/m/n/10 K\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 S[]\OT1/cmr/m/n/10 ))[]\OML/cmm
 
  []
 
-[7] [8]
-Overfull \hbox (18.40913pt too wide) in paragraph at lines 238--239
+[8] [9]
+Overfull \hbox (18.40913pt too wide) in paragraph at lines 242--243
 []\T1/cmr/m/n/10 For $\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 l[]; \OT1/cmr/m/n/10 (\
 OML/cmm/m/it/10 c[]\OT1/cmr/m/n/10 )[])\OML/cmm/m/it/10 ; \OT1/cmr/m/n/10 (\OML
 /cmm/m/it/10 l[]; \OT1/cmr/m/n/10 (\OML/cmm/m/it/10 c[]\OT1/cmr/m/n/10 )[]) \OM
@@ -679,14 +846,14 @@ m/n/10 t
  []
 
 
-Overfull \hbox (20.88483pt too wide) in paragraph at lines 238--239
+Overfull \hbox (20.88483pt too wide) in paragraph at lines 242--243
 \T1/cmr/m/n/10 of the join op-er-a-tor of the in-di-vid-ual do-mains as fol-low
 s: $\OML/cmm/m/it/10 ^^M[]\OT1/cmr/m/n/10 ((\OML/cmm/m/it/10 l[]; \OT1/cmr/m/n/
 10 (\OML/cmm/m/it/10 c[]\OT1/cmr/m/n/10 )[])) \OMS/cmsy/m/n/10 [
  []
 
-[9]
-Overfull \hbox (0.41002pt too wide) in paragraph at lines 257--258
+[10]
+Overfull \hbox (0.41002pt too wide) in paragraph at lines 261--262
 \OMS/cmsy/m/n/10 I[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 m \OMS/cmsy/m/n/10 ^^B \O
 T1/cmr/m/n/10 (\OML/cmm/m/it/10 a[]\OT1/cmr/m/n/10 )[]\OML/cmm/m/it/10 ; b\OT1/
 cmr/m/n/10 ) = \OML/cmm/m/it/10 m \OMS/cmsy/m/n/10 ^^B \OT1/cmr/m/n/10 (\OML/cm
@@ -694,8 +861,8 @@ m/m/it/10 b \OMS/cmsy/m/n/10 ^^H \OT1/cmr/m/n/10 (\OML/cmm/m/it/10 a[]\OT1/cmr/
 m/n/10 )[])$\T1/cmr/m/n/10 . The new con-straint is prepended
  []
 
-[10]
-Overfull \hbox (19.11903pt too wide) in paragraph at lines 267--268
+[11]
+Overfull \hbox (19.11903pt too wide) in paragraph at lines 271--272
 []\T1/cmr/m/n/10 The stack con-cretiza-tion func-tion $\OML/cmm/m/it/10 ^^M[]$ 
 \T1/cmr/m/n/10 is de-fined as fol-lows: $\OML/cmm/m/it/10 ^^M[]\OT1/cmr/m/n/10 
 (\OML/cmm/m/it/10 q[]\OT1/cmr/m/n/10 ) \OMS/cmsy/m/n/10 j \OML/cmm/m/it/10 ^^M[
@@ -704,163 +871,330 @@ Overfull \hbox (19.11903pt too wide) in paragraph at lines 267--268
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 273--274
+Underfull \hbox (badness 10000) in paragraph at lines 277--278
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 275--278
+Underfull \hbox (badness 10000) in paragraph at lines 279--282
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 275--278
+Underfull \hbox (badness 10000) in paragraph at lines 279--282
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 287--288
+Underfull \hbox (badness 10000) in paragraph at lines 291--292
 
  []
 
-[11]
-Underfull \hbox (badness 10000) in paragraph at lines 313--314
+[12]
+Underfull \hbox (badness 10000) in paragraph at lines 317--318
 
  []
 
 
-Overfull \hbox (51.3951pt too wide) in paragraph at lines 315--324
+Overfull \hbox (51.3951pt too wide) in paragraph at lines 319--328
 | $\OML/cmm/m/it/10 t[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 t[]$ \T1/cmr/m/n/10 
 = $[]$ 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 315--324
+Underfull \hbox (badness 10000) in paragraph at lines 319--328
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 315--324
+Underfull \hbox (badness 10000) in paragraph at lines 319--328
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 325--332
+Underfull \hbox (badness 10000) in paragraph at lines 329--336
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 325--332
+Underfull \hbox (badness 10000) in paragraph at lines 329--336
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 333--341
+Underfull \hbox (badness 10000) in paragraph at lines 337--345
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 333--341
+Underfull \hbox (badness 10000) in paragraph at lines 337--345
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 342--348
+Underfull \hbox (badness 10000) in paragraph at lines 346--352
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 342--348
+Underfull \hbox (badness 10000) in paragraph at lines 346--352
 
  []
 
-[12]
-Overfull \hbox (13.6048pt too wide) in paragraph at lines 360--361
+[13]
+Overfull \hbox (13.6048pt too wide) in paragraph at lines 364--365
 []\T1/cmr/m/n/10 Finally, the con-cretiza-tion func-tion of the Type Do-main $\
 OML/cmm/m/it/10 ^^M[] \OT1/cmr/m/n/10 : [] [][]\OMS/cmsy/m/n/10 !
  []
 
 
-Overfull \hbox (3.8228pt too wide) in paragraph at lines 368--369
+Overfull \hbox (3.8228pt too wide) in paragraph at lines 372--373
 []\T1/cmr/m/n/10 A back-ward as-sign-ment op-er-a-tor $\U/stmry/m/n/10 J\OML/cm
 m/m/it/10 X \OT1/cmr/m/n/10 := \OML/cmm/m/it/10 aexpr\U/stmry/m/n/10 K\OT1/cmr/
 m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) = [][](\OML/cmm/m/it/10 t; X; aexpr
 \OT1/cmr/m/n/10 )$
  []
 
-[13] [14] [15]
-Overfull \hbox (27.85378pt too wide) in paragraph at lines 478--479
+[14] [15] [16]
+Overfull \hbox (27.85378pt too wide) in paragraph at lines 482--483
 \T1/cmr/m/n/10 stric-tion of hav-ing $\OML/cmm/m/it/10 a$ \T1/cmr/m/n/10 in the
  cer-tainly in-cluded set makes the val-ues $\OMS/cmsy/m/n/10 f\OML/cmm/m/it/10
  "; b; bb; bbb; :::\OMS/cmsy/m/n/10 g$
  []
 
-[16]
-Overfull \hbox (2.80544pt too wide) in paragraph at lines 502--503
+[17]
+Overfull \hbox (2.80544pt too wide) in paragraph at lines 506--507
 []\T1/cmr/m/n/10 We de-fine an in-ter-me-di-ate con-cretiza-tion func-tion $\OM
 L/cmm/m/it/10 ^^M[] \OT1/cmr/m/n/10 : [] [][]\OMS/cmsy/m/n/10 !
  []
 
-[17]
-Overfull \hbox (11.58907pt too wide) in paragraph at lines 512--513
+[18]
+Overfull \hbox (11.58907pt too wide) in paragraph at lines 516--517
 []\T1/cmr/m/n/10 A back-ward as-sign-ment op-er-a-tor $\U/stmry/m/n/10 J\OML/cm
 m/m/it/10 X \OT1/cmr/m/n/10 := \OML/cmm/m/it/10 aexpr\U/stmry/m/n/10 K\OT1/cmr/
 m/n/10 (\OML/cmm/m/it/10 c\OT1/cmr/m/n/10 ) = [][](\OML/cmm/m/it/10 c; X; aexpr
 \OT1/cmr/m/n/10 )$
  []
 
-[18] [19] [20]
+[19] [20] [21]
 Chapter 3.
-LaTeX Font Info:    Try loading font information for T1+cmtt on input line 618.
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 622.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2014/09/29 v2.5h Standard LaTeX font definitions
-) [21
+) [22
 
 ]
-<tool-labeled.png, id=105, 968.61874pt x 525.965pt>
+<tool-labeled.png, id=108, 968.61874pt x 525.965pt>
 File: tool-labeled.png Graphic file (type png)
 <use tool-labeled.png>
-Package pdftex.def Info: tool-labeled.png  used on input line 630. on input lin
-e 630.
+Package pdftex.def Info: tool-labeled.png  used on input line 634. on input lin
+e 634.
 Package pdftex.def Info: Requested size: 345.0pt x 187.34085pt on input line 63
-0.
- [22] [23 <./tool-labeled.png>]
+4.
+ [23] [24 <./tool-labeled.png>]
 Chapter 4.
 
-Underfull \hbox (badness 10000) in paragraph at lines 649--650
+Underfull \hbox (badness 10000) in paragraph at lines 655--656
 
  []
 
-[24
+[25
 
-] [25] [26]
+] [26] [27] [28] [29]
 
-Package Listings Warning: Text dropped after begin of listing on input line 783
+Package Listings Warning: Text dropped after begin of listing on input line 806
 .
 
-[27] [28] [29] [30]
+[30] [31] [32] [33]
 Chapter 5.
-[31
+[34
 
 ]
 Appendix A.
-(./bachelors-thesis.bbl [32
+<form.pdf, id=149, pagebox=cropbox, 597.23125pt x 845.1575pt>
+File: form.pdf Graphic file (type pdf)
+<use form.pdf>
+Package pdftex.def Info: form.pdf  used on input line 954. on input line 954.
+Package pdftex.def Info: Requested size: 597.22978pt x 845.15544pt on input lin
+e 954.
+File: form.pdf Graphic file (type pdf)
+<use form.pdf>
+Package pdftex.def Info: form.pdf  used on input line 954. on input line 954.
+Package pdftex.def Info: Requested size: 597.22978pt x 845.15544pt on input lin
+e 954.
+<form.pdf, id=152, page=1, pagebox=cropbox, 597.23125pt x 845.1575pt>
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 1>
+Package pdftex.def Info: form.pdf , page1 used on input line 954. on input line
+ 954.
+Package pdftex.def Info: Requested size: 597.22978pt x 845.15544pt on input lin
+e 954.
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 1>
+Package pdftex.def Info: form.pdf , page1 used on input line 954. on input line
+ 954.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 954.
+[35
 
 ]
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 1>
+Package pdftex.def Info: form.pdf , page1 used on input line 954. on input line
+ 954.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 954.
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 1>
+Package pdftex.def Info: form.pdf , page1 used on input line 954. on input line
+ 954.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 954.
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 1>
+Package pdftex.def Info: form.pdf , page1 used on input line 954. on input line
+ 954.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 954.
+ [36 <./form.pdf
+
+pdfTeX warning: /usr/bin/pdflatex (file ./form.pdf): PDF inclusion: invalid oth
+er resource which is no dict (key 'ProcSets', type <array>); ignored.
+>]
+<form.pdf, id=183, page=2, pagebox=cropbox, 597.23125pt x 845.1575pt>
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 2>
+Package pdftex.def Info: form.pdf , page2 used on input line 954. on input line
+ 954.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 954.
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 2>
+Package pdftex.def Info: form.pdf , page2 used on input line 954. on input line
+ 954.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 954.
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 2>
+Package pdftex.def Info: form.pdf , page2 used on input line 954. on input line
+ 954.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 954.
+ [37 <./form.pdf
+
+pdfTeX warning: /usr/bin/pdflatex (file ./form.pdf): PDF inclusion: invalid oth
+er resource which is no dict (key 'ProcSets', type <array>); ignored.
+>]
+<form.pdf, id=189, page=3, pagebox=cropbox, 597.23125pt x 845.1575pt>
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 3>
+Package pdftex.def Info: form.pdf , page3 used on input line 954. on input line
+ 954.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 954.
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 3>
+Package pdftex.def Info: form.pdf , page3 used on input line 954. on input line
+ 954.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 954.
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 3>
+Package pdftex.def Info: form.pdf , page3 used on input line 954. on input line
+ 954.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 954.
+ [38 <./form.pdf
+
+pdfTeX warning: /usr/bin/pdflatex (file ./form.pdf): PDF inclusion: invalid oth
+er resource which is no dict (key 'ProcSets', type <array>); ignored.
+>]
+<form.pdf, id=193, page=4, pagebox=cropbox, 597.23125pt x 845.1575pt>
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 4>
+Package pdftex.def Info: form.pdf , page4 used on input line 954. on input line
+ 954.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 954.
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 4>
+Package pdftex.def Info: form.pdf , page4 used on input line 954. on input line
+ 954.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 954.
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 4>
+Package pdftex.def Info: form.pdf , page4 used on input line 954. on input line
+ 954.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 954.
+ [39 <./form.pdf
+
+pdfTeX warning: /usr/bin/pdflatex (file ./form.pdf): PDF inclusion: invalid oth
+er resource which is no dict (key 'ProcSets', type <array>); ignored.
+>]
+<form.pdf, id=202, page=5, pagebox=cropbox, 597.23125pt x 845.1575pt>
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 5>
+Package pdftex.def Info: form.pdf , page5 used on input line 954. on input line
+ 954.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 954.
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 5>
+Package pdftex.def Info: form.pdf , page5 used on input line 954. on input line
+ 954.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 954.
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 5>
+Package pdftex.def Info: form.pdf , page5 used on input line 954. on input line
+ 954.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 954.
+ [40 <./form.pdf
+
+pdfTeX warning: /usr/bin/pdflatex (file ./form.pdf): PDF inclusion: invalid oth
+er resource which is no dict (key 'ProcSets', type <array>); ignored.
+>]
+<form.pdf, id=207, page=6, pagebox=cropbox, 597.23125pt x 845.1575pt>
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 6>
+Package pdftex.def Info: form.pdf , page6 used on input line 954. on input line
+ 954.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 954.
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 6>
+Package pdftex.def Info: form.pdf , page6 used on input line 954. on input line
+ 954.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 954.
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 6>
+Package pdftex.def Info: form.pdf , page6 used on input line 954. on input line
+ 954.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 954.
+ [41 <./form.pdf
+
+pdfTeX warning: /usr/bin/pdflatex (file ./form.pdf): PDF inclusion: invalid oth
+er resource which is no dict (key 'ProcSets', type <array>); ignored.
+>] (./bachelors-thesis.bbl
 LaTeX Font Info:    Font shape `OMS/cmr/m/it' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 45.
-) [33
+) [42
 
 ] (./bachelors-thesis.aux) ) 
 Here is how much of TeX's memory you used:
- 15514 strings out of 492990
- 286065 string characters out of 6135005
- 497313 words of memory out of 5000000
- 18732 multiletter control sequences out of 15000+600000
+ 26059 strings out of 492990
+ 628716 string characters out of 6135005
+ 938912 words of memory out of 5000000
+ 29110 multiletter control sequences out of 15000+600000
  29641 words of font info for 75 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 55i,9n,54p,1402b,1537s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 62i,18n,96p,1402b,1538s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super
 -t1.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pf
 b></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></usr
@@ -886,10 +1220,10 @@ fonts/type1/public/cm-super/sfsl1000.pfb></usr/share/texmf/fonts/type1/public/c
 m-super/sfti1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt1000.pfb
 ></usr/share/texmf/fonts/type1/public/cm-super/sfxc1000.pfb></usr/share/texlive
 /texmf-dist/fonts/type1/public/stmaryrd/stmary10.pfb>
-Output written on bachelors-thesis.pdf (35 pages, 569842 bytes).
+Output written on bachelors-thesis.pdf (44 pages, 1198025 bytes).
 PDF statistics:
- 236 PDF objects out of 1000 (max. 8388607)
- 167 compressed objects within 2 object streams
+ 310 PDF objects out of 1000 (max. 8388607)
+ 204 compressed objects within 3 object streams
  0 named destinations out of 1000 (max. 500000)
- 18 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 63 words of extra memory for PDF output out of 10000 (max. 10000000)
 

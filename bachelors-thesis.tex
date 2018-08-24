@@ -20,6 +20,8 @@
 \usepackage{setspace}
 \usepackage{graphicx}
 \usepackage{url}
+\usepackage{pdfpages}
+\usepackage{pgfplots}
 \lstdefinestyle{mystyle}{
 	numberstyle=\small,
 	breakatwhitespace=false,         
@@ -65,7 +67,7 @@ Before feeding the data into a data science program, it must be cleansed and the
 In this thesis, we present an approach to detect incorrect input data with respect to a given data science program. Unlike the data-cleaning tools mentioned above, our method does not perform computations on the dataset directly. Instead, we design a static analysis that analyzes the source code of the program in order to find out the implicit assumptions that the program makes about the input data that it reads such that if these assumptions are violated the program will crash. These assumptions represent the pre-conditions that must be satisfied so that the program runs without producing errors. Our analysis will compute an over-approximation of these pre-conditions. In other words, if there is a set of accepted values that will allow the program to run without raising an error, the set of values that our analysis computes will contain all the accepted values, but it might contain some extra values that will cause the program to raise errors. That is, the pre-conditions we compute are necessary but not sufficient for the program to terminate without crashing. 
 
 We then design an input checker that looks for values that violate the assumptions computed by the analysis. If that is the case, the wrong input values are flagged as errors so that the user can correct them. Our approach is advantageous in cases where the data cannot be shared with third parties to perform data cleaning. We implement our analysis and input checker for Python programs and integrate them into a tool that can be used directly by domain experts on their data. 
-\begin{lstlisting} [language = Python, caption=Example of Assumptions on String Data] 
+\begin{lstlisting} [language = Python, label=first, caption=Example of Assumptions on String Data] 
 	sequence_length: int = int(input())
 	count_a: int = 0
 	count_c: int = 0
@@ -90,19 +92,21 @@ To elaborate further on what we aim to achieve in this thesis, let us examine th
 
 Our aim, thus, is not to perform computations on the input data based on the known fact that the human DNA contains only A, C, G and T bases and to cleanse the wrong values. Rather, we turn our attention to the program that will run on the data and try to answer the question: what does this program \textit{assume} about its input data such that if those assumptions are not fulfilled, the program will raise an error? For our analysis to compute a successful over-approximation, it must always include the character `A', `C', `G' and `T' in the set of accepted values it produces. However, it may include some other values as well. 
 
-[explain outline of the thesis...]
+In section \ref{theoretical}, we present the theoretical aspects upon which the work of this thesis is based. In section \ref{analysis}, we explain the design of our static analysis and its different components in more detail. In section \ref{implementation}, we give an overview of how our analysis and input checker were implemented and integrated into an IDE plug-in. We evaluate the work achieved in this thesis in section \ref{evaluation} and, finally, the conclusion and possible future work are to be found in section \ref{conclusion}. 
 
-\section{Theoretical Background} \label{theoritical}
+\section{Theoretical Background} \label{theoretical}
 \subsection{Static Analysis}
 [Explain what static analysis is on a high level, what it's used for, the ways to do it]
 \subsection{Abstract Interpretation}
 [Explain briefly abstract interpretation and the advantages of using it in static analysis, element of an abstract domain.]
 
-\section{Previous Work}
+\section{Previous Work and Contribution}
 
-We build our approach on the work done in \cite{madelin} which focuses on inferring assumption on numerical data using the Interval Domain and a specially designed relations domain. Our main contribution is designing a generic framework that can use any existing abstract domain to keep track of assumptions on the input data. 
+We build our approach on the work done in \cite{madelin}. This work was focused on inferring assumptions on numerical values in terms of types, ranges and simple relations. They designed a type domain which we also use in this thesis and describe in section \ref{types} and a simple relations domain to keep track of relations between numerical variables such as $ x \leq y $. For ranges the used the well-known Interval Domain \cite{cousot}. They also used a stack mechanism to store assumptions collected about the input values by the domains they employed. 
 
-\chapter{Static Analyis} \label{analysis}
+Since we would like to analyze more evolved code examples that contain assumptions on both numerical and string values, such as Listing \ref{first}, we take a more generic approach to the problem in this thesis. We design our static analysis to be a generic framework which can employ any existing value domain to keep track of assumptions on the input data. This way, we can employ more powerful domains, for example the Octagon Domain which we use in this thesis, to keep track of relations between numerical variables and we can also keep track of assumptions on different types of variables, for instance numerical and string variables, at the same time. We also extend the stack mechanism used in \cite{madelin} to be more generic and to keep track of assumptions from different domains simultaneously.  
+
+\chapter{Static Analysis Design} \label{analysis}
 
 \section{Concrete Domain} \label{concrete}
 
@@ -131,7 +135,7 @@ There are multiple ways in which this program can produce an error. On line 1 if
 
 It is obvious from this example that we need to track information about both numerical values and string values if we are to compute the set of allowed input values to this program. For examples we need to ensure that the relation $sequence\_length > max\_length$ holds and that the variable $base$ has only the characters in the set $\lbrace'A', 'C', 'G', 'T' \rbrace$. This cannot be achieved by running a conventional static analysis using only one abstract domain.
 
-\begin{lstlisting} [language=Python, caption=Example of Assumptions on both String and Numerical Data]
+\begin{lstlisting} [language=Python, label=, caption=Example of Assumptions on both String and Numerical Data]
 	number_of_sequences: int = int(input())
 	max_length: int = int(input())
 	if number_of_sequences <= 0 :
@@ -609,7 +613,7 @@ As is the case for the Type Domain, the replacement operator $ \mathcal{R}_{\mat
 \end{algorithm}
 
 
-\chapter{Implementation}
+\chapter{Implementation} \label{implementation}
 
 We implemented our static analysis and input checker in Python as an extension to the Lyra project \cite{lyra}. We then implemented a plug-in for IntelliJ IDEA that enables the user to use the analysis and checker as a tool. The plug-in implementation is in Java. 
 
@@ -632,10 +636,10 @@ The analysis starts with an instance of the $ AssumptionState $ class set to top
 	\label{tool}
 \end{figure}
 
-We implement a plug-in for IntelliJ IDEA that allows a user to run our analysis and input checker. The interface which is presented to the user is shown in Figure \ref{tool}. To run the tool on a specific Python program, we must create a run configuration for it and select it from the drop-down menu labeled 1 in the figure. Using the green button labeled 6 we can choose which input data file to check. Then we can run the tool via the button labeled 5 in the figure. The lines which contain errors in the input file will be underlined in red and when the user hovers them with the mouse, an error message will appear. In addition to that, a pop-up message will always appear at the bottom of the screen indicating the location and error message of the first error value in the file. This functionality was added to guide the user step by step in fixing the errors in the file from top to bottom. If the tool cannot detect any more errors in the file, a green pop-up appears at the bottom of the screen indicating so. 
+We implement a plug-in for IntelliJ IDEA that allows a user to run our analysis and input checker. The decision to implement such a plug-in was based on feedback received from participants in the user study conducted in \cite{madelin}. The interface which is presented to the user is shown in Figure \ref{tool}. To run the tool on a specific Python program, we must create a run configuration for it and select it from the drop-down menu labeled 1 in the figure. Using the green button labeled 6 we can choose which input data file to check. Then we can run the tool via the button labeled 5 in the figure. The lines which contain errors in the input file will be underlined in red and when the user hovers them with the mouse, an error message will appear. In addition to that, a pop-up message will always appear at the bottom of the screen indicating the location and error message of the first error value in the file. This functionality was added to guide the user step by step in fixing the errors in the file from top to bottom. If the tool cannot detect any more errors in the file, a green pop-up appears at the bottom of the screen indicating so. 
   
 
-\chapter{Evaluation}
+\chapter{Evaluation} \label{evaluation}
 
 In this section we present the evaluation of the work done in this thesis. In section \ref{user-study}, we present methodology and result of a user study we conducted in order to evaluate the usability of our tool. In section \ref{analysis-evaluation}, we present an evaluation of the static analysis we defined in section \ref{analysis}. 
 
@@ -650,7 +654,22 @@ In our user study, we asked our users to do two experiments. For every experimen
 
 We used four programs in our user study. The programs `Grades' (Listing \ref{grades}) and `Self-Driving Cars' (Listing \ref{cars}) are taken from the user study conducted in \cite{madelin}. The programs `Convert' (Listing) and `DNA Frequency' we obtained from the online sources [cite] and [cite] respectively. The code of the programs so that it can be handled by our analysis. For example, we removed statements that contain lists and function call. We also added new statement which provide more interesting assumptions on these input data. We constructed the input datasets to contain an average of eight errors per file. The errors we added can be classified into two main types: errors which appear as a result of typing mistakes, such as the number \textbf{6.5}, which represents a grade, being typed as \textbf{6..5} on line 32 in Listing \ref{grades-data}, and errors which result from some garbage values being printed in the data file due to, for example, the conversion of data from one format to another such as the value \textbf{G}, which represents a DNA base, being printed as \textbf{..G} on line 6 in Listing \ref{dna-data}.   \\ 
 
-\subsubsection{The Experiments}
+\subsubsection{Experiments}
+As mentioned earlier, we asked every participant in our user study to do two experiments, one after the other. In both experiments the user was presented with a Python program and a text file containing some input data which has errors that will cause the program to crash. They were asked to not change the code of the program but to change the input data, only adding or modifying lines without deleting them, such that the program runs without crashing. The users were presented with an online form that walked them through the experiments step by step. Before starting the experiments, the users were asked to answer some general questions in the form indicating their age, field of study, current occupation and their level of familiarity with programming on five-point Likert scale ranging from 1 to 5. 
+
+In both experiments, the form explained to them the task that they are required to perform and then asked them to choose one of the four programs based on their month of birth to ensure some randomness in the experiment. They were handed a sheet of paper containing a brief description of the task the program tries to achieve. In the experiment without the tool, they were given instructions on how to run a Python program in IntelliJ IDEA, while in the experiments with the tool, they were given instructions on how to run the tool and what kind of error messages they should expect to see. Then we allowed the user to work on the problem for eight minutes each. Both the form and the problem descriptions are shown in the appendix. 
+
+After every task, we asked the users to answer some questions in the form.  For both experiments we asked if they had been able to fix the errors in the input data and how many minutes they spent on this task. For the experiment with the tool, we added a question about whether or not they were able to run the program without raising any errors. This is to account for the cases were the user was able to fix all the errors detected by the tool, but the tool failed to flag some erroneous data due to imprecision in the analysis.  
+
+These questions were followed by a group of questions on a five-point Likert scale in which the options were: Strongly Disagree, Disagree, Neutral, Agree, Strongly Agree. In both experiments, we asked how frustrated the users felt trying to solve the problems and how understandable they found the error messages printed by the program in the first experiment and displayed by the tool in the second experiment. We added two more questions in the second experiment asking them to rate how user-friendly they found the tool and whether they would rather fix the errors in a data file with or without the help of the tool. 
+
+At the end of the form there were two open-ended questions that aimed to get feedback from the users in their own words. The first questions asked the users what they liked about the tool and the second questions asked them to suggest improvements that they think should be added to the tool. The form as well as the descriptions of the problems can be found in the appendix. 
+
+\subsection{Results} \label{results}
+
+\subsubsection{General questions}
+
+The ages of the participants ranges from 19 to 31 with an average of 23.4. Five participants have backgrounds in computer science (one user used the term "informatics" in the form), while two participants have backgrounds in physics, two in environmental engineering and one in mathematics. Six of our participants are bachelor's students, two are master's students, one participant is a postdoctoral researcher and one is a teaching assistant. 
 
 \begin{lstlisting} [language=Python, label=grades, caption=Code for Program `Grades']
 	subject: str = input()
@@ -924,15 +943,15 @@ for i in range(items):
 	T
 \end{lstlisting}
 
-\subsection{Results} \label{results}
-
 \section{Evaluation of the Static Analysis} \label{analysis-evaluation}
 
-\chapter{Conclusion}
+\chapter{Conclusion and Future Work} \label{conclusion}
+
 
 \appendix
 \chapter{Appendix} 
 
+\includepdf[pages={1-6}]{form}
 
 \bibliography{bachelors-thesis}
 \bibliographystyle{unsrt}
