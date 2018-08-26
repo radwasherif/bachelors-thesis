@@ -1,7 +1,7 @@
 \documentclass[10pt]{report}
 
 %opening
-\title{Automated Checking of Implicit Assumptions on Textual Data} 
+\title{Automated Checking of Implicit Assumptions on Textual Data } 
 \author{Radwa Sherif Abdelbar \\
 	 Supervisors: Dr. Caterina Urban, Alexandra Bugariu \\ Prof. Dr. Peter M{\"u}ller}
 \usepackage{titlesec}
@@ -22,6 +22,8 @@
 \usepackage{url}
 \usepackage{pdfpages}
 \usepackage{pgfplots}
+\usepackage{subfig}
+
 \lstdefinestyle{mystyle}{
 	numberstyle=\small,
 	breakatwhitespace=false,         
@@ -49,7 +51,7 @@
 
 
 \begin{abstract}
-
+The abundance of data and increased reliance of data science programs in today's world gives rise to new opportunities in science and business. Due to the large and heterogeneous nature of the datasets used in data science applications, it had become increasingly important to develop new tools and techniques that will ease the process of data cleaning, that is finding and fixing erroneous values in data files.  
 \end{abstract}
 
 \chapter{Introduction}
@@ -95,10 +97,19 @@ Our aim, thus, is not to perform computations on the input data based on the kno
 In section \ref{theoretical}, we present the theoretical aspects upon which the work of this thesis is based. In section \ref{analysis}, we explain the design of our static analysis and its different components in more detail. In section \ref{implementation}, we give an overview of how our analysis and input checker were implemented and integrated into an IDE plug-in. We evaluate the work achieved in this thesis in section \ref{evaluation} and, finally, the conclusion and possible future work are to be found in section \ref{conclusion}. 
 
 \section{Theoretical Background} \label{theoretical}
+
+In this section we present the basic theoretical concepts which we use in our work. 
+
 \subsection{Static Analysis}
-[Explain what static analysis is on a high level, what it's used for, the ways to do it]
+Static analysis is the analysis of the source code of a program, without executing it, in order to infer some properties about the program's behaviour. Since it is generally impossible to infer with absolute certainty that a non-trivial property holds for all executions of a program, static analysis aims to approximate the behaviour of a program by analyzing a model of the program in all of its execution paths. 
+
 \subsection{Abstract Interpretation}
-[Explain briefly abstract interpretation and the advantages of using it in static analysis, element of an abstract domain.]
+The theory of Abstract Interpretation \cite{cousot} is a general theory that allows for creating mathematically sound approximations of the behaviour of a program. It was created by Patrick Cousot and Radhia Cousot as a unifying framework for static analysis. 
+
+According to Abstract Interpretation, a program can have several semantics, that is several mathematical descriptions of its behaviour. The \textbf{concrete semantics} is the semantics that most closely resembles the real behaviour of the program. This is usually complex and computationally expensive to analyze. The \textbf{abstract semantics}, on the other hand, represents the semantics of the program with respect to some chosen property while abstracting away the irrelevant details. For example, the concrete semantics of a program can be the values which its numerical variables take, while an abstract semantics could be the signs of these variables. In this case, a statement such as ``2 * 3'' can be abstracted as ``(+) * (-)''. 
+
+In order to use Abstract Interpretation for static analysis, we must define an abstract domain that represents the states of the program according to the abstract semantics. An abstract domain must define an \textbf{element}, which is a computer representable object that represents the state of the program. As mentioned in the previous section, static analysis traverses all executions paths of the program. For this reasons, every abstract domain must define some operators in order to modify the current state according to the statements it encounters while traversing the paths of the program.  
+
 
 \section{Previous Work and Contribution}
 
@@ -107,7 +118,7 @@ We build our approach on the work done in \cite{madelin}. This work was focused 
 Since we would like to analyze more evolved code examples that contain assumptions on both numerical and string values, such as Listing \ref{first}, we take a more generic approach to the problem in this thesis. We design our static analysis to be a generic framework which can employ any existing value domain to keep track of assumptions on the input data. This way, we can employ more powerful domains, for example the Octagon Domain which we use in this thesis, to keep track of relations between numerical variables and we can also keep track of assumptions on different types of variables, for instance numerical and string variables, at the same time. We also extend the stack mechanism used in \cite{madelin} to be more generic and to keep track of assumptions from different domains simultaneously.  
 
 \chapter{Static Analysis Design} \label{analysis}
-
+In this section, we present a detailed description of our static analysis. In the next section we present the concrete semantics which we use in our analysis. In section \ref{assumption-domain}, we describe our generic framework for inferring assumptions on input data as a top-level abstract domain. In section \ref{analysis-instance}, we describe three abstract domains, namely the Type Domain (section \ref{types}), the Octagon Domain (section \ref{octagon}) and the Character Inclusion Domain (section \ref{character}), which we use to create the instance of our generic framework that we use to demonstrate how our technique works throughout this thesis and which we also used for our implementation. 
 \section{Concrete Domain} \label{concrete}
 
 To define our concrete domain, we first define the following sets:
@@ -135,7 +146,7 @@ There are multiple ways in which this program can produce an error. On line 1 if
 
 It is obvious from this example that we need to track information about both numerical values and string values if we are to compute the set of allowed input values to this program. For examples we need to ensure that the relation $sequence\_length > max\_length$ holds and that the variable $base$ has only the characters in the set $\lbrace'A', 'C', 'G', 'T' \rbrace$. This cannot be achieved by running a conventional static analysis using only one abstract domain.
 
-\begin{lstlisting} [language=Python, label=, caption=Example of Assumptions on both String and Numerical Data]
+\begin{lstlisting} [language=Python, label=running, caption=Example of Assumptions on both String and Numerical Data]
 	number_of_sequences: int = int(input())
 	max_length: int = int(input())
 	if number_of_sequences <= 0 :
@@ -188,14 +199,15 @@ We can define the Assumption Domain formally as follows: \\
 \end{center}
 \begin{itemize}
 	\item An element $d \in \textsl{D} = \lbrace ((S_{i})_{i=1}^{n}, Q) \vert S_{i} \in SUBD \wedge Q \in STACK \rbrace$. Every element of this domain consists of a sequence of instances of sub-domains and a stack.
-	\item A concretization function $\gamma_{D}(d) =( \bigcap\limits_{i=1}^{n}\gamma_{S_{i}}(S_{i}), \gamma_{STACK}(Q)).$ 
+	\item A concretization function $\gamma_{D}(d) =( \bigcap\limits_{i=1}^{n}\gamma_{S_{i}}(S_{i}), \gamma_{STACK}(Q)).$ The concretization function gives a set of values that is a superset of the set of values allowed by the concrete domains. This applies to both the set of values that program variables are allowed to take, represented by the intersection of the concretization of the sub-domains, and the set of allowed input values, represented by the concretization of the stack. 
 	 
 	\item A partial order $\sqsubseteq_{D}$ such that $ ((S_{1,i})_{i=1}^{n}, Q_{1}) \sqsubseteq_{D} ((S_{2, i})_{i=1}^{n}, Q_{2}) \Longleftrightarrow \bigwedge\limits_{i=1}^{n}(S_{1i} \sqsubseteq_{S_{i}} S_{2i}) \wedge Q_{1} \sqsubseteq_{STACK} Q_{2} .$ An element $ d_{1} $ of $ D $ is small than or equal to another element $ d_{1} $ if and only if $ d_{1} $ represents a set of allowed input values that is smaller than or equal the set allowed input values by $ d_{2} $. 
 	\item A minimum element $\bot_{D} = ((\bot_{S_{i}})_{i=1}^{n}, \bot_{STACK})$. This elements represents a state where there are no possible input values that are acceptable by the program. 
 	\item A maximum element $\top_{D} =  ((\top_{S_{i}})_{i=1}^{n}, \top_{STACK})$. This represents the set of all possible input value without any constraints. 
-	\item A join operator $\sqcup_{D}$ such that $ ((S_{1,i})_{i=1}^{n}, Q_{1}) \sqcup_{D} ((S_{2,i})_{i=1}^{n}, Q_{2}) = (((S_{1,i} \sqcup_{S_{i}} S_{2,i})_{i=1}^{n}, Q_{1} \sqcup_{STACK} Q_{2}))$. When joining two paths of the analysis, we must join the assumptions computed by the analysis on the program variables. 
-	\item A meet operator $\sqcap_{D}$ such that $ ((S_{1,i})_{i=1}^{n}, Q_{1}) \sqcap_{D} ((S_{2,i})_{i=1}^{n}, Q_{2}) = (((S_{1,i} \sqcap_{S_{i}} S_{2,i})_{i=1}^{n}, Q_{1} \sqcap_{STACK} Q_{2}))$. Similar to the join, the meet operator is applied pair-wise to all sub-domains and the stack.
-	\item A backward assignment operator $\llbracket X:=aexpr \rrbracket ((S_{i})_{i=1}^{n}, Q) =  ((\llbracket X:=aexpr \rrbracket(S_{i}))_{i=1}^{n}, \llbracket X:= expr \rrbracket(Q)).$ The backward assignment operator is applied element-wise to every sub-domain and to the stack. 
+	\item A join operator $\sqcup_{D}$ such that $ ((S_{1,i})_{i=1}^{n}, Q_{1}) \sqcup_{D} ((S_{2,i})_{i=1}^{n}, Q_{2}) = (((S_{1,i} \sqcup_{S_{i}} S_{2,i})_{i=1}^{n}, Q_{1} \sqcup_{STACK} Q_{2}))$. When joining two paths of the analysis, we must join the constraints computed by the analysis on both the program variables, by performing a pair-wise join on all the sub-domains and joining the two stacks $ Q_{1} $ and $ Q_{2} $. The soundness of this operator follows from the soundness of the join operators of the sub-domains and the stack as follows: $ \gamma_{D}(((S_{1,i})_{i=1}^{n}, Q_{1})) \cup \gamma_{D}(((S_{2,i})_{i=1}^{n}, Q_{2}))$ $ = ( \bigcap\limits_{i=1}^{n}\gamma_{S_{1,i}}(S_{1,i}), \gamma_{STACK}(Q_{1})) \cup ( \bigcap\limits_{i=1}^{n}\gamma_{S_{2,i}}(S_{2,i}), \gamma_{STACK}(Q_{2})) $
+	 
+	\item A meet operator $\sqcap_{D}$ such that $ ((S_{1,i})_{i=1}^{n}, Q_{1}) \sqcap_{D} ((S_{2,i})_{i=1}^{n}, Q_{2}) = (((S_{1,i} \sqcap_{S_{i}} S_{2,i})_{i=1}^{n}, Q_{1} \sqcap_{STACK} Q_{2}))$. Similar to the join, the meet operator is applied pair-wise to all sub-domains and the two stacks.
+	\item A backward assignment operator $\llbracket X:=aexpr \rrbracket ((S_{i})_{i=1}^{n}, Q) =  ((\llbracket X:=aexpr \rrbracket(S_{i}))_{i=1}^{n}, \llbracket X:= expr \rrbracket(Q)).$ The backward assignment operator is applied point-wise to every sub-domain and to the stack. 
 	\item A filter operator $ \llbracket bexpr \rrbracket ((S_{i})_{i=1}^{n}, Q) =  ((\llbracket bexpr \rrbracket(S_{i}))_{i=1}^{n}, \llbracket bexpr \rrbracket(Q)). $ The filter operator is applied element-wise to every sub-domain and to the stack.
 	\item A widening operator $\nabla_{D}$ such that $ ((S_{1,i})_{i=1}^{n}, Q_{1}) \nabla_{D} ((S_{2,i})_{i=1}^{n}, Q_{2}) = $ $ ((S_{1, i} \nabla_{S_{i}} S_{2,i}), Q_{1} \nabla_{STACK} Q_{2}) .$ Similar to the join and meet, widening is applied pair-wise between the sub-domains and the stack. 
 \end{itemize}
@@ -271,7 +283,7 @@ $$ q_{0}\ \vert\ q_{1}\ \vert\ ...\ \vert\ q_{N-1}\ \vert\ \ q_{N},\ q_{i} \in I
  The stack concretization function $ \gamma_{STACK} $ is defined as follows: $\gamma_{I}(q_{0})\ \vert\ \gamma_{I}(q_{1})\ \vert\ ...$ $\ \vert\ \gamma_{I}(q_{N})$ . The binary operators join, meet, widening operators are applied pair-wise to the layers of the stack. The backward assignment operator is applied to every layer of the stack. 
 
 
-\section{An Instance of the Analysis} \label{example-domains}
+\section{An Instance of the Analysis} \label{analysis-instance}
 After designing an Assumption Domain in the previous section, we create an instance of this domain with several sub-domains for the purpose of this thesis. Here we introduce these sub-domains: the Type Domain, the Octagons Domain and the Character Inclusion Domain. We then trace an instance of the analysis instantiated with these three domains on a code example. 
 
 Similar to those defined in \cite{tutorial}, we define an expression language that will be useful in defining substitution and filter algorithms for our sub-domains later in this section: \\
@@ -619,7 +631,7 @@ We implemented our static analysis and input checker in Python as an extension t
 
 
 
-We implement the Assumption Domain described in section \ref{assumption-domain} in a class we call $ AssumptionState $.  The $ AssumptionState $ class has a list of sub-states which represents the sub-domains in the Assumption Domain. The Type Domain already exists as part of Lyra. We implemented separate classes for the Octagon and Character Inclusion domains. For the Octagon domain, we used the Python interface of the ETH Library for Numerical Analysis (ELINA) \cite{singh}. We added extra logic in order to translate the Lyra representation of expressions and conditions into a representation that is compatible with ELINA and also to implement the replacement and unification operators mentioned in section \ref{octagon}. The Character Inclusion domain is implemented as described in section \ref{character} with the addition of support for built-in python functions that perform checks on the characters included in a string such as \verb|isalpha()|, \verb|isalnum()|, \verb|isdecimal()|, \verb|isdigit()|, \verb|islower()| and \verb|isupper()|. We also added the Sign Domain, which had already exited as a part of Lyra, to our implementation in order to keep track of constraints such as $ x \neq 0 $ which is impossible to track with Octagons. 
+We implement the Assumption Domain described in section \ref{assumption-domain} in a class we call $ AssumptionState $.  The $ AssumptionState $ class has a list of sub-states which represents the sub-domains in the Assumption Domain. The Type Domain already exists as part of Lyra. We implemented separate classes for the Octagon and Character Inclusion domains. For the Octagon domain, we used the Python interface of the ETH Library for Numerical Analysis (ELINA) \cite{singh}. We added extra logic in order to translate the Lyra representation of expressions and conditions into a representation that is compatible with ELINA and also to implement the replacement and unification operators mentioned in section \ref{octagon}. The Character Inclusion domain is implemented as described in section \ref{character} with the addition of support for built-in python functions that perform checks on the characters included in a string such as \verb|isalpha()|, \verb|isalnum()|, \verb|isdecimal()|, \verb|isdigit()|, \verb|islower()| and \verb|isupper()|. 
 
 Every one of the sub-states keeps track of all program variables. If a variable belongs to a type that the domain cannot handle, then its value will always be top in this domain. Therefore, an integer variable will always be mapped to top in the Character Inclusion Domain and a string variable will never have any constraints on it in the Octagon Domain. We require all sub-states to define functions that convert their constraints into JSON object and parse them back from JSON object. We also require every sub-state to implement an input-checking function that, given a input value read from a file, is able to tell whether this value satisfies the constraints that the sub-state represents or not. 
 
@@ -667,9 +679,33 @@ At the end of the form there were two open-ended questions that aimed to get fee
 
 \subsection{Results} \label{results}
 
-\subsubsection{General questions}
+In this section we present some statistics that we gathered from our user study along with some insights that can guide future work on this project. 
 
-The ages of the participants ranges from 19 to 31 with an average of 23.4. Five participants have backgrounds in computer science (one user used the term "informatics" in the form), while two participants have backgrounds in physics, two in environmental engineering and one in mathematics. Six of our participants are bachelor's students, two are master's students, one participant is a postdoctoral researcher and one is a teaching assistant. 
+The ages of the participants ranges from 19 to 31 with an average of 23.4. Five participants have backgrounds in computer science (one user used the term "informatics" in the form), while two participants have backgrounds in physics, two in environmental engineering and one in mathematics. Six of our participants are bachelor's students, two are master's students, one participant is a postdoctoral researcher and one is a teaching assistant. When asked to rate their familiarity with programming, the majority of participants who rated their experience 4 or above, as expected, have a background in computer science. More details can be seen in Figure \ref{rate}. In all the figures in which we distinguish between computer science and non-computer science participants we label the former as ``CS'' and the later as ``non-CS''. 
+
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{rate.png}
+	\caption{Self-rating programming experience}
+	\label{rate}
+\end{figure}
+
+
+We found that in the experiment without the tool, only one participant was able to fix all the errors in the input file successfully and it took them 5 and a half minutes. That participant studies computer science and they had rated their familiarity with programming 4 on the five-point scale. All other participants had at least one error in their data files when the assigned 8 minutes of the experiment were over. 
+
+In the second experiment with the tool, 9 out of 10 participants were able to fix all the errors detected by the tool within the 8 minutes of the experiment. The participant who was not able to do so had only one error left in their file at the end of the 8 minutes. They were from a computer science background and had rated their familiarity with programming 5 on the five-point scale. The time (in minutes) taken by each participant is shown in Figure [add figure]. We note that, on average, participants without computer science backgrounds took 4.9 minutes, while those with computer science background took 5.7 minutes. We noticed that some participants with computer science background first tried to solve the problem themselves without the help of the tool, while most participants with no background in computer science focused on understanding the error messages of the tool and fixing the input value which they pointed out. The user who could not fix all the errors in the file in the assigned 8 minutes had spent some time trying to solve the problem by examining the code and matching it to the input data. This is a possible explanation for why participants with no background in computer science took less time on average to solve the problem with the tool. 
+
+\begin{figure} [H]
+	\includegraphics[width=\linewidth]{frust1} 
+	\includegraphics[width=\linewidth]{frust2} 
+	\caption{Measure of frustration}
+	\label{frustration}%
+\end{figure}
+
+The plots in Figure \ref{frustration} show that 6 users reported some level of frustration trying to fix errors in the data without the help of our tool, while only one user reported some level of frustration trying to achieve the same goal with the help of the tool. This, as we expected, shows that our tool created an improvement in the overall debugging experience of the users. An interesting result was that the number of Computer Science participants who felt frustrated trying to debug the data without the help of our tool was less than then the number of non-Computer Science users who felt frustrated performing the same task. A possible explanation for this result is that, as we noticed during the experiments, participants with experience in Computer Science had the expectation that they would be able to examine the code and fix the errors in the data somewhat easily because of their familiarity with programming, unlike non-Computer Science participants who had already expected the task to be challenging.
+
+When asked to state what they liked about the tool, users mentioned that it gave clear and detailed error messages that appeared in the data file and, therefore, they did not have to examine the code to find out the errors in the data. Some of the suggestions that users made to improve the tool was to make it faster and to print the error messages in the console and to highlight which line of code was the source of the error instead of just highlighting the error in the data file. 
+
+From the previous results, we conclude that a tool that guides users through data debugging is a useful tool and helps the users achieve their goals in less time and with less frustration. Some future improvements would be to enhance the performance such that the tool is faster, to introduce an error console in which the users can read the errors all at once without having to scan the data file looking for marked errors and to mark the code lines at which the errors occur instead of just marking the input data lines.  
 
 \begin{lstlisting} [language=Python, label=grades, caption=Code for Program `Grades']
 	subject: str = input()
@@ -944,6 +980,32 @@ for i in range(items):
 \end{lstlisting}
 
 \section{Evaluation of the Static Analysis} \label{analysis-evaluation}
+
+We evaluated our static analysis using 25 code examples, including slightly varied versions of Listings \ref{grades}, \ref{cars}, \ref{convert}, \ref{dna} which were used in our user study, and an example which we took from \cite{madelin}. The other examples we constructed ourselves in order to test various aspects of our analysis. 
+
+\subsection{Methodology}
+Our aim was to measure both the soundness and the precision of our analysis. For every code example, we examined the assumptions inferred by the analysis on each of its inputs and compared it to assumptions that we had computed manually to see whether it was sound and precise or not. The results are shown in table \ref{table}. The column ``Inputs'' counts the number of input values read in each program. We consider all of the assumptions associated with a single input value to be one assumption. If one domain computes an unsound assumption on an input value, then the whole assumption on this input value is considered unsound and not counted in the ``Sound'' column in our table and, similarly, if one domain computes an imprecise assumption on an input value, then the whole assumption is considered imprecise and counted in the ``Imprecise'' column. 
+
+We added the column ``Source of imprecision'' to gain more insights on how to tune the precision of our analysis and what improvements could be introduced in future work to gain higher precision. The first three sub-columns ``OCT'', ``CHAR'' and ``TYP'' count the number of inputs for which the assumption of the Octagon, Character Inclusion and Type domains were imprecise, respectively. The fourth sub-column ``Design'' counts imprecision resulting from limitations in the design of our analysis such as loss of precision due to joins. One imprecise assumption can be counted in more than one of these sub-columns if it has more than one cause. If, for example, both the Type and Octagon domains computed imprecise assumptions on the same input value, then we add one in both the ``OCT'' and ``TYP'' columns.  
+
+\subsection{Results}
+Table \ref{table} shows that we counted 73 inputs in all of our examples and that the analysis was sound for all of them, meaning that it did not compute any assumptions that would cause a correct input value to be flagged as an error. There were 29 imprecisions, meaning that for 29 inputs, we could find at least one input value that satisfies the assumptions inferred by our analysis that would still cause the program to crash. 
+
+The Character Inclusion Domain was the least precise domain with 16 imprecise assumptions. We noticed that in 13 of these cases, the loss of precision was due to its inability to distinguish the order or frequency of characters  in a string. For example, in our running example in Listing \ref{running}, it infers the assumption $ (\phi, \lbrace 'A', 'T', 'C', 'G' \rbrace )$ for the variable $ base $. A string such as ``AATC'' would satisfy this assumption, but it would still cause the program to raise an error on runtime. The remaining instances of imprecision were caused by the fact that in our implementation of boolean functions such as \verb|isalpha()|, we infer an assumption such as $ (\phi, \lbrace 'a', 'b', 'c', ...\rbrace ) $ with a ``certainly'' set that is empty, which causes the empty string to satisfy this assumption, while in fact \verb|isalpha("")| evaluates to false. 
+
+The Octagon Domain was imprecise in 7 cases. In 2 cases, the imprecision was due to its inability to detect inequality constraints such as $ n \neq 0 $. There were three cases in which the constraints were non-octagonal such as $ a + b < c $. The remaining two cases information was lost by joining two branches. The Type Domain was imprecise in 4 cases, all of which were because of joining two branches. 
+
+There were 4 imprecisions due to the limitations in the design of our analysis and the fact that if we join two branches and one of them has more input values than the other, we lose some information on the branch with more inputs. We discuss the possibility to overcome this limitation when we discuss future work in section \ref{conclusion}. 
+
+It is evident from our results that, although the our analysis has some limitations, a significant improvement in precision can be achieved either by using more domains in our analysis or by replacing the domains we have used with more powerful domains. For example, if we add the Sign Domain to our analysis, we can capture the 2 assumptions of the form $ n \neq 0 $ which the Octagon Domain misses. The Polyhedra Domain can also capture the 3 constraints of the form $ a + b < c $ which the Octagon Domain cannot capture. If we replace the Character Inclusion Domain with the String Set Domain described in \ref{character}, which keeps track of sets of strings instead of just characters in a string, then for example in Listing \ref{running}, we can say that $ base $ can be only one of exactly four possible values `A', `T', `C' or `G', which achieves a significant increase in precision. 
+
+
+\begin{table}  \caption{Results of Static Analysis Evaluation} \label{table}
+	\let\center\empty
+	\let\endcenter\relax
+	\centering
+	\input{table}
+\end{table}
 
 \chapter{Conclusion and Future Work} \label{conclusion}
 

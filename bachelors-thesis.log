@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.7.18)  24 AUG 2018 11:33
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.7.18)  26 AUG 2018 04:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -664,34 +664,69 @@ File: tikzlibraryplotmarks.code.tex 2008/01/09 v3.0.1a (rcs-revision 1.1)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryplotmarks.co
 de.tex
 File: pgflibraryplotmarks.code.tex 2015/08/03 v3.0.1a (rcs-revision 1.14)
-))) (./bachelors-thesis.aux)
+))) (/usr/share/texlive/texmf-dist/tex/latex/subfig/subfig.sty
+Package: subfig 2005/06/28 ver: 1.3 subfig package
+
+(/usr/share/texlive/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2016/02/21 v3.3-144 Customizing captions (AR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2016/05/22 v1.7-166 caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 67.
+\captionmargin=\dimen191
+\captionmargin@=\dimen192
+\captionwidth=\dimen193
+\caption@tempdima=\dimen194
+\caption@indent=\dimen195
+\caption@parindent=\dimen196
+\caption@hangindent=\dimen197
+)
+\c@ContinuedFloat=\count149
+Package caption Info: float package is loaded.
+Package caption Info: listings package is loaded.
+)
+\c@KVtest=\count150
+\sf@farskip=\skip62
+\sf@captopadj=\dimen198
+\sf@capskip=\skip63
+\sf@nearskip=\skip64
+\c@subfigure=\count151
+\c@subfigure@save=\count152
+\c@lofdepth=\count153
+\c@subtable=\count154
+\c@subtable@save=\count155
+\c@lotdepth=\count156
+\sf@top=\skip65
+\sf@bottom=\skip66
+)
+(./bachelors-thesis.aux)
 \openout1 = `bachelors-thesis.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 45.
-LaTeX Font Info:    ... okay on input line 45.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 45.
-LaTeX Font Info:    ... okay on input line 45.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 45.
-LaTeX Font Info:    ... okay on input line 45.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 45.
-LaTeX Font Info:    ... okay on input line 45.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 45.
-LaTeX Font Info:    ... okay on input line 45.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 45.
-LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 47.
+LaTeX Font Info:    ... okay on input line 47.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 47.
+LaTeX Font Info:    ... okay on input line 47.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 47.
+LaTeX Font Info:    ... okay on input line 47.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 47.
+LaTeX Font Info:    ... okay on input line 47.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 47.
+LaTeX Font Info:    ... okay on input line 47.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 47.
+LaTeX Font Info:    ... okay on input line 47.
  ABD: EveryShipout initializing macros
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count149
-\scratchdimen=\dimen191
+\scratchcounter=\count157
+\scratchdimen=\dimen199
 \scratchbox=\box47
-\nofMPsegments=\count150
-\nofMParguments=\count151
+\nofMPsegments=\count158
+\nofMParguments=\count159
 \everyMPshowfont=\toks44
-\MPscratchCnt=\count152
-\MPscratchDim=\dimen192
-\MPnumerator=\count153
-\makeMPintoPDFobject=\count154
+\MPscratchCnt=\count160
+\MPscratchDim=\dimen256
+\MPnumerator=\count161
+\makeMPintoPDFobject=\count162
 \everyMPtoPDFconversion=\toks45
 ) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
@@ -739,7 +774,7 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-\c@lstlisting=\count155
+\c@lstlisting=\count163
 \AtBeginShipoutBox=\box48
 
 (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/pdflscape.sty
@@ -757,18 +792,21 @@ Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 Package pgfplots Warning: running in backwards compatibility mode (unsuitable t
 ick labels; missing features). Consider writing \pgfplotsset{compat=1.15} into 
 your preamble.
- on input line 45.
+ on input line 47.
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 47.
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: subfig package v1.3 is loaded.
+Package caption Info: End \AtBeginDocument code.
+LaTeX Font Info:    Try loading font information for U+msa on input line 49.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 47.
+LaTeX Font Info:    Try loading font information for U+msb on input line 49.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Try loading font information for U+stmry on input line 47.
+LaTeX Font Info:    Try loading font information for U+stmry on input line 49.
 
 (/usr/share/texlive/texmf-dist/tex/latex/stmaryrd/Ustmry.fd) [1
 
@@ -781,32 +819,32 @@ File: lstlang1.sty 2015/06/04 1.6 listings language file
 ) [2]
 [3] [4]
 Chapter 2.
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 115.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 126.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 115.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 126.
  [5
 
-] [6]
-Underfull \hbox (badness 10000) in paragraph at lines 178--179
-
- []
-
-[7]
-Underfull \hbox (badness 10000) in paragraph at lines 183--184
+] [6] [7]
+Underfull \hbox (badness 10000) in paragraph at lines 189--190
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 185--186
+Underfull \hbox (badness 10000) in paragraph at lines 194--195
 
  []
 
 
-Overfull \hbox (22.37947pt too wide) in paragraph at lines 193--194
+Underfull \hbox (badness 10000) in paragraph at lines 196--197
+
+ []
+
+
+Overfull \hbox (22.37947pt too wide) in paragraph at lines 204--205
 []\T1/cmr/m/n/10 A par-tial or-der $\OMS/cmsy/m/n/10 v[]$ \T1/cmr/m/n/10 such t
 hat $\OT1/cmr/m/n/10 ((\OML/cmm/m/it/10 S[]\OT1/cmr/m/n/10 )[]\OML/cmm/m/it/10 
 ; Q[]\OT1/cmr/m/n/10 ) \OMS/cmsy/m/n/10 v[] \OT1/cmr/m/n/10 ((\OML/cmm/m/it/10 
@@ -814,8 +852,8 @@ S[]\OT1/cmr/m/n/10 )[]\OML/cmm/m/it/10 ; Q[]\OT1/cmr/m/n/10 ) \OMS/cmsy/m/n/10
 ([]) []\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 S[] \OMS/cmsy/m/n/10 v[]
  []
 
-
-Overfull \hbox (3.71542pt too wide) in paragraph at lines 197--198
+[8]
+Overfull \hbox (3.71542pt too wide) in paragraph at lines 209--210
 []\T1/cmr/m/n/10 A meet op-er-a-tor $\OMS/cmsy/m/n/10 u[]$ \T1/cmr/m/n/10 such 
 that $\OT1/cmr/m/n/10 ((\OML/cmm/m/it/10 S[]\OT1/cmr/m/n/10 )[]\OML/cmm/m/it/10
  ; Q[]\OT1/cmr/m/n/10 ) \OMS/cmsy/m/n/10 u[] \OT1/cmr/m/n/10 ((\OML/cmm/m/it/10
@@ -824,7 +862,7 @@ it/10 S[] \OMS/cmsy/m/n/10 u[]
  []
 
 
-Overfull \hbox (2.09811pt too wide) in paragraph at lines 199--200
+Overfull \hbox (2.09811pt too wide) in paragraph at lines 211--212
 []\T1/cmr/m/n/10 A fil-ter op-er-a-tor $\U/stmry/m/n/10 J\OML/cmm/m/it/10 bexpr
 \U/stmry/m/n/10 K\OT1/cmr/m/n/10 ((\OML/cmm/m/it/10 S[]\OT1/cmr/m/n/10 )[]\OML/
 cmm/m/it/10 ; Q\OT1/cmr/m/n/10 ) = ((\U/stmry/m/n/10 J\OML/cmm/m/it/10 bexpr\U/
@@ -834,8 +872,8 @@ stmry/m/n/10 K\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 S[]\OT1/cmr/m/n/10 ))[]\OML/cmm
 
  []
 
-[8] [9]
-Overfull \hbox (18.40913pt too wide) in paragraph at lines 242--243
+[9] [10]
+Overfull \hbox (18.40913pt too wide) in paragraph at lines 254--255
 []\T1/cmr/m/n/10 For $\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 l[]; \OT1/cmr/m/n/10 (\
 OML/cmm/m/it/10 c[]\OT1/cmr/m/n/10 )[])\OML/cmm/m/it/10 ; \OT1/cmr/m/n/10 (\OML
 /cmm/m/it/10 l[]; \OT1/cmr/m/n/10 (\OML/cmm/m/it/10 c[]\OT1/cmr/m/n/10 )[]) \OM
@@ -846,14 +884,14 @@ m/n/10 t
  []
 
 
-Overfull \hbox (20.88483pt too wide) in paragraph at lines 242--243
+Overfull \hbox (20.88483pt too wide) in paragraph at lines 254--255
 \T1/cmr/m/n/10 of the join op-er-a-tor of the in-di-vid-ual do-mains as fol-low
 s: $\OML/cmm/m/it/10 ^^M[]\OT1/cmr/m/n/10 ((\OML/cmm/m/it/10 l[]; \OT1/cmr/m/n/
 10 (\OML/cmm/m/it/10 c[]\OT1/cmr/m/n/10 )[])) \OMS/cmsy/m/n/10 [
  []
 
-[10]
-Overfull \hbox (0.41002pt too wide) in paragraph at lines 261--262
+[11]
+Overfull \hbox (0.41002pt too wide) in paragraph at lines 273--274
 \OMS/cmsy/m/n/10 I[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 m \OMS/cmsy/m/n/10 ^^B \O
 T1/cmr/m/n/10 (\OML/cmm/m/it/10 a[]\OT1/cmr/m/n/10 )[]\OML/cmm/m/it/10 ; b\OT1/
 cmr/m/n/10 ) = \OML/cmm/m/it/10 m \OMS/cmsy/m/n/10 ^^B \OT1/cmr/m/n/10 (\OML/cm
@@ -861,8 +899,8 @@ m/m/it/10 b \OMS/cmsy/m/n/10 ^^H \OT1/cmr/m/n/10 (\OML/cmm/m/it/10 a[]\OT1/cmr/
 m/n/10 )[])$\T1/cmr/m/n/10 . The new con-straint is prepended
  []
 
-[11]
-Overfull \hbox (19.11903pt too wide) in paragraph at lines 271--272
+
+Overfull \hbox (19.11903pt too wide) in paragraph at lines 283--284
 []\T1/cmr/m/n/10 The stack con-cretiza-tion func-tion $\OML/cmm/m/it/10 ^^M[]$ 
 \T1/cmr/m/n/10 is de-fined as fol-lows: $\OML/cmm/m/it/10 ^^M[]\OT1/cmr/m/n/10 
 (\OML/cmm/m/it/10 q[]\OT1/cmr/m/n/10 ) \OMS/cmsy/m/n/10 j \OML/cmm/m/it/10 ^^M[
@@ -871,105 +909,105 @@ Overfull \hbox (19.11903pt too wide) in paragraph at lines 271--272
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 277--278
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 279--282
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 279--282
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 291--292
+Underfull \hbox (badness 10000) in paragraph at lines 289--290
 
  []
 
 [12]
-Underfull \hbox (badness 10000) in paragraph at lines 317--318
+Underfull \hbox (badness 10000) in paragraph at lines 291--294
 
  []
 
 
-Overfull \hbox (51.3951pt too wide) in paragraph at lines 319--328
+Underfull \hbox (badness 10000) in paragraph at lines 291--294
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 303--304
+
+ []
+
+[13]
+Underfull \hbox (badness 10000) in paragraph at lines 329--330
+
+ []
+
+
+Overfull \hbox (51.3951pt too wide) in paragraph at lines 331--340
 | $\OML/cmm/m/it/10 t[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 t[]$ \T1/cmr/m/n/10 
 = $[]$ 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 319--328
+Underfull \hbox (badness 10000) in paragraph at lines 331--340
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 319--328
+Underfull \hbox (badness 10000) in paragraph at lines 331--340
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 329--336
+Underfull \hbox (badness 10000) in paragraph at lines 341--348
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 329--336
+Underfull \hbox (badness 10000) in paragraph at lines 341--348
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 337--345
+Underfull \hbox (badness 10000) in paragraph at lines 349--357
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 337--345
+Underfull \hbox (badness 10000) in paragraph at lines 349--357
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 346--352
+Underfull \hbox (badness 10000) in paragraph at lines 358--364
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 346--352
+Underfull \hbox (badness 10000) in paragraph at lines 358--364
 
  []
 
-[13]
-Overfull \hbox (13.6048pt too wide) in paragraph at lines 364--365
+
+Overfull \hbox (13.6048pt too wide) in paragraph at lines 376--377
 []\T1/cmr/m/n/10 Finally, the con-cretiza-tion func-tion of the Type Do-main $\
 OML/cmm/m/it/10 ^^M[] \OT1/cmr/m/n/10 : [] [][]\OMS/cmsy/m/n/10 !
  []
 
-
-Overfull \hbox (3.8228pt too wide) in paragraph at lines 372--373
+[14]
+Overfull \hbox (3.8228pt too wide) in paragraph at lines 384--385
 []\T1/cmr/m/n/10 A back-ward as-sign-ment op-er-a-tor $\U/stmry/m/n/10 J\OML/cm
 m/m/it/10 X \OT1/cmr/m/n/10 := \OML/cmm/m/it/10 aexpr\U/stmry/m/n/10 K\OT1/cmr/
 m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 ) = [][](\OML/cmm/m/it/10 t; X; aexpr
 \OT1/cmr/m/n/10 )$
  []
 
-[14] [15] [16]
-Overfull \hbox (27.85378pt too wide) in paragraph at lines 482--483
+[15] [16] [17]
+Overfull \hbox (27.85378pt too wide) in paragraph at lines 494--495
 \T1/cmr/m/n/10 stric-tion of hav-ing $\OML/cmm/m/it/10 a$ \T1/cmr/m/n/10 in the
  cer-tainly in-cluded set makes the val-ues $\OMS/cmsy/m/n/10 f\OML/cmm/m/it/10
  "; b; bb; bbb; :::\OMS/cmsy/m/n/10 g$
  []
 
-[17]
-Overfull \hbox (2.80544pt too wide) in paragraph at lines 506--507
+[18]
+Overfull \hbox (2.80544pt too wide) in paragraph at lines 518--519
 []\T1/cmr/m/n/10 We de-fine an in-ter-me-di-ate con-cretiza-tion func-tion $\OM
 L/cmm/m/it/10 ^^M[] \OT1/cmr/m/n/10 : [] [][]\OMS/cmsy/m/n/10 !
  []
 
-[18]
-Overfull \hbox (11.58907pt too wide) in paragraph at lines 516--517
+
+Overfull \hbox (11.58907pt too wide) in paragraph at lines 528--529
 []\T1/cmr/m/n/10 A back-ward as-sign-ment op-er-a-tor $\U/stmry/m/n/10 J\OML/cm
 m/m/it/10 X \OT1/cmr/m/n/10 := \OML/cmm/m/it/10 aexpr\U/stmry/m/n/10 K\OT1/cmr/
 m/n/10 (\OML/cmm/m/it/10 c\OT1/cmr/m/n/10 ) = [][](\OML/cmm/m/it/10 c; X; aexpr
@@ -978,7 +1016,7 @@ m/n/10 (\OML/cmm/m/it/10 c\OT1/cmr/m/n/10 ) = [][](\OML/cmm/m/it/10 c; X; aexpr
 
 [19] [20] [21]
 Chapter 3.
-LaTeX Font Info:    Try loading font information for T1+cmtt on input line 622.
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 634.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2014/09/29 v2.5h Standard LaTeX font definitions
@@ -988,213 +1026,243 @@ File: t1cmtt.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 <tool-labeled.png, id=108, 968.61874pt x 525.965pt>
 File: tool-labeled.png Graphic file (type png)
 <use tool-labeled.png>
-Package pdftex.def Info: tool-labeled.png  used on input line 634. on input lin
-e 634.
-Package pdftex.def Info: Requested size: 345.0pt x 187.34085pt on input line 63
-4.
- [23] [24 <./tool-labeled.png>]
+Package pdftex.def Info: tool-labeled.png  used on input line 646. on input lin
+e 646.
+Package pdftex.def Info: Requested size: 345.0pt x 187.34085pt on input line 64
+6.
+ [23 <./tool-labeled.png>] [24]
 Chapter 4.
 
-Underfull \hbox (badness 10000) in paragraph at lines 655--656
+Underfull \hbox (badness 10000) in paragraph at lines 667--668
 
  []
 
 [25
 
-] [26] [27] [28] [29]
+] [26]
+<rate.png, id=124, 1204.5pt x 803.0pt>
+File: rate.png Graphic file (type png)
+<use rate.png>
+Package pdftex.def Info: rate.png  used on input line 687. on input line 687.
+Package pdftex.def Info: Requested size: 345.0pt x 229.99689pt on input line 68
+7.
+ [27 <./rate.png>]
+<frust1.png, id=129, 1204.5pt x 803.0pt>
+File: frust1.png Graphic file (type png)
+<use frust1.png>
+Package pdftex.def Info: frust1.png  used on input line 698. on input line 698.
 
-Package Listings Warning: Text dropped after begin of listing on input line 806
+Package pdftex.def Info: Requested size: 345.0pt x 229.99689pt on input line 69
+8.
+<frust2.png, id=130, 1204.5pt x 803.0pt>
+File: frust2.png Graphic file (type png)
+<use frust2.png>
+Package pdftex.def Info: frust2.png  used on input line 699. on input line 699.
+
+Package pdftex.def Info: Requested size: 345.0pt x 229.99689pt on input line 69
+9.
+ [28] [29 <./frust1.png> <./frust2.png>] [30]
+[31] [32]
+
+Package Listings Warning: Text dropped after begin of listing on input line 842
 .
 
-[30] [31] [32] [33]
+[33] [34] [35] [36] [37] (./table.tex)
+Overfull \hbox (36.32214pt too wide) in paragraph at lines 1--1008
+ [][] 
+ []
+
+[38]
 Chapter 5.
-[34
+[39
 
 ]
 Appendix A.
-<form.pdf, id=149, pagebox=cropbox, 597.23125pt x 845.1575pt>
+<form.pdf, id=171, pagebox=cropbox, 597.23125pt x 845.1575pt>
 File: form.pdf Graphic file (type pdf)
 <use form.pdf>
-Package pdftex.def Info: form.pdf  used on input line 954. on input line 954.
+Package pdftex.def Info: form.pdf  used on input line 1016. on input line 1016.
+
 Package pdftex.def Info: Requested size: 597.22978pt x 845.15544pt on input lin
-e 954.
+e 1016.
 File: form.pdf Graphic file (type pdf)
 <use form.pdf>
-Package pdftex.def Info: form.pdf  used on input line 954. on input line 954.
+Package pdftex.def Info: form.pdf  used on input line 1016. on input line 1016.
+
 Package pdftex.def Info: Requested size: 597.22978pt x 845.15544pt on input lin
-e 954.
-<form.pdf, id=152, page=1, pagebox=cropbox, 597.23125pt x 845.1575pt>
+e 1016.
+<form.pdf, id=174, page=1, pagebox=cropbox, 597.23125pt x 845.1575pt>
 File: form.pdf Graphic file (type pdf)
 <use form.pdf, page 1>
-Package pdftex.def Info: form.pdf , page1 used on input line 954. on input line
- 954.
+Package pdftex.def Info: form.pdf , page1 used on input line 1016. on input lin
+e 1016.
 Package pdftex.def Info: Requested size: 597.22978pt x 845.15544pt on input lin
-e 954.
+e 1016.
 File: form.pdf Graphic file (type pdf)
 <use form.pdf, page 1>
-Package pdftex.def Info: form.pdf , page1 used on input line 954. on input line
- 954.
+Package pdftex.def Info: form.pdf , page1 used on input line 1016. on input lin
+e 1016.
 Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
-e 954.
-[35
+e 1016.
+[40
 
 ]
 File: form.pdf Graphic file (type pdf)
 <use form.pdf, page 1>
-Package pdftex.def Info: form.pdf , page1 used on input line 954. on input line
- 954.
+Package pdftex.def Info: form.pdf , page1 used on input line 1016. on input lin
+e 1016.
 Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
-e 954.
+e 1016.
 File: form.pdf Graphic file (type pdf)
 <use form.pdf, page 1>
-Package pdftex.def Info: form.pdf , page1 used on input line 954. on input line
- 954.
+Package pdftex.def Info: form.pdf , page1 used on input line 1016. on input lin
+e 1016.
 Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
-e 954.
+e 1016.
 File: form.pdf Graphic file (type pdf)
 <use form.pdf, page 1>
-Package pdftex.def Info: form.pdf , page1 used on input line 954. on input line
- 954.
+Package pdftex.def Info: form.pdf , page1 used on input line 1016. on input lin
+e 1016.
 Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
-e 954.
- [36 <./form.pdf
-
-pdfTeX warning: /usr/bin/pdflatex (file ./form.pdf): PDF inclusion: invalid oth
-er resource which is no dict (key 'ProcSets', type <array>); ignored.
->]
-<form.pdf, id=183, page=2, pagebox=cropbox, 597.23125pt x 845.1575pt>
-File: form.pdf Graphic file (type pdf)
-<use form.pdf, page 2>
-Package pdftex.def Info: form.pdf , page2 used on input line 954. on input line
- 954.
-Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
-e 954.
-File: form.pdf Graphic file (type pdf)
-<use form.pdf, page 2>
-Package pdftex.def Info: form.pdf , page2 used on input line 954. on input line
- 954.
-Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
-e 954.
-File: form.pdf Graphic file (type pdf)
-<use form.pdf, page 2>
-Package pdftex.def Info: form.pdf , page2 used on input line 954. on input line
- 954.
-Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
-e 954.
- [37 <./form.pdf
-
-pdfTeX warning: /usr/bin/pdflatex (file ./form.pdf): PDF inclusion: invalid oth
-er resource which is no dict (key 'ProcSets', type <array>); ignored.
->]
-<form.pdf, id=189, page=3, pagebox=cropbox, 597.23125pt x 845.1575pt>
-File: form.pdf Graphic file (type pdf)
-<use form.pdf, page 3>
-Package pdftex.def Info: form.pdf , page3 used on input line 954. on input line
- 954.
-Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
-e 954.
-File: form.pdf Graphic file (type pdf)
-<use form.pdf, page 3>
-Package pdftex.def Info: form.pdf , page3 used on input line 954. on input line
- 954.
-Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
-e 954.
-File: form.pdf Graphic file (type pdf)
-<use form.pdf, page 3>
-Package pdftex.def Info: form.pdf , page3 used on input line 954. on input line
- 954.
-Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
-e 954.
- [38 <./form.pdf
-
-pdfTeX warning: /usr/bin/pdflatex (file ./form.pdf): PDF inclusion: invalid oth
-er resource which is no dict (key 'ProcSets', type <array>); ignored.
->]
-<form.pdf, id=193, page=4, pagebox=cropbox, 597.23125pt x 845.1575pt>
-File: form.pdf Graphic file (type pdf)
-<use form.pdf, page 4>
-Package pdftex.def Info: form.pdf , page4 used on input line 954. on input line
- 954.
-Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
-e 954.
-File: form.pdf Graphic file (type pdf)
-<use form.pdf, page 4>
-Package pdftex.def Info: form.pdf , page4 used on input line 954. on input line
- 954.
-Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
-e 954.
-File: form.pdf Graphic file (type pdf)
-<use form.pdf, page 4>
-Package pdftex.def Info: form.pdf , page4 used on input line 954. on input line
- 954.
-Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
-e 954.
- [39 <./form.pdf
-
-pdfTeX warning: /usr/bin/pdflatex (file ./form.pdf): PDF inclusion: invalid oth
-er resource which is no dict (key 'ProcSets', type <array>); ignored.
->]
-<form.pdf, id=202, page=5, pagebox=cropbox, 597.23125pt x 845.1575pt>
-File: form.pdf Graphic file (type pdf)
-<use form.pdf, page 5>
-Package pdftex.def Info: form.pdf , page5 used on input line 954. on input line
- 954.
-Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
-e 954.
-File: form.pdf Graphic file (type pdf)
-<use form.pdf, page 5>
-Package pdftex.def Info: form.pdf , page5 used on input line 954. on input line
- 954.
-Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
-e 954.
-File: form.pdf Graphic file (type pdf)
-<use form.pdf, page 5>
-Package pdftex.def Info: form.pdf , page5 used on input line 954. on input line
- 954.
-Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
-e 954.
- [40 <./form.pdf
-
-pdfTeX warning: /usr/bin/pdflatex (file ./form.pdf): PDF inclusion: invalid oth
-er resource which is no dict (key 'ProcSets', type <array>); ignored.
->]
-<form.pdf, id=207, page=6, pagebox=cropbox, 597.23125pt x 845.1575pt>
-File: form.pdf Graphic file (type pdf)
-<use form.pdf, page 6>
-Package pdftex.def Info: form.pdf , page6 used on input line 954. on input line
- 954.
-Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
-e 954.
-File: form.pdf Graphic file (type pdf)
-<use form.pdf, page 6>
-Package pdftex.def Info: form.pdf , page6 used on input line 954. on input line
- 954.
-Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
-e 954.
-File: form.pdf Graphic file (type pdf)
-<use form.pdf, page 6>
-Package pdftex.def Info: form.pdf , page6 used on input line 954. on input line
- 954.
-Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
-e 954.
+e 1016.
  [41 <./form.pdf
+
+pdfTeX warning: /usr/bin/pdflatex (file ./form.pdf): PDF inclusion: invalid oth
+er resource which is no dict (key 'ProcSets', type <array>); ignored.
+>]
+<form.pdf, id=206, page=2, pagebox=cropbox, 597.23125pt x 845.1575pt>
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 2>
+Package pdftex.def Info: form.pdf , page2 used on input line 1016. on input lin
+e 1016.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 1016.
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 2>
+Package pdftex.def Info: form.pdf , page2 used on input line 1016. on input lin
+e 1016.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 1016.
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 2>
+Package pdftex.def Info: form.pdf , page2 used on input line 1016. on input lin
+e 1016.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 1016.
+ [42 <./form.pdf
+
+pdfTeX warning: /usr/bin/pdflatex (file ./form.pdf): PDF inclusion: invalid oth
+er resource which is no dict (key 'ProcSets', type <array>); ignored.
+>]
+<form.pdf, id=212, page=3, pagebox=cropbox, 597.23125pt x 845.1575pt>
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 3>
+Package pdftex.def Info: form.pdf , page3 used on input line 1016. on input lin
+e 1016.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 1016.
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 3>
+Package pdftex.def Info: form.pdf , page3 used on input line 1016. on input lin
+e 1016.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 1016.
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 3>
+Package pdftex.def Info: form.pdf , page3 used on input line 1016. on input lin
+e 1016.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 1016.
+ [43 <./form.pdf
+
+pdfTeX warning: /usr/bin/pdflatex (file ./form.pdf): PDF inclusion: invalid oth
+er resource which is no dict (key 'ProcSets', type <array>); ignored.
+>]
+<form.pdf, id=216, page=4, pagebox=cropbox, 597.23125pt x 845.1575pt>
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 4>
+Package pdftex.def Info: form.pdf , page4 used on input line 1016. on input lin
+e 1016.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 1016.
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 4>
+Package pdftex.def Info: form.pdf , page4 used on input line 1016. on input lin
+e 1016.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 1016.
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 4>
+Package pdftex.def Info: form.pdf , page4 used on input line 1016. on input lin
+e 1016.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 1016.
+ [44 <./form.pdf
+
+pdfTeX warning: /usr/bin/pdflatex (file ./form.pdf): PDF inclusion: invalid oth
+er resource which is no dict (key 'ProcSets', type <array>); ignored.
+>]
+<form.pdf, id=225, page=5, pagebox=cropbox, 597.23125pt x 845.1575pt>
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 5>
+Package pdftex.def Info: form.pdf , page5 used on input line 1016. on input lin
+e 1016.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 1016.
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 5>
+Package pdftex.def Info: form.pdf , page5 used on input line 1016. on input lin
+e 1016.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 1016.
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 5>
+Package pdftex.def Info: form.pdf , page5 used on input line 1016. on input lin
+e 1016.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 1016.
+ [45 <./form.pdf
+
+pdfTeX warning: /usr/bin/pdflatex (file ./form.pdf): PDF inclusion: invalid oth
+er resource which is no dict (key 'ProcSets', type <array>); ignored.
+>]
+<form.pdf, id=230, page=6, pagebox=cropbox, 597.23125pt x 845.1575pt>
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 6>
+Package pdftex.def Info: form.pdf , page6 used on input line 1016. on input lin
+e 1016.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 1016.
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 6>
+Package pdftex.def Info: form.pdf , page6 used on input line 1016. on input lin
+e 1016.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 1016.
+File: form.pdf Graphic file (type pdf)
+<use form.pdf, page 6>
+Package pdftex.def Info: form.pdf , page6 used on input line 1016. on input lin
+e 1016.
+Package pdftex.def Info: Requested size: 561.86221pt x 795.10587pt on input lin
+e 1016.
+ [46 <./form.pdf
 
 pdfTeX warning: /usr/bin/pdflatex (file ./form.pdf): PDF inclusion: invalid oth
 er resource which is no dict (key 'ProcSets', type <array>); ignored.
 >] (./bachelors-thesis.bbl
 LaTeX Font Info:    Font shape `OMS/cmr/m/it' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 45.
-) [42
+) [47
 
 ] (./bachelors-thesis.aux) ) 
 Here is how much of TeX's memory you used:
- 26059 strings out of 492990
- 628716 string characters out of 6135005
- 938912 words of memory out of 5000000
- 29110 multiletter control sequences out of 15000+600000
+ 27266 strings out of 492990
+ 650347 string characters out of 6135005
+ 943912 words of memory out of 5000000
+ 30302 multiletter control sequences out of 15000+600000
  29641 words of font info for 75 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 62i,18n,96p,1402b,1538s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 62i,18n,96p,1376b,1536s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super
 -t1.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pf
 b></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></usr
@@ -1220,10 +1288,10 @@ fonts/type1/public/cm-super/sfsl1000.pfb></usr/share/texmf/fonts/type1/public/c
 m-super/sfti1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt1000.pfb
 ></usr/share/texmf/fonts/type1/public/cm-super/sfxc1000.pfb></usr/share/texlive
 /texmf-dist/fonts/type1/public/stmaryrd/stmary10.pfb>
-Output written on bachelors-thesis.pdf (44 pages, 1198025 bytes).
+Output written on bachelors-thesis.pdf (49 pages, 1308945 bytes).
 PDF statistics:
- 310 PDF objects out of 1000 (max. 8388607)
- 204 compressed objects within 3 object streams
+ 332 PDF objects out of 1000 (max. 8388607)
+ 215 compressed objects within 3 object streams
  0 named destinations out of 1000 (max. 500000)
- 63 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 78 words of extra memory for PDF output out of 10000 (max. 10000000)
 
