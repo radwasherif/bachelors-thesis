@@ -1,57 +1,453 @@
-\begin{thebibliography}{10}
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 2.8 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
 
-\bibitem{blei2017science}
-David~M Blei and Padhraic Smyth.
-\newblock Science and data science.
-\newblock {\em Proceedings of the National Academy of Sciences},
-  114(33):8689--8692, 2017.
 
-\bibitem{kaggle}
-Kaggle: The state of data science and machine learning, 2017.
+\refsection{0}
+  \sortlist[entry]{none/global/}
+    \entry{blei2017science}{article}{}
+      \name{author}{2}{}{%
+        {{hash=0acd0349006f4ee348ffe16e1fe1fe21}{%
+           family={Blei},
+           familyi={B\bibinitperiod},
+           given={David\bibnamedelima M},
+           giveni={D\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=4940852a16a84802eb98552d6deace24}{%
+           family={Smyth},
+           familyi={S\bibinitperiod},
+           given={Padhraic},
+           giveni={P\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {National Acad Sciences}%
+      }
+      \strng{namehash}{61789342af6258dd4966e32578f99a0c}
+      \strng{fullhash}{61789342af6258dd4966e32578f99a0c}
+      \strng{authornamehash}{61789342af6258dd4966e32578f99a0c}
+      \strng{authorfullhash}{61789342af6258dd4966e32578f99a0c}
+      \field{sortinit}{1}
+      \field{sortinithash}{27a2bc5dfb9ed0a0422134d636544b5d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Proceedings of the National Academy of Sciences}
+      \field{number}{33}
+      \field{title}{Science and data science}
+      \field{volume}{114}
+      \field{year}{2017}
+      \field{pages}{8689\bibrangedash 8692}
+      \range{pages}{4}
+    \endentry
+    \entry{kaggle}{online}{}
+      \field{sortinit}{2}
+      \field{sortinithash}{0aa614ace9f3a40ef5a67e7f7a184048}
+      \field{labeltitlesource}{title}
+      \field{title}{Kaggle: The State of Data Science and Machine Learning}
+      \field{year}{2017}
+      \verb{url}
+      \verb https://www.kaggle.com/surveys/2017
+      \endverb
+    \endentry
+    \entry{dirty-data}{article}{}
+      \name{author}{5}{}{%
+        {{hash=160cc3ad6861b29a6d5904be8edbf93e}{%
+           family={Kim},
+           familyi={K\bibinitperiod},
+           given={Won},
+           giveni={W\bibinitperiod}}}%
+        {{hash=5e999c56aadeaab4a2c2e466f3139d3d}{%
+           family={Choi},
+           familyi={C\bibinitperiod},
+           given={Byoung-Ju},
+           giveni={B\bibinithyphendelim J\bibinitperiod}}}%
+        {{hash=bd835b73d8e84beb1f97715389346319}{%
+           family={Hong},
+           familyi={H\bibinitperiod},
+           given={Eui-Kyeong},
+           giveni={E\bibinithyphendelim K\bibinitperiod}}}%
+        {{hash=1af95d566db141cb0a99cb141596b53e}{%
+           family={Kim},
+           familyi={K\bibinitperiod},
+           given={Soo-Kyung},
+           giveni={S\bibinithyphendelim K\bibinitperiod}}}%
+        {{hash=b085a81df58573d374b21f5c11971024}{%
+           family={Lee},
+           familyi={L\bibinitperiod},
+           given={Doheon},
+           giveni={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{dc5e17b354b8ea769f489806843269c6}
+      \strng{fullhash}{3c66b075685244a88e85d6551fa1b3d1}
+      \strng{authornamehash}{dc5e17b354b8ea769f489806843269c6}
+      \strng{authorfullhash}{3c66b075685244a88e85d6551fa1b3d1}
+      \field{sortinit}{3}
+      \field{sortinithash}{197da6d6c34c6b20ce45c4d4baace5a4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{1573-756X}
+      \field{journaltitle}{Data Mining and Knowledge Discovery}
+      \field{month}{1}
+      \field{number}{1}
+      \field{title}{A Taxonomy of Dirty Data}
+      \field{volume}{7}
+      \field{year}{2003}
+      \field{pages}{81\bibrangedash 99}
+      \range{pages}{19}
+      \verb{doi}
+      \verb 10.1023/A:1021564703268
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1023/A:1021564703268
+      \endverb
+    \endentry
+    \entry{cleaning}{article}{}
+      \name{author}{2}{}{%
+        {{hash=4a1858832b5b7276cc59b4b1e79e96d2}{%
+           family={Rahm},
+           familyi={R\bibinitperiod},
+           given={Erhard},
+           giveni={E\bibinitperiod}}}%
+        {{hash=c7226bb04f7d3bac581f808cb57e2b92}{%
+           family={Do},
+           familyi={D\bibinitperiod},
+           given={Hong\bibnamedelima Hai},
+           giveni={H\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+      }
+      \strng{namehash}{c88afe079a15ef9b44ac1c5e3478c34e}
+      \strng{fullhash}{c88afe079a15ef9b44ac1c5e3478c34e}
+      \strng{authornamehash}{c88afe079a15ef9b44ac1c5e3478c34e}
+      \strng{authorfullhash}{c88afe079a15ef9b44ac1c5e3478c34e}
+      \field{sortinit}{4}
+      \field{sortinithash}{d221becdd544034cf9082056cd6e6d2d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Data Eng. Bull.}
+      \field{number}{4}
+      \field{title}{Data cleaning: Problems and current approaches}
+      \field{volume}{23}
+      \field{year}{2000}
+      \field{pages}{3\bibrangedash 13}
+      \range{pages}{11}
+    \endentry
+    \entry{cousot}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=8e278ac48d46529580f34189ce35f505}{%
+           family={Cousot},
+           familyi={C\bibinitperiod},
+           given={Patrick},
+           giveni={P\bibinitperiod}}}%
+        {{hash=5b51b0ccb1532c740cef8c8045f0911f}{%
+           family={Cousot},
+           familyi={C\bibinitperiod},
+           given={Radhia},
+           giveni={R\bibinitperiod}}}%
+      }
+      \name{editor}{1}{}{%
+        {{hash=5aee9dbd2a188839105073571bee1b1f}{%
+           family={editor},
+           familyi={e\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {ACM}%
+      }
+      \strng{namehash}{8aded87411c28c264da8bc9283b227f5}
+      \strng{fullhash}{8aded87411c28c264da8bc9283b227f5}
+      \strng{authornamehash}{8aded87411c28c264da8bc9283b227f5}
+      \strng{authorfullhash}{8aded87411c28c264da8bc9283b227f5}
+      \strng{editornamehash}{5aee9dbd2a188839105073571bee1b1f}
+      \strng{editorfullhash}{5aee9dbd2a188839105073571bee1b1f}
+      \field{sortinit}{5}
+      \field{sortinithash}{c9df3c9fb8f555dd9201cedc5e343021}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the 4th ACM SIGACT-SIGPLAN symposium on Principles of programming languages}
+      \field{title}{Abstract interpretation: a unified lattice model for static analysis of programs by construction or approximation of fixpoints}
+      \field{year}{1977}
+      \field{pages}{238\bibrangedash 252}
+      \range{pages}{15}
+    \endentry
+    \entry{madelin}{thesis}{}
+      \name{author}{1}{}{%
+        {{hash=2025c0901e0f4e92add2a9c4102f319d}{%
+           family={Schumacher},
+           familyi={S\bibinitperiod},
+           given={Madelin},
+           giveni={M\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {ETH Zurich}%
+      }
+      \strng{namehash}{2025c0901e0f4e92add2a9c4102f319d}
+      \strng{fullhash}{2025c0901e0f4e92add2a9c4102f319d}
+      \strng{authornamehash}{2025c0901e0f4e92add2a9c4102f319d}
+      \strng{authorfullhash}{2025c0901e0f4e92add2a9c4102f319d}
+      \field{sortinit}{6}
+      \field{sortinithash}{02bbed3ed82f61ae046619460488516d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Automated Generation of Data Quality Checks}
+      \field{type}{mathesis}
+      \field{year}{2018}
+    \endentry
+    \entry{octagon}{article}{}
+      \name{author}{1}{}{%
+        {{hash=f5a65e353c1f698c5b75db2a0914d504}{%
+           family={Min\'{e}},
+           familyi={M\bibinitperiod},
+           given={Antoine},
+           giveni={A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{f5a65e353c1f698c5b75db2a0914d504}
+      \strng{fullhash}{f5a65e353c1f698c5b75db2a0914d504}
+      \strng{authornamehash}{f5a65e353c1f698c5b75db2a0914d504}
+      \strng{authorfullhash}{f5a65e353c1f698c5b75db2a0914d504}
+      \field{sortinit}{9}
+      \field{sortinithash}{2999ebab86052e6d71b434385f8b4ed2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Higher-order and symbolic computation}
+      \field{number}{1}
+      \field{title}{The octagon abstract domain}
+      \field{volume}{19}
+      \field{year}{2006}
+      \field{pages}{31\bibrangedash 100}
+      \range{pages}{70}
+    \endentry
+    \entry{character}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=0c4c757c4c7a2316d68a83bf7de6235b}{%
+           family={Costantini},
+           familyi={C\bibinitperiod},
+           given={Giulia},
+           giveni={G\bibinitperiod}}}%
+        {{hash=04abe0009fedd8e939eb61a687e57d5b}{%
+           family={Ferrara},
+           familyi={F\bibinitperiod},
+           given={Pietro},
+           giveni={P\bibinitperiod}}}%
+        {{hash=e57bd7ce3f16e31c83246778ded14abb}{%
+           family={Cortesi},
+           familyi={C\bibinitperiod},
+           given={Agostino},
+           giveni={A\bibinitperiod}}}%
+      }
+      \name{editor}{2}{}{%
+        {{hash=664bdebd55d63d9fc806e1f525bcd4f8}{%
+           family={Qin},
+           familyi={Q\bibinitperiod},
+           given={Shengchao},
+           giveni={S\bibinitperiod}}}%
+        {{hash=a56a8f95811e5bceac56df83e3fe6f79}{%
+           family={Qiu},
+           familyi={Q\bibinitperiod},
+           given={Zongyan},
+           giveni={Z\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Berlin, Heidelberg}%
+      }
+      \list{publisher}{1}{%
+        {Springer Berlin Heidelberg}%
+      }
+      \strng{namehash}{104da8cb8610c4cfb8aa499900f553e2}
+      \strng{fullhash}{104da8cb8610c4cfb8aa499900f553e2}
+      \strng{authornamehash}{104da8cb8610c4cfb8aa499900f553e2}
+      \strng{authorfullhash}{104da8cb8610c4cfb8aa499900f553e2}
+      \strng{editornamehash}{6841b292e448e1770ccbf7943a0c8c79}
+      \strng{editorfullhash}{6841b292e448e1770ccbf7943a0c8c79}
+      \field{sortinit}{1}
+      \field{sortinithash}{27a2bc5dfb9ed0a0422134d636544b5d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{In this paper we propose a unifying approach for the static analysis of string values based on abstract interpretation, and we present several abstract domains that track different types of information. In this way, the analysis can be tuned at different levels of precision and efficiency, and it can address specific properties.}
+      \field{booktitle}{Formal Methods and Software Engineering}
+      \field{isbn}{978-3-642-24559-6}
+      \field{title}{Static Analysis of String Values}
+      \field{year}{2011}
+      \field{pages}{505\bibrangedash 521}
+      \range{pages}{17}
+    \endentry
+    \entry{tutorial}{article}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{1}{}{%
+        {{hash=f5a65e353c1f698c5b75db2a0914d504}{%
+           family={Min\'{e}},
+           familyi={M\bibinitperiod},
+           given={Antoine},
+           giveni={A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Now Publishers, Inc.}%
+      }
+      \strng{namehash}{53aa0591d2e7920f9ff774ec8926cf19}
+      \strng{fullhash}{53aa0591d2e7920f9ff774ec8926cf19}
+      \strng{authornamehash}{53aa0591d2e7920f9ff774ec8926cf19}
+      \strng{authorfullhash}{53aa0591d2e7920f9ff774ec8926cf19}
+      \field{sortinit}{1}
+      \field{sortinithash}{27a2bc5dfb9ed0a0422134d636544b5d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Foundations and Trends{\textregistered} in Programming Languages}
+      \field{number}{3-4}
+      \field{title}{Tutorial on Static Inference of Numeric Invariants by Abstract Interpretation}
+      \field{volume}{4}
+      \field{year}{2017}
+      \field{pages}{120\bibrangedash 372}
+      \range{pages}{253}
+    \endentry
+    \entry{mostafa}{article}{}
+      \name{author}{4}{}{%
+        {{hash=3b1499a024daef4e9482de8489a63b71}{%
+           family={Hassan},
+           familyi={H\bibinitperiod},
+           given={Mostafa},
+           giveni={M\bibinitperiod}}}%
+        {{hash=6bce83f5d3329685daf03ee6a00d928b}{%
+           family={Urban},
+           familyi={U\bibinitperiod},
+           given={Caterina},
+           giveni={C\bibinitperiod}}}%
+        {{hash=db17f0e2d4ff4e05bddaf0e5d8ed9f3c}{%
+           family={Eilers},
+           familyi={E\bibinitperiod},
+           given={Marco},
+           giveni={M\bibinitperiod}}}%
+        {{hash=57f66066d804db9a6a0f631aa4beba38}{%
+           family={M\"{u}ller},
+           familyi={M\bibinitperiod},
+           given={Peter},
+           giveni={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{7728dca4f5a3934ffa3cfa3e2006a145}
+      \strng{fullhash}{804f10b11c3900cc689a30ee17a1980b}
+      \strng{authornamehash}{7728dca4f5a3934ffa3cfa3e2006a145}
+      \strng{authorfullhash}{804f10b11c3900cc689a30ee17a1980b}
+      \field{sortinit}{1}
+      \field{sortinithash}{27a2bc5dfb9ed0a0422134d636544b5d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{MaxSMT-Based Type Inference for Python 3}
+    \endentry
+    \entry{lyra}{misc}{}
+      \field{sortinit}{1}
+      \field{sortinithash}{27a2bc5dfb9ed0a0422134d636544b5d}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{http://www.pm.inf.ethz.ch/research/lyra.html}}
+      \field{title}{Lyra project}
+      \field{year}{}
+    \endentry
+    \entry{singh}{article}{}
+      \name{author}{3}{}{%
+        {{hash=477da6ebf8a92a2f2265e7bb085c8644}{%
+           family={Singh},
+           familyi={S\bibinitperiod},
+           given={Gagandeep},
+           giveni={G\bibinitperiod}}}%
+        {{hash=8f4f7b9935992aa7a20147800e695b1e}{%
+           family={P\"{u}schel},
+           familyi={P\bibinitperiod},
+           given={Markus},
+           giveni={M\bibinitperiod}}}%
+        {{hash=3be48f15f1478336ea1bc8a71ef4fce4}{%
+           family={Vechev},
+           familyi={V\bibinitperiod},
+           given={Martin},
+           giveni={M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {ACM}%
+      }
+      \strng{namehash}{f013497b839b45af1daf04ceed1790d5}
+      \strng{fullhash}{f013497b839b45af1daf04ceed1790d5}
+      \strng{authornamehash}{f013497b839b45af1daf04ceed1790d5}
+      \strng{authorfullhash}{f013497b839b45af1daf04ceed1790d5}
+      \field{sortinit}{1}
+      \field{sortinithash}{27a2bc5dfb9ed0a0422134d636544b5d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Proceedings of the ACM on Programming Languages}
+      \field{number}{POPL}
+      \field{title}{A practical construction for decomposing numerical abstract domains}
+      \field{volume}{2}
+      \field{year}{2017}
+      \field{pages}{55}
+      \range{pages}{1}
+    \endentry
+    \entry{convert}{online}{}
+      \field{sortinit}{2}
+      \field{sortinithash}{0aa614ace9f3a40ef5a67e7f7a184048}
+      \field{labeltitlesource}{title}
+      \field{title}{Interactively analyse 100GB of JSON data with Spark}
+      \field{year}{}
+      \verb{url}
+      \verb https://cambridgespark.com/content/tutorials/interactively-analyse-100GB-of-JSON-data-with-Spark/index.html
+      \endverb
+    \endentry
+    \entry{dna}{online}{}
+      \field{sortinit}{2}
+      \field{sortinithash}{0aa614ace9f3a40ef5a67e7f7a184048}
+      \field{labeltitlesource}{title}
+      \field{title}{Counting DNA Nucleotides}
+      \field{year}{}
+      \verb{url}
+      \verb http://rosalind.info/problems/dna/
+      \endverb
+    \endentry
+    \entry{checkcell}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=e5e47f25988e69706600677f05aa4796}{%
+           family={Barowy},
+           familyi={B\bibinitperiod},
+           given={Daniel\bibnamedelima W},
+           giveni={D\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+        {{hash=33cf6c77a12f72570d5aaf95f398209d}{%
+           family={Gochev},
+           familyi={G\bibinitperiod},
+           given={Dimitar},
+           giveni={D\bibinitperiod}}}%
+        {{hash=105979a6197b01fa55fde5c770beb601}{%
+           family={Berger},
+           familyi={B\bibinitperiod},
+           given={Emery\bibnamedelima D},
+           giveni={E\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {ACM}%
+      }
+      \strng{namehash}{294a32e68267c0651e3ab1f68c5a41b9}
+      \strng{fullhash}{294a32e68267c0651e3ab1f68c5a41b9}
+      \strng{authornamehash}{294a32e68267c0651e3ab1f68c5a41b9}
+      \strng{authorfullhash}{294a32e68267c0651e3ab1f68c5a41b9}
+      \field{sortinit}{2}
+      \field{sortinithash}{0aa614ace9f3a40ef5a67e7f7a184048}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{ACM SIGPLAN Notices}
+      \field{number}{10}
+      \field{title}{CheckCell: data debugging for spreadsheets}
+      \field{volume}{49}
+      \field{year}{2014}
+      \field{pages}{507\bibrangedash 523}
+      \range{pages}{17}
+    \endentry
+  \endsortlist
+\endrefsection
+\endinput
 
-\bibitem{dirty-data}
-Won Kim, Byoung-Ju Choi, Eui-Kyeong Hong, Soo-Kyung Kim, and Doheon Lee.
-\newblock A taxonomy of dirty data.
-\newblock {\em Data Mining and Knowledge Discovery}, 7(1):81--99, Jan 2003.
-
-\bibitem{madelin}
-Madelin Schumacher.
-\newblock Automated generation of data quality checks.
-\newblock Master's thesis, ETH Zurich, 2018.
-
-\bibitem{cousot}
-Patrick Cousot and Radhia Cousot.
-\newblock Abstract interpretation: a unified lattice model for static analysis
-  of programs by construction or approximation of fixpoints.
-\newblock In editor, editor, {\em Proceedings of the 4th ACM SIGACT-SIGPLAN
-  symposium on Principles of programming languages}, pages 238--252. ACM, 1977.
-
-\bibitem{octagon}
-Antoine Min{\'e}.
-\newblock The octagon abstract domain.
-\newblock {\em Higher-order and symbolic computation}, 19(1):31--100, 2006.
-
-\bibitem{character}
-Giulia Costantini, Pietro Ferrara, and Agostino Cortesi.
-\newblock Static analysis of string values.
-\newblock In Shengchao Qin and Zongyan Qiu, editors, {\em Formal Methods and
-  Software Engineering}, pages 505--521, Berlin, Heidelberg, 2011. Springer
-  Berlin Heidelberg.
-
-\bibitem{tutorial}
-Antoine Min{\'e} et~al.
-\newblock Tutorial on static inference of numeric invariants by abstract
-  interpretation.
-\newblock {\em Foundations and Trends{\textregistered} in Programming
-  Languages}, 4(3-4):120--372, 2017.
-
-\bibitem{lyra}
-Lyra project.
-
-\bibitem{singh}
-Gagandeep Singh, Markus P{\"u}schel, and Martin Vechev.
-\newblock A practical construction for decomposing numerical abstract domains.
-\newblock {\em Proceedings of the ACM on Programming Languages}, 2(POPL):55,
-  2017.
-
-\end{thebibliography}
